@@ -8,7 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import br.com.felipe.gorisfood.GorisfoodApiApplication;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 
-public class CadastroCozinhaMain {
+public class ConsultaCozinhaMain {
 
 	public static void main(String[] args) {
 		 
