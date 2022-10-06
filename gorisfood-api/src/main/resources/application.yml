@@ -3,7 +3,6 @@ spring:
     url: ${URL_BD}
     username: ${USERNAME_BD}
     password: ${PASSWORD_BD}
-    
   jpa:
     generate-ddl: true
     hibernate:
