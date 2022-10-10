@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: ${URL_BD}
-    username: ${USERNAME_BD}
-    password: ${PASSWORD_BD}
+    url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC
+    username: root
+    password: root
   jpa:
     generate-ddl: true
+    show-sql: true
     hibernate:
       ddl-auto: create

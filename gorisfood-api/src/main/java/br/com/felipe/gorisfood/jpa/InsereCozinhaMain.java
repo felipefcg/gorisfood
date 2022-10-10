@@ -3,10 +3,10 @@ package br.com.felipe.gorisfood.jpa;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import br.com.felipe.gorisfood.GorisfoodApiApplication;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
+import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 
 public class InsereCozinhaMain {
 
@@ -20,10 +20,10 @@ public class InsereCozinhaMain {
 		Cozinha japonesa = new Cozinha();
 		japonesa.setNome("Japonesa");
 		
-		CadastroCozinha cadastroCozinha = context.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = context.getBean(CozinhaRepository.class);
 		
-		brasileira = cadastroCozinha.inserir(brasileira);
-		japonesa = cadastroCozinha.inserir(japonesa);
+		brasileira = cozinhaRepository.salvar(brasileira);
+		japonesa = cozinhaRepository.salvar(japonesa);
 		
 		System.out.printf("%d - %s\n", brasileira.getId(), brasileira.getNome());
 		System.out.printf("%d - %s\n", japonesa.getId(), japonesa.getNome());
