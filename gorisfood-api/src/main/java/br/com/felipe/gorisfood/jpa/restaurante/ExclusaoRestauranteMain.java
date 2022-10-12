@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.jpa;
+package br.com.felipe.gorisfood.jpa.restaurante;
 
 import java.math.BigDecimal;
 
@@ -10,20 +10,18 @@ import br.com.felipe.gorisfood.GorisfoodApiApplication;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 
-public class AlteracaoRestauranteMain {
+public class ExclusaoRestauranteMain {
 
 	public static void main(String[] args) {
 		ApplicationContext context = new SpringApplicationBuilder(GorisfoodApiApplication.class)
-										.web(WebApplicationType.NONE)
-										.run(args);
+				.web(WebApplicationType.NONE).run(args);
+
+		RestauranteRepository restauranteRepository = context.getBean(RestauranteRepository.class);
 		
 		Restaurante restaurante = new Restaurante();
 		restaurante.setId(1L);
-		restaurante.setNome("Mc Donald's");
-		restaurante.setTaxaFrete(new BigDecimal(1.05));
-
-		RestauranteRepository restauranteRepository = context.getBean(RestauranteRepository.class);
-		restauranteRepository.salvar(restaurante);
+				
+		restauranteRepository.remover(restaurante);
 	}
 
 }

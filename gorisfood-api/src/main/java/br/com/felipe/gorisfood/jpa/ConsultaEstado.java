@@ -5,16 +5,18 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import br.com.felipe.gorisfood.GorisfoodApiApplication;
-import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
+import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 
-public class ConsultaCozinhaMain {
+public class ConsultaEstado {
 
 	public static void main(String[] args) {
+
 		 
 		ApplicationContext context = new SpringApplicationBuilder(GorisfoodApiApplication.class).web(WebApplicationType.NONE).run(args);
 		
-		CozinhaRepository cozinhaRepository = context.getBean(CozinhaRepository.class);
-		cozinhaRepository.listar().forEach(c -> System.out.println(c.getNome()));
+		EstadoRepository repository = context.getBean(EstadoRepository.class);
+		repository.listar().forEach(System.out::println);
+	
 	}
 
 }

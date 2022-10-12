@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.jpa;
+package br.com.felipe.gorisfood.jpa.cozinha;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
