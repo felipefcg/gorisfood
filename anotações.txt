@@ -1,0 +1,41 @@
+* Utilizar Anotação personalidada para qualificador de injeção de dependendcia (Bean's)
+	Ex: 
+		-- Criação da minha anotação
+		@Retention(RUNTIME)
+		@Qualifier
+		public @interface TipoDoNotificador {
+			NivelUrgencia value();
+		}
+		
+		-- Classe utilizando a anotação, no lugar do @Qualifier(...)
+		@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
+		@Component
+		public class NotificadorEmail implements Notificador {
+	
+* Utilizar init e destroy no ciclo de vida do Bean, seja na anotação @Bean ou na própria classe com @PostConstruct e @PreDestroy
+	- @Bean(initMethod = "init", destroyMethod = "destroy");
+	- @PostConstruct public void init() {...} / @PreDestroy public void destroy() {...}
+	
+* Events no Spring
+	- Injetar na sua classe "SERVICE" a class "ApplicationEventPublisher"
+	- Para disparar o evento chamar o método "eventPublisher.publishEvent(new ClienteNotificacaoPublisher(cliente))"
+	- Criar a sua classe de publicação (Publisher) de evento "ClienteNotificacaoPublisher", nesse caso recebe um "cliente"
+		public class ClienteNotificacaoPublisher {
+			private final Cliente cliente;
+		}
+	- Criar a(s) classe(s) que vão escutar o evento (Listeners) e o método que vai tratar o evento anotado com EventListener
+		@Component
+		public class NotificacaoClienteService {
+			
+			@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
+			@Autowired
+			private Notificador notificador;
+			
+			@EventListener
+			public void notificarCliente(ClienteNotificacaoPublisher event) {
+				System.out.println("Notificando o cliente " + event.getCliente().getNome());
+				notificador.notificar(event.getCliente(), "Seu cadastro no sistema está ativo!");
+			}
+		}
+	- A forma configurada acima cria o evento de forma sincrona (default do spring)
+	
