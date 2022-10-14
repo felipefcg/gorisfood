@@ -1,4 +1,4 @@
-* Utilizar Anotação personalidada para qualificador de injeção de dependendcia (Bean's)
+* Utilizar Anotação personalidada para qualificador de injeção de dependencia (Bean's)
 	Ex: 
 		-- Criação da minha anotação
 		@Retention(RUNTIME)
@@ -39,3 +39,6 @@
 		}
 	- A forma configurada acima cria o evento de forma sincrona (default do spring)
 	
+	
+* Retornar XML na resposta da requisição
+	- Para permitir retornar XML deve ser incluido no POM a dependencia do Jackson-XML, para permitir o parse do objeto
