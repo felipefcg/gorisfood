@@ -42,3 +42,4 @@
 	
 * Retornar XML na resposta da requisição
 	- Para permitir retornar XML deve ser incluido no POM a dependencia do Jackson-XML, para permitir o parse do objeto
+		
