@@ -16,7 +16,7 @@
 	- @Bean(initMethod = "init", destroyMethod = "destroy");
 	- @PostConstruct public void init() {...} / @PreDestroy public void destroy() {...}
 	
-* Events no Spring
+* Events no Spring (https://www.baeldung.com/spring-events)
 	- Injetar na sua classe "SERVICE" a class "ApplicationEventPublisher"
 	- Para disparar o evento chamar o método "eventPublisher.publishEvent(new ClienteNotificacaoPublisher(cliente))"
 	- Criar a sua classe de publicação (Publisher) de evento "ClienteNotificacaoPublisher", nesse caso recebe um "cliente"
