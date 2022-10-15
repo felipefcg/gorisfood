@@ -67,3 +67,17 @@
 			private List<Cozinha> cozinhas;
 		}
 	
+* Métodos HTTP
+	- GET: consultar um recurso ou uma lista
+	- POST: criar um recurso
+	- PUT: Atualizar ou criar um recurso.
+		- Criar: PUT /cozinhas/11 -> criar o recurso com o ID 11, ou se ja existir atualizar. 
+				 Raramente é utilizado para essa finalidade de criação
+		- Atualizar: Atualiza todo todo o recurso. 
+					 Se na requisição foi passado apenas um atributo do recurso, irá atualizar o atributo com o valor informado e os demais ficarão em branco.
+	- PATCH: Atualização parcial do recurso, apenas atualiza os dados informados
+	- DELETE: Remove um recurso (seja físicamente ou logicamente)
+	- HEAD: Pareceido com o GET, porém não retorna um corpo. 
+			Utilizado apenas para buscar os cabeçalhos de um recurso
+	- OPTIONS: retorna os métodos HTTP aceitos por um recurso
+		
