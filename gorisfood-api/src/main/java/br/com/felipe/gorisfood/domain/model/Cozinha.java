@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-@JsonRootName("gastronomia")
+@JsonRootName("cozinha")
 public class Cozinha {
 	
 	@EqualsAndHashCode.Include

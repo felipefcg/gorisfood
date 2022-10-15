@@ -1,13 +1,14 @@
 package br.com.felipe.gorisfood.api.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.model.CozinhaXmlWrapper;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 
@@ -21,6 +22,11 @@ public class CozinhaController {
 	@GetMapping
 	public List<Cozinha> listar () {
 		return repository.listar();
+	}
+	
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	public CozinhaXmlWrapper listarXml() {
+		return new CozinhaXmlWrapper(repository.listar());
 	}
 	
 	@GetMapping("{id}")
