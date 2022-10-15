@@ -42,4 +42,12 @@
 	
 * Retornar XML na resposta da requisição
 	- Para permitir retornar XML deve ser incluido no POM a dependencia do Jackson-XML, para permitir o parse do objeto
+		<dependency>
+		  <groupId>com.fasterxml.jackson.dataformat</groupId>
+		  <artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
 		
+* Anotações para alterar informações no JSON e/ou XML
+	- @JsonRootName("gastronomia"): Anota a classe para definir o nome do objeto no XML/JSON
+	- @JsonIgnore: Anota o atributo da classe para que o mesmo não seja apresentado no XML/JSON
+	- @JsonProperty("titulo"): Anota o atributo para mudar o nome do atributo no XML/JSON
