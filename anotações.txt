@@ -51,11 +51,12 @@
 	- @JsonRootName("gastronomia"): Anota a classe para definir o nome do objeto no XML/JSON
 	- @JsonIgnore: Anota o atributo da classe para que o mesmo não seja apresentado no XML/JSON
 	- @JsonProperty("titulo"): Anota o atributo para mudar o nome do atributo no XML/JSON
-	- @JacksonXmlRootElement(localName = "cozinhas"): para classe Wrapper que vai ser o objeto Root do XML
+	- @JacksonXmlRootElement(localName = "cozinhas") ou @JsonRootName(value = "cozinhas"): para classe Wrapper que vai ser o objeto Root do XML
 	- @JsonProperty("cozinha") ou @JacksonXmlProperty(localName = "cozinhaX"): Vai dar o nome dos elementos da lista
 	- @JacksonXmlElementWrapper(useWrapping = false): Remove a TAG que encapsula os objetos da lista
 	
 	EX: @JacksonXmlRootElement(localName = "cozinhas")
+		//@JsonRootName(value = "cozinhas")
 		@Data
 		public class CozinhaXmlWrapper {
 
