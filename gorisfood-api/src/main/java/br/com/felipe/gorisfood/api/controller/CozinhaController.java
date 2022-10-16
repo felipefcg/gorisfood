@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,5 +69,23 @@ public class CozinhaController {
 		cozinha = repository.salvar(cozinhaAtual);
 		
 		return ResponseEntity.ok(cozinha);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@DeleteMapping("{id}")
+	public ResponseEntity remover(@PathVariable Long id) {
+		Cozinha cozinhaAtual = repository.buscar(id);
+		
+		if(cozinhaAtual == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		try {
+			repository.remover(cozinhaAtual);
+			return ResponseEntity.noContent().build();
+		} catch (DataIntegrityViolationException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		
 	}
 }

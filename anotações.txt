@@ -85,3 +85,5 @@
 	- org.springframework.beans.BeanUtils.copyProperties(source, target, "propriedadeIgnoradaNaCopia");
 	- Essa situação não é um mapper
 	
+* Ao tentar fazermos um delete de um recurso (Ex: cozinha) que, por exemplo, não pode ser removido por ser FK para outro recurso (cozinha é FK de restaurantes),
+podemos retornar o HTTP STATUS 409 (CONFLICT)
