@@ -81,3 +81,7 @@
 			Utilizado apenas para buscar os cabeçalhos de um recurso
 	- OPTIONS: retorna os métodos HTTP aceitos por um recurso
 		
+* Utilizar o BeanUtils para copiar valores de um objeto 1 para o objeto 2 desde que sejam a mesma classe.
+	- org.springframework.beans.BeanUtils.copyProperties(source, target, "propriedadeIgnoradaNaCopia");
+	- Essa situação não é um mapper
+	
