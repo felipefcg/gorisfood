@@ -1,6 +1,10 @@
 package br.com.felipe.gorisfood.domain.service;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +71,34 @@ public class CadastroRestauranteService {
 		
 		return restauranteRepository.salvar(restauranteSalvo);
 	}
+
+	public Restaurante alterarParcialmente(Long id, Map<String, Object> campos) {
+		
+		Restaurante restauranteAtual = buscar(id);
+		merge(campos, restauranteAtual);
+		
+		return restauranteRepository.salvar(restauranteAtual);
+	}
+	
+	private void merge (Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
+		camposOrigem.forEach((nomeCampo, valorCampo) -> {
+			try {
+
+				Field field = restauranteDestino.getClass().getDeclaredField(nomeCampo);
+				field.setAccessible(true);
+				
+				if(field.getType().equals(BigDecimal.class)) {
+					field.set(restauranteDestino, new BigDecimal((double) valorCampo, MathContext.DECIMAL32).setScale(2));
+				} else {
+					field.set(restauranteDestino, valorCampo);
+				}
+				
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				throw new EntidadeRelacionamentoNaoEncontradaException("Falha na leitura dos campos!!");
+			}
+		});
+	}
+	
 
 }

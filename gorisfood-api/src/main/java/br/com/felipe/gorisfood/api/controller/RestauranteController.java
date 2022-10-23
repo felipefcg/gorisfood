@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,6 +65,20 @@ public class RestauranteController {
 							   @RequestBody Restaurante restaurante) {
 		try {
 			restaurante = service.alterar(id, restaurante);
+			return ResponseEntity.ok(restaurante);
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.notFound().build();
+		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
+		}
+	}
+	
+	@PatchMapping("{id}")
+	public ResponseEntity<Object> alterarParcialmente(@PathVariable Long id, 
+							   @RequestBody Map<String, Object> campos) {
+		
+		try {
+			Restaurante restaurante = service.alterarParcialmente(id, campos);
 			return ResponseEntity.ok(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
