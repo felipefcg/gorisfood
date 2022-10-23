@@ -15,6 +15,9 @@ public class Estado {
 	
 	@EqualsAndHashCode.Include
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	private String uf;
 	
 	private String nome;

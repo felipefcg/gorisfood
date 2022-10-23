@@ -14,5 +14,5 @@ INSERT INTO permissao(nome, descricao) value ('Cliente', 'Permite fazer pedidos'
 INSERT INTO estado (uf, nome) value ('SP', 'São Paulo');
 INSERT INTO estado (uf, nome) value ('MG', 'Minas Gerais');
 
-INSERT INTO cidade (nome, estado_uf) value ('Franco da Rocha', 'SP');
-INSERT INTO cidade (nome, estado_uf) value ('Uberlândia', 'MG');
+INSERT INTO cidade (nome, estado_id) value ('Franco da Rocha', 1);
+INSERT INTO cidade (nome, estado_id) value ('Uberlândia', 2);
