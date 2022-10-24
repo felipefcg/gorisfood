@@ -27,7 +27,12 @@ public class CadastroCozinhaService {
 	}
 	
 	public Cozinha buscar(Long id) {
-		return repository.buscar(id);
+		try {
+			return repository.buscar(id);
+		}catch (EmptyResultDataAccessException e) {
+			throw new EntidadeNaoEncontradaException(
+					String.format("Não existe um cadastro de cozinha com o código %d.", id));
+		}
 	}
 	
 	public void remover(Long id) throws DataIntegrityViolationException {

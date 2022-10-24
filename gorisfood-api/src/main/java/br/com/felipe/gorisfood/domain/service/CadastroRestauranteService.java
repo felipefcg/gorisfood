@@ -8,7 +8,11 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
@@ -57,16 +61,7 @@ public class CadastroRestauranteService {
 
 	public Restaurante alterar(Long id, Restaurante restaurante) {
 		Restaurante restauranteSalvo = this.buscar(id);
-		
-		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinhaSalva = cozinhaRepository.buscar(cozinhaId);
-		
-		if(cozinhaSalva == null) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(
-					String.format("Cozinha com ID %d não encontrado.", cozinhaId));
-		}
-		
-		restaurante.setCozinha(cozinhaSalva);
+		buscaCozinha(restaurante);
 		BeanUtils.copyProperties(restaurante, restauranteSalvo, "id");
 		
 		return restauranteRepository.salvar(restauranteSalvo);
@@ -74,29 +69,37 @@ public class CadastroRestauranteService {
 
 	public Restaurante alterarParcialmente(Long id, Map<String, Object> campos) {
 		
-		Restaurante restauranteAtual = buscar(id);
-		merge(campos, restauranteAtual);
+		Restaurante restauranteDestino = buscar(id);
+		merge(campos, restauranteDestino);
+		buscaCozinha(restauranteDestino);
 		
-		return restauranteRepository.salvar(restauranteAtual);
+		return restauranteRepository.salvar(restauranteDestino);
 	}
 	
-	private void merge (Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
-		camposOrigem.forEach((nomeCampo, valorCampo) -> {
-			try {
+	private void buscaCozinha(Restaurante restaurante) {
+		Long cozinhaId = restaurante.getCozinha().getId();
+		
+		try {
+			Cozinha cozinhaSalva = cozinhaRepository.buscar(cozinhaId);
+			restaurante.setCozinha(cozinhaSalva);
+		}catch (EmptyResultDataAccessException e) {
+			throw new EntidadeRelacionamentoNaoEncontradaException(
+					String.format("Cozinha com ID %d não encontrado.", cozinhaId));
+		}
+	}
+	
+	private void merge (Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+		ObjectMapper mapper = new ObjectMapper();
+		Restaurante restauranteOrigem = mapper.convertValue(dadosOrigem, Restaurante.class);
+		
+		dadosOrigem.forEach((nomeCampo, valorCampo) -> {
 
-				Field field = restauranteDestino.getClass().getDeclaredField(nomeCampo);
+				Field field = ReflectionUtils.findField(Restaurante.class, nomeCampo);
 				field.setAccessible(true);
 				
-				if(field.getType().equals(BigDecimal.class)) {
-					field.set(restauranteDestino, new BigDecimal((double) valorCampo, MathContext.DECIMAL32).setScale(2));
-				} else {
-					field.set(restauranteDestino, valorCampo);
-				}
+				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 				
-			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-				throw new EntidadeRelacionamentoNaoEncontradaException("Falha na leitura dos campos!!");
-			}
+				ReflectionUtils.setField(field, restauranteDestino, novoValor);
 		});
 	}
 	

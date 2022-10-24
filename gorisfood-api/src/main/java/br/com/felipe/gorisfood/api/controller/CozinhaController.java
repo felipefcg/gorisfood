@@ -35,13 +35,12 @@ public class CozinhaController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<Cozinha> buscar (@PathVariable Long id) {
-		Cozinha cozinha = service.buscar(id);
-		
-		if(cozinha == null) {
+		try {
+			Cozinha cozinha = service.buscar(id);
+			return ResponseEntity.ok(cozinha);
+		}catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
 		}
-		
-		return ResponseEntity.ok(cozinha);
 	}
 	
 	@PostMapping
@@ -52,16 +51,16 @@ public class CozinhaController {
 	
 	@PutMapping("{id}")
 	public ResponseEntity<Cozinha> alterar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
-		Cozinha cozinhaAtual = service.buscar(id);
-		
-		if(cozinhaAtual == null) {
+		try {
+			Cozinha cozinhaAtual = service.buscar(id);
+			
+			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+			cozinha = service.salvar(cozinhaAtual);
+			
+			return ResponseEntity.ok(cozinha);
+		}catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
 		}
-		
-		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-		cozinha = service.salvar(cozinhaAtual);
-		
-		return ResponseEntity.ok(cozinha);
 	}
 	
 	@SuppressWarnings("rawtypes")

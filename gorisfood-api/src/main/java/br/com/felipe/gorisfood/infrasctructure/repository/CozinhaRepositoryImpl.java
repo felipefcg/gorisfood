@@ -25,7 +25,13 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	
 	@Override
 	public Cozinha buscar(Long id) {
-		return em.find(Cozinha.class, id);
+		Cozinha cozinha = em.find(Cozinha.class, id);
+		
+		if(cozinha == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		return cozinha;
 	}
 	
 	@Override
