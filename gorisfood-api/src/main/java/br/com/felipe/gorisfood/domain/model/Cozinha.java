@@ -1,5 +1,7 @@
 package br.com.felipe.gorisfood.domain.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +18,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @JsonRootName("cozinha")
-public class Cozinha {
+public class Cozinha implements Serializable {
 	
+	private static final long serialVersionUID = -3273178572976891462L;
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

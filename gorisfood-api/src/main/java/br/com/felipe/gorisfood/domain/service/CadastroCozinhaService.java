@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,25 +20,23 @@ public class CadastroCozinhaService {
 	private CozinhaRepository repository;
 	
 	public Cozinha salvar(Cozinha cozinha) {
-		return repository.salvar(cozinha);
+		return repository.save(cozinha);
 	}
 	
 	public List<Cozinha> listar(){
-		return repository.listar();
+		return repository.findAll();
 	}
 	
 	public Cozinha buscar(Long id) {
-		try {
-			return repository.buscar(id);
-		}catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cozinha com o código %d.", id));
-		}
+		
+		return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de cozinha com o código %d.", id)));
+		
 	}
 	
 	public void remover(Long id) throws DataIntegrityViolationException {
 		try {
-			repository.remover(id);
+			repository.deleteById(id);
 		
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(

@@ -52,7 +52,7 @@ public class RestauranteController {
 			String url = String.format("http://localhost:8080/restaurantes/%d", restaurante.getId());
 			
 			return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, url).body(restaurante);
-		} catch (EntidadeNaoEncontradaException e) {
+		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //			return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).build();
 //			return ResponseEntity.unprocessableEntity().build();

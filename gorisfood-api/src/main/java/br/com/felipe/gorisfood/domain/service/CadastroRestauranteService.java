@@ -47,12 +47,10 @@ public class CadastroRestauranteService {
 	}
 
 	public Restaurante criar(Restaurante restaurante) {
-		Cozinha cozinha = cozinhaRepository.buscar(restaurante.getCozinha().getId());
-		
-		if(cozinha == null) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(
-					String.format("Não existe um cadastro de cozinha com o código %d.", restaurante.getCozinha().getId()));
-		}
+		Long cozinhaId = restaurante.getCozinha().getId();
+		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+							.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
+									String.format("Não existe um cadastro de cozinha com o código %d.", cozinhaId)));
 		
 		restaurante.setCozinha(cozinha);
 		
@@ -79,13 +77,11 @@ public class CadastroRestauranteService {
 	private void buscaCozinha(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		
-		try {
-			Cozinha cozinhaSalva = cozinhaRepository.buscar(cozinhaId);
-			restaurante.setCozinha(cozinhaSalva);
-		}catch (EmptyResultDataAccessException e) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(
-					String.format("Cozinha com ID %d não encontrado.", cozinhaId));
-		}
+		Cozinha cozinhaSalva = cozinhaRepository.findById(cozinhaId)
+								.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
+												String.format("Cozinha com ID %d não encontrado.", cozinhaId)));
+		
+		restaurante.setCozinha(cozinhaSalva);
 	}
 	
 	private void merge (Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
