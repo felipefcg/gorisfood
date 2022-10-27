@@ -24,15 +24,13 @@ public class CadastroCidadeService {
 	private EstadoRepository estadoRepository;
 	
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 
 	public Cidade buscar(Long id) {
-		try {
-			return cidadeRepository.buscar(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format("Cidade com %d não encontrada", id));
-		}
+		return cidadeRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Cidade com %d não encontrada", id)));
 	}
 
 	public Cidade salvar(Cidade cidade) {
@@ -41,7 +39,7 @@ public class CadastroCidadeService {
 		Estado estado = buscarEstado(idEstado);
 		
 		cidade.setEstado(estado);
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 
 	public Cidade alterar (Long id, Cidade cidade) {
@@ -51,23 +49,20 @@ public class CadastroCidadeService {
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 		cidadeAtual.setEstado(estado);
 		
-		return cidadeRepository.salvar(cidadeAtual);
+		return cidadeRepository.save(cidadeAtual);
 	}
 	
 	public void remover(Long id) {
 		try {
-			cidadeRepository.remover(id);
+			cidadeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(String.format("Cidade com %d não encontrada", id));
 		}
 	}
 	
 	private Estado buscarEstado(Long idEstado) {
-		try {
-			return estadoRepository.buscar(idEstado);
-		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(
-					String.format("Não foi encontrado Estado com o id %d", idEstado));
-		}
+		return estadoRepository.findById(idEstado)
+				.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
+						String.format("Não foi encontrado Estado com o id %d", idEstado)));
 	}
 }

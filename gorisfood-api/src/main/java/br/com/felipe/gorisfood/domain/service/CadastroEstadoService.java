@@ -20,21 +20,17 @@ public class CadastroEstadoService {
 	private EstadoRepository repository;
 	
 	public List<Estado> listar() {
-		return repository.listar();
+		return repository.findAll();
 	}
 	
 	public Estado buscar(Long id) {
-		
-		try {
-			return repository.buscar(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Estado não encontrado com o id %s", id));
-		}
+		return repository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Estado não encontrado com o id %s", id)));
 	}
 	
 	public Estado salvar(Estado estado) {
-		return repository.salvar(estado);
+		return repository.save(estado);
 	}
 	
 	public Estado atualizar(Long id, Estado estado) {
@@ -46,7 +42,7 @@ public class CadastroEstadoService {
 	
 	public void remover(Long id) {
 		try {
-			repository.remover(id);
+			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExcpetion(
 					String.format("Cozinha de estado %d não pode ser removida pois está em uso.", id));

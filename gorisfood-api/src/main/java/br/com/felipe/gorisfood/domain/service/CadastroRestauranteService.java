@@ -1,14 +1,11 @@
 package br.com.felipe.gorisfood.domain.service;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -31,50 +28,39 @@ public class CadastroRestauranteService {
 	private CozinhaRepository cozinhaRepository;
 	
 	public List<Restaurante> listar() {
-		return restauranteRepository.listar();
+		return restauranteRepository.findAll();
 	}
 	
 	public Restaurante buscar(Long id) {
 		
-		 Restaurante restaurante = restauranteRepository.buscar(id);
-		 
-		 if(restaurante == null) {
-			 throw new EntidadeNaoEncontradaException(
-					 String.format("Restaurante não encontrado com o código %d.", id));
-		 }
-		 
-		 return restaurante;
+		 return restauranteRepository.findById(id)
+				 .orElseThrow(() -> new EntidadeNaoEncontradaException(
+						 String.format("Restaurante não encontrado com o código %d.", id)));
 	}
 
 	public Restaurante criar(Restaurante restaurante) {
-		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-							.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
-									String.format("Não existe um cadastro de cozinha com o código %d.", cozinhaId)));
-		
-		restaurante.setCozinha(cozinha);
-		
-		return restauranteRepository.salvar(restaurante);
+		colocarCozinhaNoRestaurante(restaurante);
+		return restauranteRepository.save(restaurante);
 	}
 
 	public Restaurante alterar(Long id, Restaurante restaurante) {
-		Restaurante restauranteSalvo = this.buscar(id);
-		buscaCozinha(restaurante);
+		Restaurante restauranteSalvo = buscar(id);
+		colocarCozinhaNoRestaurante(restaurante);
 		BeanUtils.copyProperties(restaurante, restauranteSalvo, "id");
 		
-		return restauranteRepository.salvar(restauranteSalvo);
+		return restauranteRepository.save(restauranteSalvo);
 	}
 
 	public Restaurante alterarParcialmente(Long id, Map<String, Object> campos) {
 		
 		Restaurante restauranteDestino = buscar(id);
 		merge(campos, restauranteDestino);
-		buscaCozinha(restauranteDestino);
+		colocarCozinhaNoRestaurante(restauranteDestino);
 		
-		return restauranteRepository.salvar(restauranteDestino);
+		return restauranteRepository.save(restauranteDestino);
 	}
 	
-	private void buscaCozinha(Restaurante restaurante) {
+	private void colocarCozinhaNoRestaurante(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		
 		Cozinha cozinhaSalva = cozinhaRepository.findById(cozinhaId)
