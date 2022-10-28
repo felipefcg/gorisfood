@@ -113,3 +113,5 @@ arquivo /META-INF/orm.xml
 			</named-query>
 		</entity-mappings>
 	- o arquivo /META-INF/orm.xml geralmente é utilizado quando temos queries muito grande para deixar nas anotações em cima da assinatura dos métodos
+	- Para mapear mais de um arquivo XML, afim de separar as queries e deixar os arquivos menores devemo declarar no application.properties
+		EX: spring.jpa.mapping-resources=META-INF/orm-restaurantes.xml,META-INF/orm-clientes.xml
