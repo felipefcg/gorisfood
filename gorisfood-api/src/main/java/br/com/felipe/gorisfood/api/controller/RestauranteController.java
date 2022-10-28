@@ -94,9 +94,15 @@ public class RestauranteController {
 		return service.buscarPorNomeECozinha(nome, cozinhaId);
 	}
 	
-	@GetMapping(value = "por-nome-taxa", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "por-nome-e-taxa", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<Restaurante> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
 		return service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim);
+	}
+	
+	@GetMapping(value = "por-nome-cozinha-e-taxa", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<Restaurante> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+		return service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal);
 	}
 }

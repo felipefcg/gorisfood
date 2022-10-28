@@ -115,3 +115,12 @@ arquivo /META-INF/orm.xml
 	- o arquivo /META-INF/orm.xml geralmente é utilizado quando temos queries muito grande para deixar nas anotações em cima da assinatura dos métodos
 	- Para mapear mais de um arquivo XML, afim de separar as queries e deixar os arquivos menores devemo declarar no application.properties
 		EX: spring.jpa.mapping-resources=META-INF/orm-restaurantes.xml,META-INF/orm-clientes.xml
+		
+* é possivel utilizar classes Repository customizadas, desde que ela tenha o msm nome da interface com o sufixo Impl e a interface tenha a assinatura do método
+da implementação
+	Ex: RestauranteRepositoryImpl e RestauranteRepository
+	Afim de melhorar a validação em tempo de desenvolvimento podemos criar uma Interface nova onde a Implementação implementa a interface customizada e a 
+interface Repository extende a customizada.
+	Ex: 
+		- public class RestauranteRepositoryImpl implements RestauranteRepositoryCustom {...}
+		- public interface RestauranteRepository extends RestauranteRepositoryCustom, JpaRepository<Restaurante, Long> {...}

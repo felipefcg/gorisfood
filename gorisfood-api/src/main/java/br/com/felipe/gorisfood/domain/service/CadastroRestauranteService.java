@@ -93,4 +93,8 @@ public class CadastroRestauranteService {
 	public List<Restaurante> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFinal) {
 		return restauranteRepository.consultaPorNomeETaxaFrete(nome, taxaInicio, taxaFinal);
 	}
+	
+	public List<Restaurante> buscarPorCozinhaETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFinal) {
+		return restauranteRepository.consultarPorCozinhaETaxa(nome, taxaInicio, taxaFinal);
+	}
 }
