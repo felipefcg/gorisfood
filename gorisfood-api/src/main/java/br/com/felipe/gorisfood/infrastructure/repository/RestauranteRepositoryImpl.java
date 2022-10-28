@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import br.com.felipe.gorisfood.domain.model.Restaurante;
+import br.com.felipe.gorisfood.domain.repository.RestauranteRepositoryCustom;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryCustom {

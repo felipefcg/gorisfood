@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.infrastructure.repository;
+package br.com.felipe.gorisfood.domain.repository;
 
 import java.math.BigDecimal;
 import java.util.List;

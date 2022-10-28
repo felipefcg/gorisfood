@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.felipe.gorisfood.domain.model.Restaurante;
-import br.com.felipe.gorisfood.infrastructure.repository.RestauranteRepositoryCustom;
 
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, RestauranteRepositoryCustom {
