@@ -91,3 +91,25 @@ podemos retornar o HTTP STATUS 409 (CONFLICT)
 * Utilizando Exctions do Srpring
 	- org.springframework.dao.DataIntegrityViolationException
 	- org.springframework.dao.EmptyResultDataAccessException
+	
+* Utilizando NAMED QUERY: 
+	- É possível utilizar Named Query utilizam a anotação @NamedQuery em cima do método, e dessa forma colocar a query na própria anotação ou no 
+arquivo /META-INF/orm.xml
+	- Ou nomeando a query no arquivo /META-INF/orm.xml com NomeEntidadeDominio.nomeDoMetodoDeQuery
+	Ex conteudo do arquivo:
+		<?xml version="1.0" encoding="UTF-8"?>
+		<entity-mappings 
+			xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+			version="2.2">
+
+			<named-query name="Restaurante.consultaPorNomeETaxaFrete">
+				<query>
+					from Restaurante 
+					where nome like concat('%',:nome,'%') 
+					and taxaFrete between :taxaInicio and :taxaFim
+				</query>
+			</named-query>
+		</entity-mappings>
+	- o arquivo /META-INF/orm.xml geralmente é utilizado quando temos queries muito grande para deixar nas anotações em cima da assinatura dos métodos

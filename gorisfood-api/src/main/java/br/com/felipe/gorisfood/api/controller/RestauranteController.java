@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.api.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -85,5 +86,17 @@ public class RestauranteController {
 		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
 		}
+	}
+	
+	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<Restaurante> buscarPorNomeECozinha(String nome, Long cozinhaId) {
+		return service.buscarPorNomeECozinha(nome, cozinhaId);
+	}
+	
+	@GetMapping(value = "por-nome-taxa", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<Restaurante> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
+		return service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim);
 	}
 }

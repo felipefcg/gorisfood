@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.domain.service;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,12 @@ public class CadastroRestauranteService {
 				ReflectionUtils.setField(field, restauranteDestino, novoValor);
 		});
 	}
-	
 
+	public List<Restaurante> buscarPorNomeECozinha(String nome, Long cozinhaId) {
+		return restauranteRepository.consultaPorNome(nome, cozinhaId);
+	}
+	
+	public List<Restaurante> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFinal) {
+		return restauranteRepository.consultaPorNomeETaxaFrete(nome, taxaInicio, taxaFinal);
+	}
 }
