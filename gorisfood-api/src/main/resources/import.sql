@@ -3,6 +3,7 @@ INSERT into cozinha (nome) value ('Indiana');
 
 INSERT into restaurante (nome, taxa_frete, cozinha_id) value ('Maluquinho Pizzaria', 5.99, 1);
 INSERT into restaurante (nome, taxa_frete, cozinha_id) value ('Reis Hot Dogs', 1.75, 2);
+INSERT into restaurante (nome, taxa_frete, cozinha_id) value ('New York Burguer', 0.00, 2);
 
 INSERT INTO forma_pagamento(descricao) value ('Cartão de Crédito');
 INSERT INTO forma_pagamento(descricao) value ('Cartão de Débito');

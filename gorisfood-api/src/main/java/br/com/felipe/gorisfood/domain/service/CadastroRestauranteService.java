@@ -18,6 +18,8 @@ import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
+import br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteComFreteGratisSpec;
+import br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteComNomeSemelhanteSpec;
 
 @Service
 public class CadastroRestauranteService {
@@ -96,5 +98,12 @@ public class CadastroRestauranteService {
 	
 	public List<Restaurante> buscarPorCozinhaETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFinal) {
 		return restauranteRepository.consultarPorCozinhaETaxa(nome, taxaInicio, taxaFinal);
+	}
+	
+	public List<Restaurante> buscarPorFreteGratisENome(String nome) {
+		var freteGratis = new RestauranteComFreteGratisSpec();
+		var nomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		List<Restaurante> list = restauranteRepository.findAll(freteGratis.and(nomeSemelhante));
+		return list;
 	}
 }

@@ -105,4 +105,10 @@ public class RestauranteController {
 	public List<Restaurante> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 		return service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal);
 	}
+	
+	@GetMapping(value = "por-frete-gratis-e-nome", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<Restaurante> buscarPorFreteGratisENome(String nome) {
+		return service.buscarPorFreteGratisENome(nome);
+	}
 }
