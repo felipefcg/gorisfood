@@ -1,5 +1,8 @@
 package br.com.felipe.gorisfood.domain.service;
 
+import static br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteSpecs.comFreteGratis;
+import static br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteSpecs.comNomeSemelhante;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,8 +21,7 @@ import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
-import br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteComFreteGratisSpec;
-import br.com.felipe.gorisfood.infrastructure.repository.specification.RestauranteComNomeSemelhanteSpec;
+
 
 @Service
 public class CadastroRestauranteService {
@@ -101,9 +103,6 @@ public class CadastroRestauranteService {
 	}
 	
 	public List<Restaurante> buscarPorFreteGratisENome(String nome) {
-		var freteGratis = new RestauranteComFreteGratisSpec();
-		var nomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		List<Restaurante> list = restauranteRepository.findAll(freteGratis.and(nomeSemelhante));
-		return list;
+		return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 	}
 }
