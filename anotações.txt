@@ -124,3 +124,16 @@ interface Repository extende a customizada.
 	Ex: 
 		- public class RestauranteRepositoryImpl implements RestauranteRepositoryCustom {...}
 		- public interface RestauranteRepository extends RestauranteRepositoryCustom, JpaRepository<Restaurante, Long> {...}
+		
+* Centralizar a Specification dentro do RepositoryImpl e injetar a própria interface Repository	dentro da Implementação, para isso precisamo anotar a injeção 
+de dependencia com @Lazy para que essa dependencia seja carregado apenas no momento de uso, evitando assim referência circular.
+ Ex: 
+	@Repository
+	public class RestauranteRepositoryImpl implements RestauranteRepositoryCustom {
+	
+		@Autowired
+		@Lazy
+		private RestauranteRepository repository;
+		
+		//... demais atributos e métodos ...
+	}
