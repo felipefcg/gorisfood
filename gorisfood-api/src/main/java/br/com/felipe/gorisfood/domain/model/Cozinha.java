@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.domain.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -34,5 +35,6 @@ public class Cozinha implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")
-	private List<Restaurante> restaurantes;
+	private List<Restaurante> restaurantes = new ArrayList<>();
+	
 }
