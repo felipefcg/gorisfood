@@ -137,3 +137,21 @@ de dependencia com @Lazy para que essa dependencia seja carregado apenas no mome
 		
 		//... demais atributos e métodos ...
 	}
+	
+* Criar um JPA Repository Customizado para implementar métodos de busca repetitivos que podem servir para todas os nosso repositórios
+	Para isso precisamos:
+		1 - Criar interface que extende JpaRepository: public interface CustomJpaRepository<T, ID> extends JpaRepository<T, ID> {...}
+		2 - Anotar a interface com @NoRepositoryBean
+		3 - Criar classe de implementação que implementa a nova interface e extende SimpleJpaRepository: 
+			public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements CustomJpaRepository<T, ID> {
+				private EntityManager em;
+					
+				public CustomJpaRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+					super(entityInformation, entityManager);
+					this.em = entityManager;
+				}
+				
+				//... Métodos CRUD ...
+			}
+		4 - Adicionar na classe de start da aplicação a anotação @EnableJpaRepositories: @EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class)
+		5 - Extender no seu Repository a interface customizada ao invés de JpaRepository: public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long> {}

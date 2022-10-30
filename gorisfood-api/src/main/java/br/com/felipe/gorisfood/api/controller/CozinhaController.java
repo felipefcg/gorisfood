@@ -1,10 +1,12 @@
 package br.com.felipe.gorisfood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
+import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 
 @RestController
@@ -77,5 +80,11 @@ public class CozinhaController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
 		}
+	}
+	
+	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public Optional<Cozinha> buscarPrimeiro() {
+		return service.buscarPrimeiro();
 	}
 }

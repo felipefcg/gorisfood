@@ -3,6 +3,8 @@ package br.com.felipe.gorisfood.domain.repository;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.repository.NoRepositoryBean;
+
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
 public interface RestauranteRepositoryCustom {

@@ -13,7 +13,7 @@ import br.com.felipe.gorisfood.domain.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository extends RestauranteRepositoryCustom, 
-												JpaRepository<Restaurante, Long>, 
+												CustomJpaRepository<Restaurante, Long>, 
 												JpaSpecificationExecutor<Restaurante>  {
 	
 	@Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
