@@ -154,4 +154,12 @@ de dependencia com @Lazy para que essa dependencia seja carregado apenas no mome
 				//... Métodos CRUD ...
 			}
 		4 - Adicionar na classe de start da aplicação a anotação @EnableJpaRepositories: @EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class)
-		5 - Extender no seu Repository a interface customizada ao invés de JpaRepository: public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long> {}
+		5 - Extender no seu Repository a interface customizada ao invés de JpaRepository: 
+			public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long> {}
+		
+* Campos DATA_CRIACAO e DATA_ATUALIZACAO: Geralmente nos sistemas nós colocamos nas tabelas os campos de data criacao e atualização e ficamos "controlando" 
+a atualizção dessas datas, porém temos como passar esse boilerplate para o Hibernate com as anotações:
+	- @CreationTimestamp
+	- @UpdateTimestamp
+Onde ele automaticamente gerencia esse controle, sendo q no CreationTimestamp ele insere apenas na criação do registro no banco e o UpdateTimestamp em todo 
+momento	que vamos salvar o registro.
