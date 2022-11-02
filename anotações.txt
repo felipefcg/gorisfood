@@ -66,7 +66,11 @@
 			@JacksonXmlElementWrapper(useWrapping = false)
 			private List<Cozinha> cozinhas;
 		}
-	
+	- @JsonIgnoreProperties: Ignora o(s) atributo(s) do objeto
+		EX: Ignora o atributo Id que tem em Cozinha
+			@JsonIgnoreProperties("id")
+			private Cozinha cozinha;
+		
 * Métodos HTTP
 	- GET: consultar um recurso ou uma lista
 	- POST: criar um recurso
