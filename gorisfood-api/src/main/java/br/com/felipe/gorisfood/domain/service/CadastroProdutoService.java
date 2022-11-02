@@ -41,7 +41,7 @@ public class CadastroProdutoService {
 	public Produto alterar(Long id, Produto produtoAlterado) {
 		Produto produtoSalvo = buscar(id);
 		inserirRestaurante(produtoAlterado);
-		BeanUtils.copyProperties(produtoAlterado, produtoSalvo, "id");
+		BeanUtils.copyProperties(produtoAlterado, produtoSalvo, "id", "restaurante");
 		return produtoRepository.save(produtoSalvo);
 	}
 	
