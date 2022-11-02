@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
-import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 
 @RestController

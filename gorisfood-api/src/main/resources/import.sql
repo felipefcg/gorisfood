@@ -12,6 +12,11 @@ INSERT into restaurante (id, nome, taxa_frete, cozinha_id, endereco_bairro,ender
 INSERT into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) value (2, 'Reis Hot Dogs', 1.75, 2, utc_timestamp, utc_timestamp);
 INSERT into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) value (3, 'New York Burguer', 0.00, 2, utc_timestamp, utc_timestamp);
 
+insert into produto (id, ativo, nome , descricao, preco, restaurante_id)
+	value (1, true, 'Arroz doce da vó', 'Arroz doce especial receita de anos na família', 5.99, 1);
+insert into produto (id, ativo, nome , descricao, preco, restaurante_id)
+	value (2, false, 'Macarronada', 'O melhor macarrão da cidade', 29, 1);
+
 INSERT INTO forma_pagamento(id, descricao) value (1, 'Dinheiro');
 INSERT INTO forma_pagamento(id, descricao) value (2, 'Cartão de Crédito');
 INSERT INTO forma_pagamento(id, descricao) value (3, 'Cartão de Débito');
