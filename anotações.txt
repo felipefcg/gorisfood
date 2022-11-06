@@ -66,6 +66,7 @@
 			@JacksonXmlElementWrapper(useWrapping = false)
 			private List<Cozinha> cozinhas;
 		}
+		
 	- @JsonIgnoreProperties: Ignora o(s) atributo(s) do objeto
 		EX: Ignora o atributo Id que tem em Cozinha
 			@JsonIgnoreProperties("id")
@@ -167,3 +168,9 @@ a atualizção dessas datas, porém temos como passar esse boilerplate para o Hi
 	- @UpdateTimestamp
 Onde ele automaticamente gerencia esse controle, sendo q no CreationTimestamp ele insere apenas na criação do registro no banco e o UpdateTimestamp em todo 
 momento	que vamos salvar o registro.
+
+* Hibernate: Problema do N+1: Umas das formas de resolver esse problema é utilizar o JOIN FETCH no JPQL
+	EX: 
+		@Query("from Restaurante r JOIN FETCH r.cozinha left JOIN FETCH r.formasPagamento")
+		List<Restaurante> findAll(); 
+	
