@@ -3,6 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8
     username: root
     password: root
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 15
+      idle-timeout: 10000
   jpa:
     generate-ddl: true
     show-sql: true
