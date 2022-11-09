@@ -174,3 +174,4 @@ momento	que vamos salvar o registro.
 		@Query("from Restaurante r JOIN FETCH r.cozinha left JOIN FETCH r.formasPagamento")
 		List<Restaurante> findAll(); 
 	
+* LazyInitializationException – O que é e a melhor maneira de corrigi-lo: https://thorben-janssen.com/lazyinitializationexception/	

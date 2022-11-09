@@ -21,6 +21,6 @@ public interface RestauranteRepository extends RestauranteRepositoryCustom,
 	
 	List<Restaurante> consultaPorNomeETaxaFrete(String nome, BigDecimal taxaInicio, BigDecimal taxaFim);
 	
-	@Query("from Restaurante r JOIN FETCH r.cozinha left JOIN FETCH r.formasPagamento")
+	@Query("select distinct r from Restaurante r left JOIN FETCH r.cozinha left JOIN FETCH r.formasPagamento")
 	List<Restaurante> findAll();
 }
