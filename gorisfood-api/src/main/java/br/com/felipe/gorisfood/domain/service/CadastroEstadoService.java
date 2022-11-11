@@ -45,7 +45,7 @@ public class CadastroEstadoService {
 			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExcpetion(
-					String.format("Cozinha de estado %d não pode ser removida pois está em uso.", id));
+					String.format("Estado de estado %d não pode ser removida pois está em uso.", id));
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Estado não encontrado com o id %s", id));

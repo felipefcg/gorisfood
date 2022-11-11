@@ -27,7 +27,6 @@ public class Produto {
 	private BigDecimal preco;
 	private Boolean ativo;
 	
-	@JsonIgnore
 	@ManyToOne
 	private Restaurante restaurante;
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
@@ -73,6 +74,8 @@ public class CidadeController {
 			return ResponseEntity.noContent().build();
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
+		} catch (EntidadeEmUsoExcpetion e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
 }
