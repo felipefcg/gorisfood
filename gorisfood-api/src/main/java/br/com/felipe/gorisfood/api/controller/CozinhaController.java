@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
@@ -73,10 +74,12 @@ public class CozinhaController {
 			return ResponseEntity.noContent().build();
 
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
+//			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 			
 		} catch (EntidadeEmUsoExcpetion e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
 			
 		}
 	}

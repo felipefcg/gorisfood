@@ -182,5 +182,33 @@ momento	que vamos salvar o registro.
 	
 	
 * @ResponseStatus: além de definir o HTTP STATUS do método do Controller, também é possível anotar as Exceptions da sua aplicação
-		para quando ocorrer a Exceção e ela não for tratada no fluxo da aplicação o Spring Boot retorna a exceção na resposta com 
-		o HTTP STATUS definido na anotação.
+	para quando ocorrer a Exceção e ela não for tratada no fluxo da aplicação o Spring Boot retorna a exceção na resposta com 
+	o HTTP STATUS definido na anotação.
+	OBS: Essa solução retorna o body no formato padrão de erro do Spring, sem customização do desenvolvedor
+		
+* ResponseStatusException: é uma exceção criao pelo Spring aonde você informa o HTTP STATUS de retorno e mensagem do erro.	
+	OBS: Essa solução retorna o body no formato padrão de erro do Spring, sem customização do desenvolvedor
+	OBS2: Essa classe tem as subclasses:
+			* MethodNotAllowedException
+			* NotAcceptableStatusException
+			* ServerErrorException
+			* ServerWebInputException
+			* UnsupportedMediaTypeStatusException
+	Ex: 
+		@DeleteMapping("{id}")
+		public ResponseEntity remover(@PathVariable Long id) {
+			try {
+				service.remover(id);
+				return ResponseEntity.noContent().build();
+
+			} catch (EntidadeNaoEncontradaException e) {
+				//return ResponseEntity.notFound().build();
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+				
+			} catch (EntidadeEmUsoExcpetion e) {
+				//return ResponseEntity.status(HttpStatus.CONFLICT).build();
+				throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+				
+			}
+		}
+		
