@@ -179,3 +179,8 @@ momento	que vamos salvar o registro.
 * FLYWAY
 	* É possível mudar a localização dos arquivos do Flyway utilizando a propriedade spring.flyway.locations
 	EX: spring.flyway.locations=classpath:db/migration,classpath:db/testdata
+	
+	
+* @ResponseStatus: além de definir o HTTP STATUS do método do Controller, também é possível anotar as Exceptions da sua aplicação
+		para quando ocorrer a Exceção e ela não for tratada no fluxo da aplicação o Spring Boot retorna a exceção na resposta com 
+		o HTTP STATUS definido na anotação.
