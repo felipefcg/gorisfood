@@ -6,10 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
-import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -39,54 +35,27 @@ public class RestauranteController {
 	}
 	
 	@GetMapping(value =  "{id}", consumes = MediaType.ALL_VALUE)
-	public ResponseEntity<Restaurante> buscar(@PathVariable Long id){
-		try {
-			return ResponseEntity.ok(service.buscar(id));
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+	public Restaurante buscar(@PathVariable Long id){
+		return service.buscar(id);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> criar(@RequestBody Restaurante restaurante) {
-		try {
-			restaurante = service.criar(restaurante);
-			String url = String.format("http://localhost:8080/restaurantes/%d", restaurante.getId());
-			
-			return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, url).body(restaurante);
-		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//			return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).build();
-			return ResponseEntity.unprocessableEntity().build();
-		}
-		
+	@ResponseStatus(HttpStatus.CREATED)
+	public Restaurante criar(@RequestBody Restaurante restaurante) {
+			return service.criar(restaurante);
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<?> alterar(@PathVariable Long id, 
+	public Restaurante alterar(@PathVariable Long id, 
 							   @RequestBody Restaurante restaurante) {
-		try {
-			restaurante = service.alterar(id, restaurante);
-			return ResponseEntity.ok(restaurante);
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
-		}
+		return service.alterar(id, restaurante);
 	}
 	
 	@PatchMapping("{id}")
-	public ResponseEntity<Object> alterarParcialmente(@PathVariable Long id, 
+	public Restaurante alterarParcialmente(@PathVariable Long id, 
 							   @RequestBody Map<String, Object> campos) {
 		
-		try {
-			Restaurante restaurante = service.alterarParcialmente(id, campos);
-			return ResponseEntity.ok(restaurante);
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
-		}
+		return service.alterarParcialmente(id, campos);
 	}
 	
 	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)

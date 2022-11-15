@@ -16,6 +16,8 @@ import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 	
+	private static final String ESTADO_EM_USO = "Estado de estado %d não pode ser removida pois está em uso.";
+	private static final String ESTADO_NAO_ENCONTRADO = "Estado não encontrado com o id %s";
 	@Autowired
 	private EstadoRepository repository;
 	
@@ -26,7 +28,7 @@ public class CadastroEstadoService {
 	public Estado buscar(Long id) {
 		return repository.findById(id)
 				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Estado não encontrado com o id %s", id)));
+						String.format(ESTADO_NAO_ENCONTRADO, id)));
 	}
 	
 	public Estado salvar(Estado estado) {
@@ -45,10 +47,10 @@ public class CadastroEstadoService {
 			repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExcpetion(
-					String.format("Estado de estado %d não pode ser removida pois está em uso.", id));
+					String.format(ESTADO_EM_USO, id));
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Estado não encontrado com o id %s", id));
+					String.format(ESTADO_NAO_ENCONTRADO, id));
 		}
 	}
 }

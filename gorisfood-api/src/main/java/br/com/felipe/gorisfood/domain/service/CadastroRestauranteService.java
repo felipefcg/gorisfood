@@ -24,6 +24,10 @@ import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 @Service
 public class CadastroRestauranteService {
 
+	private static final String MSG_COZINHA_COM_NAO_ENCONTRADO = "Cozinha com ID %d não encontrado.";
+
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante não encontrado com o código %d.";
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
@@ -38,7 +42,7 @@ public class CadastroRestauranteService {
 		
 		 return restauranteRepository.findById(id)
 				 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-						 String.format("Restaurante não encontrado com o código %d.", id)));
+						 String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
 	}
 
 	public Restaurante criar(Restaurante restaurante) {
@@ -69,7 +73,7 @@ public class CadastroRestauranteService {
 		
 		Cozinha cozinhaSalva = cozinhaRepository.findById(cozinhaId)
 								.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
-												String.format("Cozinha com ID %d não encontrado.", cozinhaId)));
+												String.format(MSG_COZINHA_COM_NAO_ENCONTRADO, cozinhaId)));
 		
 		restaurante.setCozinha(cozinhaSalva);
 	}

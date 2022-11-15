@@ -17,6 +17,10 @@ import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 @Service
 public class CadastroProdutoService {
 
+	private static final String NAO_EXISTE_RESTAURANTE = "Não foi encontrado restaurante com id %d";
+
+	private static final String MSG_NAO_EXISTE_PRODUTO = "Não existe um cadastro de produto com o código %d.";
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
@@ -30,7 +34,7 @@ public class CadastroProdutoService {
 	public Produto buscar(Long id) {
 		return produtoRepository.findById(id)
 				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Não existe um cadastro de produto com o código %d.", id)));
+						String.format(MSG_NAO_EXISTE_PRODUTO, id)));
 	}
 
 	public Produto criar(Produto novoProduto) {
@@ -50,7 +54,7 @@ public class CadastroProdutoService {
 			produtoRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de produto com o código %d.", id));
+					String.format(MSG_NAO_EXISTE_PRODUTO, id));
 		}
 		
 	}
@@ -59,7 +63,7 @@ public class CadastroProdutoService {
 		Long idRestaurante = produto.getRestaurante().getId();
 		Restaurante restaurante = restauranteRepository.findById(idRestaurante)
 			.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
-					String.format("Não foi encontrado restaurante com id %d" , idRestaurante)));
+					String.format(NAO_EXISTE_RESTAURANTE , idRestaurante)));
 		produto.setRestaurante(restaurante);
 		
 	}

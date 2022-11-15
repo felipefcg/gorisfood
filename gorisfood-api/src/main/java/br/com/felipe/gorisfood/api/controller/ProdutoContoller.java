@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
-import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 
@@ -35,46 +32,25 @@ public class ProdutoContoller {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Produto> buscar(@PathVariable Long id){
-		try {
-			return ResponseEntity.ok(service.buscar(id));
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+	public Produto buscar(@PathVariable Long id){
+		return service.buscar(id);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Produto novoProduto) {
-		try {
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(service.criar(novoProduto)); 
-		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-					.body(e.getMessage());
-		}
+	@ResponseStatus(HttpStatus.CREATED)
+	public Produto criar(@RequestBody Produto novoProduto) {
+		return service.criar(novoProduto);
 	}
 	
 	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> alterar(@PathVariable Long id, @RequestBody Produto produtoAlterado) {
-		try {
-			return ResponseEntity.ok(service.alterar(id,produtoAlterado));
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeRelacionamentoNaoEncontradaException e) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-					.body(e.getMessage());
-		}
+	public Produto alterar(@PathVariable Long id, @RequestBody Produto produtoAlterado) {
+		return service.alterar(id,produtoAlterado);
 	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<Object> remover(@PathVariable Long id) {
-		try {
-			service.remover(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long id) {
+		service.remover(id);
 	}
-	
 	
 }
