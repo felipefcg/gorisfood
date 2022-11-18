@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 
@@ -39,12 +41,20 @@ public class ProdutoContoller {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Produto criar(@RequestBody Produto novoProduto) {
-		return service.criar(novoProduto);
+		try {
+			return service.criar(novoProduto);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+		}
 	}
 	
 	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Produto alterar(@PathVariable Long id, @RequestBody Produto produtoAlterado) {
-		return service.alterar(id,produtoAlterado);
+		try {
+			return service.alterar(id,produtoAlterado);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+		}
 	}
 	
 	@DeleteMapping("{id}")

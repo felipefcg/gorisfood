@@ -13,26 +13,20 @@ import org.springframework.util.ReflectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
-import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
-import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 
 
 @Service
 public class CadastroRestauranteService {
 
-	private static final String MSG_COZINHA_COM_NAO_ENCONTRADO = "Cozinha com ID %d não encontrado.";
-
-	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante não encontrado com o código %d.";
-
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private CadastroCozinhaService cozinhaService;
 	
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
@@ -41,8 +35,7 @@ public class CadastroRestauranteService {
 	public Restaurante buscar(Long id) {
 		
 		 return restauranteRepository.findById(id)
-				 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-						 String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
+				 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
 	}
 
 	public Restaurante criar(Restaurante restaurante) {
@@ -71,9 +64,7 @@ public class CadastroRestauranteService {
 	private void colocarCozinhaNoRestaurante(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		
-		Cozinha cozinhaSalva = cozinhaRepository.findById(cozinhaId)
-								.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
-												String.format(MSG_COZINHA_COM_NAO_ENCONTRADO, cozinhaId)));
+		Cozinha cozinhaSalva = cozinhaService.buscar(cozinhaId);
 		
 		restaurante.setCozinha(cozinhaSalva);
 	}

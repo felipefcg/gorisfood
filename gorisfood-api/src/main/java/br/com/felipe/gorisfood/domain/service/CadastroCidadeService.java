@@ -8,8 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
-import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.model.Estado;
 import br.com.felipe.gorisfood.domain.repository.CidadeRepository;
@@ -18,8 +18,6 @@ import br.com.felipe.gorisfood.domain.repository.CidadeRepository;
 public class CadastroCidadeService {
 
 	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removida pois está em uso.";
-
-	private static final String MSG_CIDADE_ENCONTRADA = "Cidade com %d não encontrada";
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -33,8 +31,7 @@ public class CadastroCidadeService {
 
 	public Cidade buscar(Long id) {
 		return cidadeRepository.findById(id)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format(MSG_CIDADE_ENCONTRADA, id)));
+				.orElseThrow(() -> new CidadeNaoEncontradaException(id));
 	}
 
 	public Cidade salvar(Cidade cidade) {
@@ -60,7 +57,7 @@ public class CadastroCidadeService {
 		try {
 			cidadeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_ENCONTRADA, id));
+			throw new CidadeNaoEncontradaException(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExcpetion(
 					String.format(MSG_CIDADE_EM_USO, id));

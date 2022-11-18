@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -42,20 +44,31 @@ public class RestauranteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Restaurante criar(@RequestBody Restaurante restaurante) {
+		try {	
 			return service.criar(restaurante);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+		}
 	}
 
 	@PutMapping("{id}")
 	public Restaurante alterar(@PathVariable Long id, 
 							   @RequestBody Restaurante restaurante) {
-		return service.alterar(id, restaurante);
+		try {
+			return service.alterar(id, restaurante);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+		}
 	}
 	
 	@PatchMapping("{id}")
 	public Restaurante alterarParcialmente(@PathVariable Long id, 
 							   @RequestBody Map<String, Object> campos) {
-		
-		return service.alterarParcialmente(id, campos);
+		try {
+			return service.alterarParcialmente(id, campos);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+		}
 	}
 	
 	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
