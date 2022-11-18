@@ -10,16 +10,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
-import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.model.Estado;
 import br.com.felipe.gorisfood.domain.repository.CidadeRepository;
-import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroCidadeService {
-
-	private static final String MSG_ESTADO_NAO_ENCONTRADO = "Não foi encontrado Estado com o id %d";
 
 	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removida pois está em uso.";
 
@@ -27,9 +23,9 @@ public class CadastroCidadeService {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
-	
+
 	@Autowired
-	private EstadoRepository estadoRepository;
+	private CadastroEstadoService estadoService;
 	
 	public List<Cidade> listar() {
 		return cidadeRepository.findAll();
@@ -44,7 +40,7 @@ public class CadastroCidadeService {
 	public Cidade salvar(Cidade cidade) {
 		Long idEstado = cidade.getEstado().getId();
 		
-		Estado estado = buscarEstado(idEstado);
+		Estado estado = estadoService.buscar(idEstado);
 		
 		cidade.setEstado(estado);
 		return cidadeRepository.save(cidade);
@@ -52,7 +48,7 @@ public class CadastroCidadeService {
 
 	public Cidade alterar (Long id, Cidade cidade) {
 		Cidade cidadeAtual = buscar(id);
-		Estado estado = buscarEstado(cidade.getEstado().getId());
+		Estado estado = estadoService.buscar(cidade.getEstado().getId());
 		
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 		cidadeAtual.setEstado(estado);
@@ -71,9 +67,4 @@ public class CadastroCidadeService {
 		}
 	}
 	
-	private Estado buscarEstado(Long idEstado) {
-		return estadoRepository.findById(idEstado)
-				.orElseThrow(() -> new EntidadeRelacionamentoNaoEncontradaException(
-						String.format(MSG_ESTADO_NAO_ENCONTRADO, idEstado)));
-	}
 }

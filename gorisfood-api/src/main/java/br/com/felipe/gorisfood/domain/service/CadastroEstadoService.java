@@ -9,7 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
-import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Estado;
 import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 
@@ -17,7 +17,7 @@ import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 public class CadastroEstadoService {
 	
 	private static final String ESTADO_EM_USO = "Estado de estado %d não pode ser removida pois está em uso.";
-	private static final String ESTADO_NAO_ENCONTRADO = "Estado não encontrado com o id %s";
+	
 	@Autowired
 	private EstadoRepository repository;
 	
@@ -27,8 +27,7 @@ public class CadastroEstadoService {
 	
 	public Estado buscar(Long id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format(ESTADO_NAO_ENCONTRADO, id)));
+				.orElseThrow(() -> new EstadoNaoEncontradoException(id));
 	}
 	
 	public Estado salvar(Estado estado) {
@@ -49,8 +48,7 @@ public class CadastroEstadoService {
 			throw new EntidadeEmUsoExcpetion(
 					String.format(ESTADO_EM_USO, id));
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format(ESTADO_NAO_ENCONTRADO, id));
+			throw new EstadoNaoEncontradoException(id);
 		}
 	}
 }
