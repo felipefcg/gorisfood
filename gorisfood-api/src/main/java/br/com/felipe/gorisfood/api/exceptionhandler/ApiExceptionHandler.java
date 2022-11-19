@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ApiExceptionHandler {
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
@@ -42,6 +42,5 @@ public class ApiExceptionHandler {
 				.mensagem(String.format("O método %s não é suportado para essa URI", e.getMethod()))
 				.build();
 	}
-	
 	
 }
