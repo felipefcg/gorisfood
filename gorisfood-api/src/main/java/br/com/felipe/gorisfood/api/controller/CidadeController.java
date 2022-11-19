@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
-import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
@@ -60,16 +58,6 @@ public class CidadeController {
 			service.remover(id);
 	}
 
-	
-	@ExceptionHandler(CidadeNaoEncontradaException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public Problema handleCidadeNaoEncontradaException(CidadeNaoEncontradaException e) {
-		return Problema.builder()
-				.dataHora(LocalDateTime.now())
-				.mensagem(e.getMessage())
-				.build();
-	}
-	
 	@ExceptionHandler(EstadoNaoEncontradoException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public Problema handleEstadoNaoEncontradoException(EstadoNaoEncontradoException e) {
@@ -78,4 +66,5 @@ public class CidadeController {
 				.mensagem(e.getMessage())
 				.build();
 	}
+
 }
