@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -17,6 +19,24 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Problema handleCidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
+		return Problema.builder()
+				.dataHora(LocalDateTime.now())
+				.mensagem(e.getMessage())
+				.build();
+	}
+	
+	@ExceptionHandler(EntidadeEmUsoExcpetion.class)
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	public Problema handleEntidadeEmUsoExcpetion(EntidadeEmUsoExcpetion e) {
+		return Problema.builder()
+				.dataHora(LocalDateTime.now())
+				.mensagem(e.getMessage())
+				.build();
+	}
+	
+	@ExceptionHandler(EntidadeRelacionamentoNaoEncontradaException.class)
+	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+	public Problema handleEntidadeRelacionamentoNaoEncontradaException(EntidadeRelacionamentoNaoEncontradaException e) {
 		return Problema.builder()
 				.dataHora(LocalDateTime.now())
 				.mensagem(e.getMessage())
