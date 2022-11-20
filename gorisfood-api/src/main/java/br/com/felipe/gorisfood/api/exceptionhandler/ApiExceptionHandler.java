@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.api.exceptionhandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -56,6 +57,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		
 		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String detalhe = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
+		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.CORPO_REQUISCAO_INVALIDO, detalhe).build();
+		
+		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
 	
 	private Problema.ProblemaBuilder criaProblemaBuilder(Integer status, TipoProblema tipoProblema, String mensagem) {
