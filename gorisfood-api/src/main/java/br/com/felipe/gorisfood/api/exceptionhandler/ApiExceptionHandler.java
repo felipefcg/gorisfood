@@ -2,19 +2,23 @@ package br.com.felipe.gorisfood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 
 @RestControllerAdvice
-public class ApiExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
@@ -43,24 +47,23 @@ public class ApiExceptionHandler {
 				.build();
 	}
 	
-	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-	public Problema handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
-		
-		return Problema.builder()
-				.dataHora(LocalDateTime.now())
-				.mensagem(String.format("O tipo de mídia %s não é aceito", e.getContentType()))
-				.build();
+	@Override
+	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		Problema body = Problema.builder()
+							.dataHora(LocalDateTime.now())
+							.mensagem(String.format("O tipo de mídia %s não é aceito", ex.getContentType()))
+							.build();
+		return handleExceptionInternal(ex, body, headers, status, request);
 	}
 	
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-	public Problema handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-		
-		return Problema.builder()
+	@Override
+	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		Problema body = Problema.builder()
 				.dataHora(LocalDateTime.now())
-				.mensagem(String.format("O método %s não é suportado para essa URI", e.getMethod()))
+				.mensagem(String.format("O método %s não é suportado para essa URI", ex.getMethod()))
 				.build();
+		return handleExceptionInternal(ex, body, headers, status, request);
 	}
-	
 }
