@@ -212,3 +212,7 @@ momento	que vamos salvar o registro.
 			}
 		}
 		
+** ESPECIFICAÇÕES PARA RETORNO DE ERROS 
+	* RFC 7807: https://www.rfc-editor.org/rfc/rfc7807
+	* JSON API: https://jsonapi.org/format/#error-objects / https://jsonapi.org/examples/#error-objects
+	* VND.ERROR: https://github.com/blongden/vnd.error
