@@ -216,3 +216,7 @@ momento	que vamos salvar o registro.
 	* RFC 7807: https://www.rfc-editor.org/rfc/rfc7807
 	* JSON API: https://jsonapi.org/format/#error-objects / https://jsonapi.org/examples/#error-objects
 	* VND.ERROR: https://github.com/blongden/vnd.error
+	
+* Forçar jackson a falhar quando é enviado um atributo que não faz parte do body/DTO e/ou que esta anotado com @JsonIgnore
+	- spring.jackson.deserialization.fail-on-unknown-properties = true
+	- spring.jackson.deserialization.fail-on-ignored-properties = true
