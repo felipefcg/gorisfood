@@ -1,6 +1,6 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
@@ -71,9 +72,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
 		String detalhe = null;
+		Throwable causaRaiz = ExceptionUtils.getRootCause(ex);
 		
-		if ( ExceptionUtils.getRootCause(ex) instanceof InvalidFormatException causaRaiz) {
-			detalhe = montaMensagemInvalidFormatException(causaRaiz);
+		if ( causaRaiz instanceof InvalidFormatException) {
+			detalhe = montaMensagemInvalidFormatException((InvalidFormatException) causaRaiz);
+		} else if ( causaRaiz instanceof PropertyBindingException) { 
+			detalhe = montaMensagemPropertyBindingException( (PropertyBindingException) causaRaiz); 
 		} else {
 			detalhe = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 		}
@@ -83,15 +87,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
 	
+	private String montaMensagemPropertyBindingException(PropertyBindingException causaRaiz) {
+		
+		return String.format("A propriedade '%s' não faz parte da requisição. Por favor verifique a sintaxe e tente novamente.", joinPath(causaRaiz.getPath()));
+	}
+
 	private String montaMensagemInvalidFormatException(InvalidFormatException causaRaiz) {
 		
-		String propriedade = causaRaiz.getPath()
-			.stream()
-			.map( Reference::getFieldName)
-			.collect(Collectors.joining("."));
+		String propriedade = joinPath(causaRaiz.getPath());
 		
 		return String.format("A propriedade '%s' recebeu o valor '%s' que é inválido."
 				+ "Informe um valor compatível  com o tipo '%s'", propriedade, causaRaiz.getValue(), causaRaiz.getTargetType().getSimpleName());
+	}
+
+	private String joinPath(List<Reference> references) {
+		return references.stream()
+			.map( Reference::getFieldName)
+			.collect(Collectors.joining("."));
 	}
 
 	private Problema.ProblemaBuilder criaProblemaBuilder(Integer status, TipoProblema tipoProblema, String mensagem) {
