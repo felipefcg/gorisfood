@@ -1,5 +1,9 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.fasterxml.jackson.databind.JsonMappingException.Reference;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
@@ -62,13 +69,31 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-		String detalhe = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
+		
+		String detalhe = null;
+		
+		if ( ExceptionUtils.getRootCause(ex) instanceof InvalidFormatException causaRaiz) {
+			detalhe = montaMensagemInvalidFormatException(causaRaiz);
+		} else {
+			detalhe = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
+		}
+		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.CORPO_REQUISCAO_INVALIDO, detalhe).build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
 	
+	private String montaMensagemInvalidFormatException(InvalidFormatException causaRaiz) {
+		
+		String propriedade = causaRaiz.getPath()
+			.stream()
+			.map( Reference::getFieldName)
+			.collect(Collectors.joining("."));
+		
+		return String.format("A propriedade '%s' recebeu o valor '%s' que é inválido."
+				+ "Informe um valor compatível  com o tipo '%s'", propriedade, causaRaiz.getValue(), causaRaiz.getTargetType().getSimpleName());
+	}
+
 	private Problema.ProblemaBuilder criaProblemaBuilder(Integer status, TipoProblema tipoProblema, String mensagem) {
 		String tipo = null;
 		String titulo = null;
