@@ -16,7 +16,7 @@ import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 	
-	private static final String ESTADO_EM_USO = "Estado de estado %d não pode ser removida pois está em uso.";
+	private static final String ESTADO_EM_USO = "Estado de id %d não pode ser removida pois está em uso.";
 	
 	@Autowired
 	private EstadoRepository repository;

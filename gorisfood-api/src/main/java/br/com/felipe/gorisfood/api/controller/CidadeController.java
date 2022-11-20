@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
+import br.com.felipe.gorisfood.api.exceptionhandler.TipoProblema;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
@@ -61,9 +62,12 @@ public class CidadeController {
 	@ExceptionHandler(EstadoNaoEncontradoException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public Problema handleEstadoNaoEncontradoException(EstadoNaoEncontradoException e) {
+		TipoProblema tipoProblema = TipoProblema.ENTIDADE_RELACIONAMENTO_NAO_ENCONTRADA;
 		return Problema.builder()
-				.dataHora(LocalDateTime.now())
-				.mensagem(e.getMessage())
+				.status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+				.tipo(tipoProblema.getUri())
+				.titulo(tipoProblema.getTitulo())
+				.detalhe(e.getMessage())
 				.build();
 	}
 
