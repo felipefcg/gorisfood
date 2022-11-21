@@ -218,5 +218,10 @@ momento	que vamos salvar o registro.
 	* VND.ERROR: https://github.com/blongden/vnd.error
 	
 * Forçar jackson a falhar quando é enviado um atributo que não faz parte do body/DTO e/ou que esta anotado com @JsonIgnore
+	* Por properties
 	- spring.jackson.deserialization.fail-on-unknown-properties = true
 	- spring.jackson.deserialization.fail-on-ignored-properties = true
+	
+	* Programaticamente
+	- mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+	- mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);

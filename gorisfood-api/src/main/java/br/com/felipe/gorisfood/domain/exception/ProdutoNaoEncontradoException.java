@@ -9,6 +9,6 @@ public class ProdutoNaoEncontradoException extends EntidadeNaoEncontradaExceptio
 	}
 	
 	public ProdutoNaoEncontradoException(Long idProduto) {
-		this(String.format("Produto com %d não encontrada", idProduto));
+		this(String.format("Produto não encontrado com o id %d.", idProduto));
 	}
 }

@@ -1,17 +1,12 @@
 package br.com.felipe.gorisfood.domain.service;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
@@ -52,13 +47,10 @@ public class CadastroRestauranteService {
 		return restauranteRepository.save(restauranteSalvo);
 	}
 
-	public Restaurante alterarParcialmente(Long id, Map<String, Object> campos) {
+	public Restaurante alterarParcialmente(Restaurante restauranteAtualizado) {
+		colocarCozinhaNoRestaurante(restauranteAtualizado);
 		
-		Restaurante restauranteDestino = buscar(id);
-		merge(campos, restauranteDestino);
-		colocarCozinhaNoRestaurante(restauranteDestino);
-		
-		return restauranteRepository.save(restauranteDestino);
+		return restauranteRepository.save(restauranteAtualizado);
 	}
 	
 	private void colocarCozinhaNoRestaurante(Restaurante restaurante) {
@@ -67,21 +59,6 @@ public class CadastroRestauranteService {
 		Cozinha cozinhaSalva = cozinhaService.buscar(cozinhaId);
 		
 		restaurante.setCozinha(cozinhaSalva);
-	}
-	
-	private void merge (Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-		ObjectMapper mapper = new ObjectMapper();
-		Restaurante restauranteOrigem = mapper.convertValue(dadosOrigem, Restaurante.class);
-		
-		dadosOrigem.forEach((nomeCampo, valorCampo) -> {
-
-				Field field = ReflectionUtils.findField(Restaurante.class, nomeCampo);
-				field.setAccessible(true);
-				
-				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-				
-				ReflectionUtils.setField(field, restauranteDestino, novoValor);
-		});
 	}
 
 	public List<Restaurante> buscarPorNomeECozinha(String nome, Long cozinhaId) {
