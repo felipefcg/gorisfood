@@ -225,3 +225,10 @@ momento	que vamos salvar o registro.
 	* Programaticamente
 	- mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 	- mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+	
+** Habilitar Spring Boot para customizar erro de URL inexistente (não mapeada) no Spring
+	* Deve setar as propriedades 
+		- spring.mvc.throw-exception-if-no-handler-found=true
+		- spring.web.resources.add-mappings=false
+	* Criar uma classe Handler para tratar os erros anotada com @RestControllerAdvice e extendendo ResponseEntityExceptionHandler
+	 - sobrescrever o método handleNoHandlerFoundException

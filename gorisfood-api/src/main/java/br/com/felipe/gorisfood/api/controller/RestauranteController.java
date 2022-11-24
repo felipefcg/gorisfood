@@ -49,6 +49,9 @@ public class RestauranteController {
 	
 	@GetMapping(value =  "{id}", consumes = MediaType.ALL_VALUE)
 	public Restaurante buscar(@PathVariable Long id){
+		if(true) {
+			throw new IllegalArgumentException ("ssdfa");
+		}
 		return service.buscar(id);
 	}
 	
