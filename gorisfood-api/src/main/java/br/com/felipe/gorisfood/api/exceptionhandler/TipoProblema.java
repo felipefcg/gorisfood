@@ -7,7 +7,8 @@ public enum TipoProblema {
 	ENTIDADE_NAO_ENCONTRADA("Entidade Não Encontrada", "entidade-nao-encontrada"),
 	ENTIDADE_EM_USO("Entidade em Uso","entidade-em-uso"),
 	ENTIDADE_RELACIONAMENTO_NAO_ENCONTRADA("Entidade Dependente","entidade-dependente"),
-	CORPO_REQUISCAO_INVALIDO("Corpo da Requisição Inválido", "corpo-da-requisicao-invalido");
+	CORPO_REQUISCAO_INVALIDO("Corpo da Requisição Inválido", "corpo-da-requisicao-invalido"),
+	PARAMETRO_INVALIDO("Parametro Inválido", "parametro-invalido");
 	
 	private String uri;
 	private String titulo;
