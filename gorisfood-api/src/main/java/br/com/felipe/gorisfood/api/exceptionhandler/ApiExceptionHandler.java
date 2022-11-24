@@ -29,12 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private static final String MSG_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inexperado no sistema."
+					+ " Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleErroGenerico(Exception e, WebRequest request) {
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		
-		String detalhe = "Ocorreu um erro interno inexperado no sistema."
-						+ " Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+		String detalhe = MSG_GENERICA_USUARIO_FINAL;
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.ERRO_DE_SISTEMA, detalhe).build();
 		
 		log.error(TipoProblema.ERRO_DE_SISTEMA.getTitulo(), e);
@@ -107,7 +109,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			detalhe = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 		}
 		
-		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.CORPO_REQUISCAO_INVALIDO, detalhe).build();
+		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.CORPO_REQUISCAO_INVALIDO, detalhe)
+							.mensagemUsuario(MSG_GENERICA_USUARIO_FINAL)
+							.build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
