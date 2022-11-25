@@ -1,5 +1,7 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
@@ -16,4 +18,5 @@ public class Problema {
 	private String detalhe;
 	
 	private String mensagemUsuario;
+	private LocalDateTime timestamp;
 }
