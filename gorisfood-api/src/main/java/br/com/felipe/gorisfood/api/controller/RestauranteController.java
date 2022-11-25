@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class RestauranteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante criar(@RequestBody Restaurante restaurante) {
+	public Restaurante criar(@RequestBody @Valid Restaurante restaurante) {
 		try {	
 			return service.criar(restaurante);
 		} catch (CozinhaNaoEncontradaException e) {
