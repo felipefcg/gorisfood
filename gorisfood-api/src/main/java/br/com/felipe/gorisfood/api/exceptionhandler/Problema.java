@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,4 +20,6 @@ public class Problema {
 	
 	private String mensagemUsuario;
 	private LocalDateTime timestamp;
+	private List<CampoErrado> erros;
+	
 }

@@ -9,7 +9,8 @@ public enum TipoProblema {
 	ENTIDADE_RELACIONAMENTO_NAO_ENCONTRADA("Entidade Dependente","entidade-dependente"),
 	CORPO_REQUISCAO_INVALIDO("Corpo da Requisição Inválido", "corpo-da-requisicao-invalido"),
 	PARAMETRO_INVALIDO("Parametro Inválido", "parametro-invalido"),
-	ERRO_DE_SISTEMA("Erro de Sistema", "erro-de-sistema");
+	ERRO_DE_SISTEMA("Erro de Sistema", "erro-de-sistema"),
+	DADOS_INVALIDOS("Dados inválidos", "dados-invalidos");
 	
 	private String uri;
 	private String titulo;
