@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
+import br.com.felipe.gorisfood.api.exceptionhandler.Problema.Campo;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
@@ -85,18 +86,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		String msg = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 		
-		
-		List<CampoErrado> erros = ex.getFieldErrors()
-			.stream()
-			.map(field -> 
-				CampoErrado.builder()
-					.campo(field.getField())
-					.erro(String.format("O campo %s.", field.getDefaultMessage()))
-					.build())
-			.collect(Collectors.toList());
+		List<Campo> campos = ex.getFieldErrors()
+								.stream()
+								.map(field -> 
+									Campo.builder()
+										.nome(field.getField())
+										.erro(String.format("O campo %s.", field.getDefaultMessage()))
+										.build())
+								.toList();
 
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.DADOS_INVALIDOS, msg, msg)
-				.erros(erros)
+				.campos(campos)
 				.build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
