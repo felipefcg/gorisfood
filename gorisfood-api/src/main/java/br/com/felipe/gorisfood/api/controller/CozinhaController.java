@@ -3,6 +3,8 @@ package br.com.felipe.gorisfood.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class CozinhaController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cozinha criar(@RequestBody Cozinha cozinha) {
+	public Cozinha criar(@RequestBody @Valid Cozinha cozinha) {
 		return service.salvar(cozinha);
 	}
 	

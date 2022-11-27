@@ -232,5 +232,26 @@ momento	que vamos salvar o registro.
 		- spring.web.resources.add-mappings=false
 	* Criar uma classe Handler para tratar os erros anotada com @RestControllerAdvice e extendendo ResponseEntityExceptionHandler
 	 - sobrescrever o método handleNoHandlerFoundException
-	 
-* Documentaçã Bean Validation: https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints	 
+
+*** Bean Validation ***
+	* Documentação: https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints	 
+	* Ao adicionar um Bean Validation em uma classe temos que tomar cuidado para ver se isso não vai impactar em outro fluxo que utiliza validação de um outro campo dessa classe,
+		para mitigar esse problemas nós podemos utilizar o atributo "GROUPS" na anotação de validação (@NotNull, @NotBlank, @PositiveOrZero e etc).
+		Para utilizar essa solução nós precisamos:
+			1: Criar uma classe/interface para "nomear" o grupo.
+				Ex: No exemplo abaixo foi criado uma interface com outra INNER interface para re
+					public interface Grupo {
+						public interface CadastroRestaurante {}
+					}
+			
+			2: Adicionar na anoticação de validação (@NotNull, @NotBlank, @PositiveOrZero e etc) esse grupo criado
+				Ex: 
+					@NotNull(groups = Grupo.CadastroRestaurante.class)
+					private Cozinha cozinha;
+			
+			3: Trocar o local aonde se encontra o @Valid  (javax.validation.Valid) para @Validated (org.springframework.validation.annotation.Validated), passando como parametro o grupo criado no passo 1
+				Ex: 
+					public Restaurante criar(@RequestBody @Validated(Grupo.CadastroRestaurante.class) Restaurante restaurante) {
+						... lógicas do método
+					}
+		

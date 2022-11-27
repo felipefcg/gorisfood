@@ -9,11 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import br.com.felipe.gorisfood.api.validation.Grupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,14 +27,13 @@ public class Cozinha implements Serializable {
 	
 	private static final long serialVersionUID = -3273178572976891462L;
 
-	@NotNull
+	@NotNull (groups = Grupo.CadastroRestaurante.class)
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-//	@JsonIgnore
-//	@JsonProperty("titulo")
+	@NotBlank
 	private String nome;
 	
 	@JsonIgnore
