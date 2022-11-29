@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -41,16 +43,17 @@ public class Restaurante {
 	@Column(name = "id")
 	private Long id;
 	
-	@NotBlank(groups = Grupo.CadastroRestaurante.class)
+	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
-	@PositiveOrZero(groups = Grupo.CadastroRestaurante.class)
+	@PositiveOrZero
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@Valid
-	@NotNull(groups = Grupo.CadastroRestaurante.class)
+	@NotNull
+	@ConvertGroup(from = Default.class, to = Grupo.CozinhaId.class)
 	@ManyToOne
 	@JoinColumn(name="cozinha_id", nullable = false)
 	private Cozinha cozinha;

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.felipe.gorisfood.api.validation.Grupo;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
@@ -56,7 +55,7 @@ public class RestauranteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante criar(@RequestBody @Validated(Grupo.CadastroRestaurante.class) Restaurante restaurante) {
+	public Restaurante criar(@RequestBody @Valid Restaurante restaurante) {
 		try {	
 			return service.criar(restaurante);
 		} catch (CozinhaNaoEncontradaException e) {
