@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final String MSG_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inexperado no sistema."
 					+ " Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
 
+	@Autowired
+	private MessageSource messageSource;
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleErroGenerico(Exception e, WebRequest request) {
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -88,11 +94,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		List<Campo> campos = ex.getFieldErrors()
 								.stream()
-								.map(field -> 
-									Campo.builder()
-										.nome(field.getField())
-										.erro(String.format("O campo %s.", field.getDefaultMessage()))
-										.build())
+								.map(field -> {
+									
+									String mensagem = messageSource.getMessage(field, LocaleContextHolder.getLocale());
+									
+									return Campo.builder()
+											.nome(field.getField())
+											.erro(mensagem)
+											.build();
+								})
 								.toList();
 
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.DADOS_INVALIDOS, msg, msg)

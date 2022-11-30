@@ -292,3 +292,52 @@ momento	que vamos salvar o registro.
 					}
 					
 				4: Diferente da solução anterior manter a anotação @Valid ao invés de @Validated
+				
+	* Alterando a mensagem de retorno do Bean Validation:	
+	1: utilizando o arquivo MESSAGES.PROPERTIES.
+		1.1: Para isso é necessário criar na classe que vai tratar a exceção do Bean Validation para ler o arquivo de properties.
+		Ex:
+			public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+				@Autowired
+				private MessageSource messageSource;
+
+				//..demais atributos
+					
+				@Override
+				protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+						HttpHeaders headers, HttpStatus status, WebRequest request) {
+					
+					String msg = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+					
+					List<Campo> campos = ex.getFieldErrors()
+											.stream()
+											.map(field -> {
+												
+												String mensagem = messageSource.getMessage(field, LocaleContextHolder.getLocale());
+												
+												return Campo.builder()
+														.nome(field.getField())
+														.erro(mensagem)
+														.build();
+											})
+											.toList();
+
+					Problema problema = criaProblemaBuilder(status.value(), TipoProblema.DADOS_INVALIDOS, msg, msg)
+							.campos(campos)
+							.build();
+					
+					return handleExceptionInternal(ex, problema, headers, status, request);
+				}
+				
+				//... demais métodos
+			}
+		
+		1.2: Utilizando a validação @NotBlank, temos várias formas de setar a mensagem, da mais especialista para a mais generalista
+			NotBlank.restaurante.nome=Nome do restaurante é obrigatório //Mensagem especifica para a validação no atributo NOME da classe RESTAURANTE
+			#NotBlank.nome=Infome um nome porque é obrigatório //Mensagem para qualquer validação em atributos que se chamam NOME em QUALQUER classe
+			NotBlank={0} é obrigatório //Menssagem QUALQUER campo anotado com @NotBlank 
+									   // O binding {0} pega o nome do campo que está anotado com essa validação. Nesse caso é "nome" mesmo, mas poderias ser "cep", "documento" e etc
+	
+			nome=Nome //substitui o binding do parâmetro {0} para o valor fornecido. Toda vez que o valor para o binding {0} for "nome" é colocado o valor "Nome", pode ser qualquer texto
+			cozinha.nome=Nome da Cozinha //Igual à propriedade anterior porém mais específica para o atributo nome da classe cozinha
