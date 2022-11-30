@@ -48,12 +48,11 @@ public class Restaurante {
 	private String nome;
 	
 	@NotNull
-	@PositiveOrZero
+	@PositiveOrZero(message = "{restaurante.taxaFrete}")
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@Valid
-	@NotNull
 	@ConvertGroup(from = Default.class, to = Grupo.CozinhaId.class)
 	@ManyToOne
 	@JoinColumn(name="cozinha_id", nullable = false)

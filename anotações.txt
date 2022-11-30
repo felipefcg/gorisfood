@@ -121,7 +121,7 @@ arquivo /META-INF/orm.xml
 	- Para mapear mais de um arquivo XML, afim de separar as queries e deixar os arquivos menores devemo declarar no application.properties
 		EX: spring.jpa.mapping-resources=META-INF/orm-restaurantes.xml,META-INF/orm-clientes.xml
 		
-* é possivel utilizar classes Repository customizadas, desde que ela tenha o msm nome da interface com o sufixo Impl e a interface tenha a assinatura do método
+* é possível utilizar classes Repository customizadas, desde que ela tenha o msm nome da interface com o sufixo Impl e a interface tenha a assinatura do método
 da implementação
 	Ex: RestauranteRepositoryImpl e RestauranteRepository
 	Afim de melhorar a validação em tempo de desenvolvimento podemos criar uma Interface nova onde a Implementação implementa a interface customizada e a 
@@ -341,3 +341,11 @@ momento	que vamos salvar o registro.
 	
 			nome=Nome //substitui o binding do parâmetro {0} para o valor fornecido. Toda vez que o valor para o binding {0} for "nome" é colocado o valor "Nome", pode ser qualquer texto
 			cozinha.nome=Nome da Cozinha //Igual à propriedade anterior porém mais específica para o atributo nome da classe cozinha
+			
+	* Mensagens da Validação: A especificação Bean Validation utiliza como padrãoo arquivo ValidationMessages.properties para as suas mensagens, porém é possível utilizar o 
+		messages.properties pois o Spring utiliza esse arquivo, inclusive as mensagens do Spring acabam sendo "prioritário" aos do Validarion.
+		Porém nesse caso quando é necessário especificar uma mensagem na anotação para fazer o binding com o .properties (Ex: @NotNull(message = "{restaurante.taxaFrete}")) 
+		a chave da mensagem tem que estar no ValidationMessages.
+		É possível mudar a configuração no Spring para que seja utilizado apenas o messages.properties alterando programaticamente.
+		Ex:
+			
