@@ -348,4 +348,14 @@ momento	que vamos salvar o registro.
 		a chave da mensagem tem que estar no ValidationMessages.
 		É possível mudar a configuração no Spring para que seja utilizado apenas o messages.properties alterando programaticamente.
 		Ex:
-			
+			@Configuration
+			public class ValidationConfig {
+
+				@Bean
+				public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+					LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+					bean.setValidationMessageSource(messageSource);
+					
+					return bean;
+				}
+			}

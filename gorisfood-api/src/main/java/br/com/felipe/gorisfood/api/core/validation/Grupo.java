@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.validation;
+package br.com.felipe.gorisfood.api.core.validation;
 
 public interface Grupo {
 

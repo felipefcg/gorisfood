@@ -28,7 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.felipe.gorisfood.api.validation.Grupo;
+import br.com.felipe.gorisfood.api.core.validation.Grupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

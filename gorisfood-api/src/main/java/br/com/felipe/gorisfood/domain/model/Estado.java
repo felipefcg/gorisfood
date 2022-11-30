@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import br.com.felipe.gorisfood.api.validation.Grupo;
+import br.com.felipe.gorisfood.api.core.validation.Grupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
