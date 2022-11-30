@@ -2,6 +2,8 @@ package br.com.felipe.gorisfood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,12 +39,12 @@ public class EstadoController {
 	
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Estado criar(@RequestBody Estado estado) {
+	public Estado criar(@RequestBody @Valid Estado estado) {
 		return service.salvar(estado);
 	}
 	
 	@PutMapping("{id}")
-	public Estado alterar(@PathVariable Long id, @RequestBody Estado estado){
+	public Estado alterar(@PathVariable Long id, @RequestBody @Valid Estado estado){
 		return service.atualizar(id, estado);
 	}
 	

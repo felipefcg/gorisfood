@@ -1,7 +1,8 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class CidadeController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade criar(@RequestBody Cidade cidade) {
+	public Cidade criar(@RequestBody @Valid Cidade cidade) {
 		return  service.salvar(cidade);
 	}
 	

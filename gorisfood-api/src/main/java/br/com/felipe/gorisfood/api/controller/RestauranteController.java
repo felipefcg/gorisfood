@@ -64,7 +64,7 @@ public class RestauranteController {
 	}
 
 	@PutMapping("{id}")
-	public Restaurante alterar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+	public Restaurante alterar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
 		try {
 			return service.alterar(id, restaurante);
 		} catch (CozinhaNaoEncontradaException e) {
@@ -73,7 +73,7 @@ public class RestauranteController {
 	}
 	
 	@PatchMapping("{id}")
-	public Restaurante alterarParcialmente(@PathVariable Long id, @RequestBody Map<String, Object> campos,
+	public Restaurante alterarParcialmente(@PathVariable Long id, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
 		
 		Restaurante restauranteDestino = service.buscar(id);
