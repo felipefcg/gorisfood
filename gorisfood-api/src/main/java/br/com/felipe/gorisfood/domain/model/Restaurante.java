@@ -29,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.felipe.gorisfood.api.core.validation.Grupo;
-import br.com.felipe.gorisfood.api.core.validation.TaxaFrete;
+import br.com.felipe.gorisfood.api.core.validation.Multiplo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -48,9 +48,9 @@ public class Restaurante {
 	@Column(nullable = false)
 	private String nome;
 	
-//	@NotNull
-//	@PositiveOrZero
-	@TaxaFrete
+	@NotNull
+	@PositiveOrZero
+	@Multiplo(numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
