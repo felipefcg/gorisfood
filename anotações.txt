@@ -359,3 +359,47 @@ momento	que vamos salvar o registro.
 					return bean;
 				}
 			}
+	
+	* CRIANDO SUA PROPRIA CONSTRAINT: Para criar sua própria constraint é necessário:
+		1: Criar a anotação que vai ser a sua constraint e anota-la com @Constraint passando no atribuo validatedBy a classe que irá implementar a validação,
+			os "métodos" defaul String message(), Class<?>[] groups e Class<? extends Payload>[] payload() default { }.
+			Caso a sua Constraint receber algum parâmetro dever ser criado o método que "representa" esse parâmetro (Ex: int numero() )
+		Ex: 
+			@Retention(RUNTIME)
+			@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+			@Constraint(validatedBy = {MultiploValidator.class})
+			public @interface Multiplo {
+				String message() default "múltiplo inválido";
+				Class<?>[] groups() default { };
+				Class<? extends Payload>[] payload() default { };
+				int numero();
+			}
+	
+		2: Criar a classe de implementação da validação especificada na sua anotação, implementando a interface ConstraintValidator<A, T> 
+			onde, A é a sua anotação e T é o tipo de objeto que será aceito para validação.
+			2.1: QUANDO a sua anotação tiver algum atributo (Ex: int numero() ), deverá ser sobrescrito o método "public void initialize(Multiplo constraintAnnotation){}", 
+				onde irá pegar o valor dos atributos da sua anotação e setar nos atributos na sua classe de validação
+			2.2: sobrescrever o método "public boolean isValid(T value, ConstraintValidatorContext context){}", onde T é o tipo de objeto que será aceito para validação
+		Ex:
+			public class MultiploValidator implements ConstraintValidator<Multiplo, Number> {
+
+				private int numeroMultiplo;
+				
+				@Override
+				public void initialize(Multiplo constraintAnnotation) {
+					this.numeroMultiplo = constraintAnnotation.numero();
+				}
+				
+				@Override
+				public boolean isValid(Number value, ConstraintValidatorContext context) {
+					if(value != null) {
+						var dividendo = BigDecimal.valueOf(value.doubleValue());
+						var divisor = BigDecimal.valueOf(numeroMultiplo);
+						var resto = dividendo.remainder(divisor);
+						
+						return BigDecimal.ZERO.compareTo(resto) == 0;
+					}
+					return true;
+				}
+
+			}
