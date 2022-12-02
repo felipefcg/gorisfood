@@ -403,3 +403,8 @@ momento	que vamos salvar o registro.
 				}
 
 			}
+			
+			
+**** ORG.SPRINGFRAMEWORK.BEANS.BEANUTILS *****
+	* Usado para copiar propriedades de um objeto para outro: BeanUtils.copyProperties(source, target, "propriedadeIgnoradaNaCopia");
+	* Usado para Reflection: BeanUtils.getPropertyDescriptor(o.getClass(), descricaoField).getReadMethod().invoke(o);

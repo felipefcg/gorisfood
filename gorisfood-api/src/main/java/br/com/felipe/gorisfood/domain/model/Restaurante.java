@@ -30,9 +30,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.felipe.gorisfood.api.core.validation.Grupo;
 import br.com.felipe.gorisfood.api.core.validation.Multiplo;
+import br.com.felipe.gorisfood.api.core.validation.ValorZeroIncluiDescricao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
