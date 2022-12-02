@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
-import br.com.felipe.gorisfood.api.exceptionhandler.Problema.Campo;
+import br.com.felipe.gorisfood.api.exceptionhandler.Problema.Objeto;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
@@ -92,21 +93,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		String msg = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 		
-		List<Campo> campos = ex.getFieldErrors()
+		List<Objeto> objetos = ex.getAllErrors()
 								.stream()
-								.map(field -> {
+								.map(error -> {
 									
-									String mensagem = messageSource.getMessage(field, LocaleContextHolder.getLocale());
+									String nome = error.getObjectName();
 									
-									return Campo.builder()
-											.nome(field.getField())
+									if (error instanceof FieldError fieldError) {
+										nome = fieldError.getField() ;
+									}
+									
+									String mensagem = messageSource.getMessage(error, LocaleContextHolder.getLocale());
+									
+									return Objeto.builder()
+											.nome(nome)
 											.erro(mensagem)
 											.build();
 								})
 								.toList();
 
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.DADOS_INVALIDOS, msg, msg)
-				.campos(campos)
+				.objetos(objetos)
 				.build();
 		
 		return handleExceptionInternal(ex, problema, headers, status, request);
