@@ -17,9 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindException;
-import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.felipe.gorisfood.api.core.validation.ValidacaoUtils;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
-import lombok.SneakyThrows;
 
 @RestController
 @RequestMapping(value = "restaurantes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,9 +43,6 @@ public class RestauranteController {
 	@Autowired
 	private CadastroRestauranteService service;
 
-	@Autowired
-	private SmartValidator validator;
-	
 	@GetMapping(consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Restaurante> listar(){
@@ -85,25 +79,13 @@ public class RestauranteController {
 		
 		Restaurante restauranteDestino = service.buscar(id);
 		merge(campos, restauranteDestino, request);
-		validate(restauranteDestino, "restaurante");
+		ValidacaoUtils.validate(restauranteDestino, "restaurante");
 		
 		try {
 			return service.alterarParcialmente(restauranteDestino);
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
-	}
-	
-	@SneakyThrows
-	private void validate(Restaurante restaurante, String objectName) {
-		
-		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
-		validator.validate(restaurante, bindingResult);
-		
-		if(bindingResult.hasErrors()) {
-			throw new BindException(bindingResult);
-		}
-		
 	}
 
 	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
