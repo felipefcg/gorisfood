@@ -410,7 +410,7 @@ momento	que vamos salvar o registro.
 	* Usado para Reflection: BeanUtils.getPropertyDescriptor(o.getClass(), descricaoField).getReadMethod().invoke(o);
 	
 *** Testes de Integração ***
-	* Para fazermos teste de integração nós devemos:
+	* Para fazermos teste de integração, sem que seja executado durante o build como Testes Unitário, nós devemos:
 		1- Adicionar o plugin maven-failsafe na tag de build
 			Ex: <build>
 					<plugins>
@@ -424,4 +424,36 @@ momento	que vamos salvar o registro.
 			Ex: CadastroCozinhaIT.java
 		3- Executar o goal "verify" no maven
 			Ex: mvn verify
+			
+*** Teste de Integração (API) ***
+	Para efetuarmos esse tipo de teste, além de habilitarmos o plugin do failsafe (conforme tópico anterior), nós devemos:
+	1- Habilitar a dependencia do Rest-Assured
+	Ex: <dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+	2- Anotar a classe com: @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+	3- criar os testes passando os dados da chamda, o método da chamada e o status/retorn esperado
+	Ex: @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+		class CozinhaControllerIT {
+
+			@LocalServerPort
+			int port;
+			
+			@Test
+			void deveRetornarStatus200_QuandoConsultarCozinhas() {
+				RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+				
+				given()
+					.basePath("/cozinhas")
+					.port(port)
+					.accept(ContentType.JSON)
+				.when()
+					.get()
+				.then()
+					.statusCode(HttpStatus.OK.value());
+			}
+
+		}
 		
