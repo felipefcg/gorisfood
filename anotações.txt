@@ -408,3 +408,20 @@ momento	que vamos salvar o registro.
 **** ORG.SPRINGFRAMEWORK.BEANS.BEANUTILS *****
 	* Usado para copiar propriedades de um objeto para outro: BeanUtils.copyProperties(source, target, "propriedadeIgnoradaNaCopia");
 	* Usado para Reflection: BeanUtils.getPropertyDescriptor(o.getClass(), descricaoField).getReadMethod().invoke(o);
+	
+*** Testes de Integração ***
+	* Para fazermos teste de integração nós devemos:
+		1- Adicionar o plugin maven-failsafe na tag de build
+			Ex: <build>
+					<plugins>
+						<!-- outros plugins -->	
+						<plugin>
+							<artifactId>maven-failsafe-plugin</artifactId>
+						</plugin>
+					</plugins>
+				</build>
+		2- Renomear a classe de Teste de integração para o sufixo IT: 
+			Ex: CadastroCozinhaIT.java
+		3- Executar o goal "verify" no maven
+			Ex: mvn verify
+		
