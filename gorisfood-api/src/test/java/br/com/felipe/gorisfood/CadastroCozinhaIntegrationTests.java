@@ -19,7 +19,7 @@ class CadastroCozinhaIntegrationTests {
 	private CadastroCozinhaService service;
 	
 	@Test
-	void testarCadastroCozinhaComSucesso() {
+	void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
 		//cenário
 		var cozinha = new Cozinha();
 		cozinha.setNome("Chinesa");
@@ -33,7 +33,7 @@ class CadastroCozinhaIntegrationTests {
 	}
 	
 	@Test
-	void testarCadastroCozinhaSemNome() {
+	void deveFalhar_QuandoCadastrarCozinhaSemNome() {
 		var cozinha = new Cozinha();
 		
 		ConstraintViolationException erroEsperado = assertThrows(ConstraintViolationException.class, () -> service.salvar(cozinha));
