@@ -23,9 +23,9 @@ CREATE TABLE pedido (
 		
 	CONSTRAINT pedido_pk PRIMARY KEY (id),
 	CONSTRAINT pedido_cidade_fk FOREIGN KEY (endereco_cidade_id) REFERENCES cidade(id),
-	CONSTRAINT pedido_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+	CONSTRAINT pedido_usuario_fk FOREIGN KEY (usuario_cliente_id) REFERENCES usuario(id),
 	CONSTRAINT pedido_restaurante_fk FOREIGN KEY (restaurante_id) REFERENCES restaurante(id),
-	CONSTRAINT pedido_forma-pagament_fk FOREIGN KEY (forma_pagamento_id) REFERENCES forma_pagamento(id)
+	CONSTRAINT `pedido_forma-pagamento_fk` FOREIGN KEY (forma_pagamento_id) REFERENCES forma_pagamento(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

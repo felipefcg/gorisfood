@@ -3,30 +3,25 @@ package br.com.felipe.gorisfood;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Optional;
-
 import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
-import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
-import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @SpringBootTest
+@TestPropertySource("/application-test.yml")
 class CadastroCozinhaIT {
 
 	@Autowired
 	private CadastroCozinhaService service;
-	
-	@Autowired
-	private CadastroRestauranteService restauranteService;
-	
+
 	@Test
 	void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
 		//cenário
