@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
@@ -78,13 +79,36 @@ class CozinhaControllerIT {
 			.statusCode(HttpStatus.CREATED.value());
 	}
 
+	@Test
+	public void deveRetornarRespostaEEstatusCorretos_QuandoConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", 2)
+			.accept(ContentType.JSON)
+		.when()
+			.get("{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo("Americana"));		
+	}
+	
+	@Test
+	public void deveRetornar404_QuandoConsultarCozinhaInexistente() {
+		given()
+			.pathParam("cozinhaId", 2000)
+			.accept(ContentType.JSON)
+		.when()
+			.get("{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
 	private void prepararDados() {
 		var cozinha1 = new Cozinha();
 		cozinha1.setNome("Tailandesa");
 		cozinhaRepository.save(cozinha1);
 		
 		var cozinha2 = new Cozinha();
-		cozinha2.setNome("Indiana");
+		cozinha2.setNome("Americana");
 		cozinhaRepository.save(cozinha2);
 	}
 }
