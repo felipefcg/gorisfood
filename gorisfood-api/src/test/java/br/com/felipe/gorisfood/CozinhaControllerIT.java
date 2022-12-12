@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
 import br.com.felipe.gorisfood.domain.model.Cozinha;
+import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
+import br.com.felipe.gorisfood.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
@@ -25,7 +27,10 @@ class CozinhaControllerIT {
 	int port;
 	
 	@Autowired
-	private Flyway flyway;
+	private DatabaseCleaner databaseCleaner;
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
 	
 	@BeforeEach
 	void setup() {
@@ -33,7 +38,8 @@ class CozinhaControllerIT {
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
 		
-		flyway.migrate();
+		databaseCleaner.clearTables();
+		prepararDados();
 	}
 	
 	@Test
@@ -47,18 +53,18 @@ class CozinhaControllerIT {
 	}
 	
 	@Test
-	void deve4Cozinhas_QuandoConsultarCozinhas() {
+	void deveRetornar2Cozinhas_QuandoConsultarCozinhas() {
 		given()
 			.accept(ContentType.JSON)
 		.when()
 			.get()
 		.then()
-			.body("", Matchers.hasSize(4))
+			.body("", Matchers.hasSize(2))
 			.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
 	}
 	
 	@Test
-	void testRetornarStatus201_QuandoCadastrarCozinha() {
+	void deveRetornarStatus201_QuandoCadastrarCozinha() {
 		var cozinha = new Cozinha();
 		cozinha.setNome("Chinesa");
 		
@@ -72,4 +78,13 @@ class CozinhaControllerIT {
 			.statusCode(HttpStatus.CREATED.value());
 	}
 
+	private void prepararDados() {
+		var cozinha1 = new Cozinha();
+		cozinha1.setNome("Tailandesa");
+		cozinhaRepository.save(cozinha1);
+		
+		var cozinha2 = new Cozinha();
+		cozinha2.setNome("Indiana");
+		cozinhaRepository.save(cozinha2);
+	}
 }
