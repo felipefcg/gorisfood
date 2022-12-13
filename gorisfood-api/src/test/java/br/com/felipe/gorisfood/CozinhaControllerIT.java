@@ -3,6 +3,9 @@ package br.com.felipe.gorisfood;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 import br.com.felipe.gorisfood.util.DatabaseCleaner;
+import br.com.felipe.gorisfood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
@@ -25,13 +29,17 @@ import io.restassured.http.ContentType;
 class CozinhaControllerIT {
 
 	@LocalServerPort
-	int port;
+	private int port;
 	
 	@Autowired
 	private DatabaseCleaner databaseCleaner;
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
+	
+	private static final int ID_COZINHA_INEXISTENTE = 100;
+	private int totalCozinhasCadastradas;
+	private Cozinha cozinhaAmericana;
 	
 	@BeforeEach
 	void setup() {
@@ -54,14 +62,13 @@ class CozinhaControllerIT {
 	}
 	
 	@Test
-	void deveRetornar2Cozinhas_QuandoConsultarCozinhas() {
+	void deveRetornarTotalCozinhas_QuandoConsultarCozinhas() {
 		given()
 			.accept(ContentType.JSON)
 		.when()
 			.get()
 		.then()
-			.body("", Matchers.hasSize(2))
-			.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
+			.body("", Matchers.hasSize(totalCozinhasCadastradas));
 	}
 	
 	@Test
@@ -69,8 +76,10 @@ class CozinhaControllerIT {
 		var cozinha = new Cozinha();
 		cozinha.setNome("Chinesa");
 		
+		String json = ResourceUtils.getContentFromResource("json/correto/cadastro-cozinha-chinesa.json");
+		
 		given()
-			.body(cozinha)
+			.body(json)
 			.contentType(ContentType.JSON)
 			.accept(ContentType.JSON)
 		.when()
@@ -82,19 +91,19 @@ class CozinhaControllerIT {
 	@Test
 	public void deveRetornarRespostaEEstatusCorretos_QuandoConsultarCozinhaExistente() {
 		given()
-			.pathParam("cozinhaId", 2)
+			.pathParam("cozinhaId", cozinhaAmericana.getId())
 			.accept(ContentType.JSON)
 		.when()
 			.get("{cozinhaId}")
 		.then()
 			.statusCode(HttpStatus.OK.value())
-			.body("nome", equalTo("Americana"));		
+			.body("nome", equalTo(cozinhaAmericana.getNome()));		
 	}
 	
 	@Test
-	public void deveRetornar404_QuandoConsultarCozinhaInexistente() {
+	void deveRetornar404_QuandoConsultarCozinhaInexistente() {
 		given()
-			.pathParam("cozinhaId", 2000)
+			.pathParam("cozinhaId", ID_COZINHA_INEXISTENTE)
 			.accept(ContentType.JSON)
 		.when()
 			.get("{cozinhaId}")
@@ -103,12 +112,15 @@ class CozinhaControllerIT {
 	}
 	
 	private void prepararDados() {
-		var cozinha1 = new Cozinha();
-		cozinha1.setNome("Tailandesa");
-		cozinhaRepository.save(cozinha1);
+		var cozinhaTailandesa = new Cozinha();
+		cozinhaTailandesa.setNome("Tailandesa");
+		cozinhaRepository.save(cozinhaTailandesa);
 		
-		var cozinha2 = new Cozinha();
-		cozinha2.setNome("Americana");
-		cozinhaRepository.save(cozinha2);
+		cozinhaAmericana = new Cozinha();
+		cozinhaAmericana.setNome("Americana");
+		cozinhaRepository.save(cozinhaAmericana);
+		
+		this.totalCozinhasCadastradas = (int) cozinhaRepository.count();
+		
 	}
 }
