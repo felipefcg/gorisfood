@@ -27,6 +27,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.felipe.gorisfood.api.core.validation.Grupo;
 import br.com.felipe.gorisfood.api.core.validation.Multiplo;
@@ -54,7 +55,8 @@ public class Restaurante {
 	@PositiveOrZero
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
-	
+
+	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	@Valid
 	@ConvertGroup(from = Default.class, to = Grupo.CozinhaId.class)
 	@NotNull
