@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.core.validation;
+package br.com.felipe.gorisfood.core.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BeanPropertyBindingResult;

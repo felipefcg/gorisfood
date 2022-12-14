@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import br.com.felipe.gorisfood.api.core.validation.Grupo;
+import br.com.felipe.gorisfood.core.validation.Grupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

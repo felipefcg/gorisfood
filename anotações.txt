@@ -457,3 +457,39 @@ momento	que vamos salvar o registro.
 
 		}
 		
+*** JACKSON MIXIN ***
+	Afim de segregrarmos as anotações da classe de domínio com as anotaçãos do Jackson é possível criar uma 
+	classe MIXIN copiando os atributos da classe de domínio anotados com @Json... do Jackson
+	1 - Criar a classe Mixin
+		Ex: public class RestauranteMixin {
+
+			@JsonIgnoreProperties(value = "nome", allowGetters = true)
+			private Cozinha cozinha;
+
+			@JsonIgnore
+			private Endereco endereco;
+
+			@JsonIgnore
+			private LocalDateTime dataCadastro;
+			
+			@JsonIgnore
+			private LocalDateTime dataAtualizacao;
+			
+			@JsonIgnore
+			private List<FormaPagamento> formasPagamento = new ArrayList<>();
+			
+			@JsonIgnore
+			private List<Produto> produtos = new ArrayList<>();
+		}
+		
+	2 - Criar uma classe de configuração para informar o Jackson sobre o mapeamento do Mixin
+		Ex: @Component
+			public class JacksonMixinModule extends SimpleModule {
+
+				private static final long serialVersionUID = 1L;
+
+				public JacksonMixinModule() {
+					setMixInAnnotation(Restaurante.class, RestauranteMixin.class);
+				}
+			}
+	

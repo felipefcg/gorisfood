@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.core.validation;
+package br.com.felipe.gorisfood.core.validation;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;

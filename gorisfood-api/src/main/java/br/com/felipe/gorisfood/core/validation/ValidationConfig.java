@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.core.validation;
+package br.com.felipe.gorisfood.core.validation;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

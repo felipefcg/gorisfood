@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
-import br.com.felipe.gorisfood.api.core.validation.Grupo;
+import br.com.felipe.gorisfood.core.validation.Grupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
