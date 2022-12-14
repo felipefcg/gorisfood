@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Produto;
@@ -29,12 +30,14 @@ public class CadastroProdutoService {
 		return produtoRepository.findById(id)
 				.orElseThrow(() -> new ProdutoNaoEncontradoException(id));
 	}
-
+	
+	@Transactional
 	public Produto criar(Produto novoProduto) {
 		inserirRestaurante(novoProduto);
 		return produtoRepository.save(novoProduto);
 	}
 
+	@Transactional
 	public Produto alterar(Long id, Produto produtoAlterado) {
 		Produto produtoSalvo = buscar(id);
 		inserirRestaurante(produtoAlterado);
@@ -42,6 +45,7 @@ public class CadastroProdutoService {
 		return produtoRepository.save(produtoSalvo);
 	}
 	
+	@Transactional
 	public void remover(Long id) {
 		try {
 			produtoRepository.deleteById(id);

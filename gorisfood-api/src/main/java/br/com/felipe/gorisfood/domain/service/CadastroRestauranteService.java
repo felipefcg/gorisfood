@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
@@ -33,11 +34,13 @@ public class CadastroRestauranteService {
 				 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
 	}
 
+	@Transactional
 	public Restaurante criar(Restaurante restaurante) {
 		colocarCozinhaNoRestaurante(restaurante);
 		return restauranteRepository.save(restaurante);
 	}
 
+	@Transactional
 	public Restaurante alterar(Long id, Restaurante restaurante) {
 		Restaurante restauranteSalvo = buscar(id);
 		colocarCozinhaNoRestaurante(restaurante);
@@ -47,6 +50,7 @@ public class CadastroRestauranteService {
 		return restauranteRepository.save(restauranteSalvo);
 	}
 
+	@Transactional
 	public Restaurante alterarParcialmente(Restaurante restauranteAtualizado) {
 		colocarCozinhaNoRestaurante(restauranteAtualizado);
 		

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
@@ -30,10 +31,12 @@ public class CadastroEstadoService {
 				.orElseThrow(() -> new EstadoNaoEncontradoException(id));
 	}
 	
+	@Transactional
 	public Estado salvar(Estado estado) {
 		return repository.save(estado);
 	}
 	
+	@Transactional
 	public Estado atualizar(Long id, Estado estado) {
 		Estado estadoSalvo = buscar(id);
 		
@@ -41,6 +44,7 @@ public class CadastroEstadoService {
 		return salvar(estadoSalvo);
 	}
 	
+	@Transactional
 	public void remover(Long id) {
 		try {
 			repository.deleteById(id);
