@@ -3,10 +3,6 @@ package br.com.felipe.gorisfood;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

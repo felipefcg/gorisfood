@@ -1,0 +1,7 @@
+{
+    "nome":"Goris Lanches",
+    "taxaFrete": 9.99,
+    "cozinha": {
+        "id": 100
+    }
+}
