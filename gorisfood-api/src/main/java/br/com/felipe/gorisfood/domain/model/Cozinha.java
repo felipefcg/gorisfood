@@ -22,7 +22,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-@JsonRootName("cozinha")
 public class Cozinha implements Serializable {
 	
 	private static final long serialVersionUID = -3273178572976891462L;
@@ -36,7 +35,6 @@ public class Cozinha implements Serializable {
 	@NotBlank
 	private String nome;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<>();
 	

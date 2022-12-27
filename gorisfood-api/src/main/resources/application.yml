@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
     hikari:
