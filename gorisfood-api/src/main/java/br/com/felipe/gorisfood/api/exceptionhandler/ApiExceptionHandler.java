@@ -1,6 +1,6 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -229,6 +229,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.titulo(titulo)
 				.detalhe(mensagem)
 				.mensagemUsuario(msnsagemUsuario)
-				.timestamp(LocalDateTime.now());
+				.timestamp(OffsetDateTime.now());
 	}
 }

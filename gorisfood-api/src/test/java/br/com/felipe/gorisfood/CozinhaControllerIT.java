@@ -69,8 +69,9 @@ class CozinhaControllerIT {
 	
 	@Test
 	void deveRetornarStatus201_QuandoCadastrarCozinha() {
-		var cozinha = new Cozinha();
-		cozinha.setNome("Chinesa");
+//		var cozinha = new Cozinha();
+//		cozinha.setNome("Chinesa");
+		var cozinha = Cozinha.builder().nome("Chinesa").build();
 		
 		String json = ResourceUtils.getContentFromResource("json/correto/cadastro-cozinha-chinesa.json");
 		
@@ -108,12 +109,10 @@ class CozinhaControllerIT {
 	}
 	
 	private void prepararDados() {
-		var cozinhaTailandesa = new Cozinha();
-		cozinhaTailandesa.setNome("Tailandesa");
+		var cozinhaTailandesa = Cozinha.builder().nome("Tailandesa").build();
 		cozinhaRepository.save(cozinhaTailandesa);
 		
-		cozinhaAmericana = new Cozinha();
-		cozinhaAmericana.setNome("Americana");
+		cozinhaAmericana = Cozinha.builder().nome("Americana").build();
 		cozinhaRepository.save(cozinhaAmericana);
 		
 		this.totalCozinhasCadastradas = (int) cozinhaRepository.count();

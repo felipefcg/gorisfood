@@ -41,9 +41,9 @@ class CadastroCozinhaIT {
 	@Test
 	void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
 		//cenário
-		var cozinha = new Cozinha();
-		cozinha.setNome("Chinesa");
-		
+//		var cozinha = new Cozinha();
+//		cozinha.setNome("Chinesa");
+		var cozinha = Cozinha.builder().nome("Chinesa").build();
 		//ação
 		cozinha = service.salvar(cozinha);
 		
@@ -59,7 +59,8 @@ class CadastroCozinhaIT {
 	}
 	@Test
 	void deveFalhar_QuandoCadastrarCozinhaSemNome() {
-		var cozinha = new Cozinha();
+//		var cozinha = new Cozinha();
+		var cozinha = Cozinha.builder().build();		
 		
 		ConstraintViolationException erroEsperado = assertThrows(ConstraintViolationException.class, () -> service.salvar(cozinha));
 		assertThat(erroEsperado).isNotNull();
@@ -79,19 +80,26 @@ class CadastroCozinhaIT {
 	}
 	
 	private void prepararDados() {
-		var cozinha1 = new Cozinha();
-		cozinha1.setNome("Tailandesa");
+//		var cozinha1 = new Cozinha();
+//		cozinha1.setNome("Tailandesa");
+		var cozinha1 = Cozinha.builder().nome("Tailandesa").build();
 		cozinha1 = cozinhaRepository.save(cozinha1);
 		
-		var cozinha2 = new Cozinha();
-		cozinha2.setNome("Indiana");
+//		var cozinha2 = new Cozinha();
+//		cozinha2.setNome("Indiana");
+		var cozinha2 = Cozinha.builder().nome("Indiana").build();
 		cozinhaRepository.save(cozinha2);
 		
-		var restaurante1 = new Restaurante();
-		restaurante1.setNome("Restaurante 1");
-		restaurante1.setCozinha(cozinha1);
-		restaurante1.setTaxaFrete(new BigDecimal(20));
-		
+//		var restaurante1 = new Restaurante();
+//		restaurante1.setNome("Restaurante 1");
+//		restaurante1.setCozinha(cozinha1);
+//		restaurante1.setTaxaFrete(new BigDecimal(20));
+		var restaurante1 = Restaurante.builder()
+								.nome("Restaurante 1")
+								.cozinha(cozinha1)
+								.taxaFrete(new BigDecimal(20))
+								.build();
+
 		restauranteRepository.save(restaurante1);
 	}
 }

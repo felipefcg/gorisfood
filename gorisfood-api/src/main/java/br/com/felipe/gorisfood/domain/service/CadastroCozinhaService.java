@@ -38,7 +38,7 @@ public class CadastroCozinhaService {
 	}
 	
 	@Transactional
-	public void remover(Long id) throws DataIntegrityViolationException {
+	public void remover(Long id) {
 		try {
 			repository.deleteById(id);
 		

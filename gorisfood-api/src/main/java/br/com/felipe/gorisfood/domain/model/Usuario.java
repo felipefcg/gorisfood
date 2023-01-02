@@ -1,6 +1,6 @@
 package br.com.felipe.gorisfood.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ public class Usuario {
 	
 	@CreationTimestamp
 	@Column(columnDefinition = "datetime", nullable = false)
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
 	
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo",

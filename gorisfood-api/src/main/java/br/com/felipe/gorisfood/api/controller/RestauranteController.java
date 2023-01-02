@@ -30,9 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.felipe.gorisfood.api.model.input.RestauranteInputDTO;
+import br.com.felipe.gorisfood.api.model.output.CozinhaOutputDTO;
+import br.com.felipe.gorisfood.api.model.output.RestauranteOutputDTO;
 import br.com.felipe.gorisfood.core.validation.ValidacaoUtils;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -45,36 +49,48 @@ public class RestauranteController {
 
 	@GetMapping(consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Restaurante> listar(){
-		return service.listar();
+	public List<RestauranteOutputDTO> listar(){
+		return toDtoList(service.listar());
 	}
 	
 	@GetMapping(value =  "{id}", consumes = MediaType.ALL_VALUE)
-	public Restaurante buscar(@PathVariable Long id){
-		return service.buscar(id);
+	public RestauranteOutputDTO buscar(@PathVariable Long id){
+		return toDTO(service.buscar(id));
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante criar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteOutputDTO criar(@RequestBody @Valid RestauranteInputDTO restauranteDTO) {
 		try {	
-			return service.criar(restaurante);
+			Restaurante restaurante = toDomain(restauranteDTO);
+			return toDTO(service.criar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
 	}
 
+	private Restaurante toDomain(RestauranteInputDTO restauranteDTO) {
+		Cozinha cozinha = Cozinha.builder()
+									.id(restauranteDTO.cozinha().id())
+									.build();
+		return Restaurante.builder()
+					.nome(restauranteDTO.nome())
+					.taxaFrete(restauranteDTO.taxaFrete())
+					.cozinha(cozinha)
+					.build();
+	}
+
 	@PutMapping("{id}")
-	public Restaurante alterar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
+	public RestauranteOutputDTO alterar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
 		try {
-			return service.alterar(id, restaurante);
+			return toDTO(service.alterar(id, restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
 	}
 	
 	@PatchMapping("{id}")
-	public Restaurante alterarParcialmente(@PathVariable Long id, @RequestBody @Valid Map<String, Object> campos,
+	public RestauranteOutputDTO alterarParcialmente(@PathVariable Long id, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
 		
 		Restaurante restauranteDestino = service.buscar(id);
@@ -82,7 +98,7 @@ public class RestauranteController {
 		ValidacaoUtils.validate(restauranteDestino, "restaurante");
 		
 		try {
-			return service.alterarParcialmente(restauranteDestino);
+			return toDTO(service.alterarParcialmente(restauranteDestino));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
@@ -90,34 +106,36 @@ public class RestauranteController {
 
 	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Restaurante> buscarPorNomeECozinha(String nome, Long cozinhaId) {
-		return service.buscarPorNomeECozinha(nome, cozinhaId);
+	public List<RestauranteOutputDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
+		return toDtoList(service.buscarPorNomeECozinha(nome, cozinhaId));
 	}
 	
 	@GetMapping(value = "por-nome-e-taxa", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Restaurante> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
-		return service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim);
+	public List<RestauranteOutputDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
+		return toDtoList(service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim));
 	}
 	
 	@GetMapping(value = "por-nome-cozinha-e-taxa", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Restaurante> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-		return service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal);
+	public List<RestauranteOutputDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+		return toDtoList(service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal));
 	}
 	
 	@GetMapping(value = "por-frete-gratis-e-nome", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Restaurante> buscarPorFreteGratisENome(String nome) {
-		return service.buscarPorFreteGratisENome(nome);
+	public List<RestauranteOutputDTO> buscarPorFreteGratisENome(String nome) {
+		return toDtoList(service.buscarPorFreteGratisENome(nome));
 	}
 	
 	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public Optional<Restaurante> buscarPrimeiro() {
-		return service.buscarPrimeiro();
+	public Optional<RestauranteOutputDTO> buscarPrimeiro() {
+		return toDTO(service.buscarPrimeiro());
 	}
 	
+	
+
 	private void merge (Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
 		HttpInputMessage inputMessage = new ServletServerHttpRequest(request);
 		
@@ -141,5 +159,34 @@ public class RestauranteController {
 			Throwable causaRaiz = ExceptionUtils.getRootCause(e);
 			throw new HttpMessageNotReadableException(e.getMessage(), causaRaiz, inputMessage);
 		}
+	}
+	
+	private RestauranteOutputDTO toDTO(Restaurante restaurante) {
+		CozinhaOutputDTO cozinhaOutputDTO = CozinhaOutputDTO.builder()
+												.id(restaurante.getCozinha().getId())
+												.nome(restaurante.getCozinha().getNome())
+												.build();
+		
+		return RestauranteOutputDTO.builder()
+				.id(restaurante.getId())
+				.nome(restaurante.getNome())
+				.taxaFrete(restaurante.getTaxaFrete())
+				.cozinha(cozinhaOutputDTO)
+				.build();
+	}
+	
+	private List<RestauranteOutputDTO> toDtoList(List<Restaurante> restaurantes) {
+		return restaurantes.stream()
+					.map(r -> toDTO(r))
+					.toList();
+	}
+	
+	private Optional<RestauranteOutputDTO> toDTO(Optional<Restaurante> restaurante) {
+		if(restaurante.isEmpty()) {
+			return Optional.empty();
+		}
+		
+		return Optional.of(toDTO(restaurante.get()));
+		
 	}
 }

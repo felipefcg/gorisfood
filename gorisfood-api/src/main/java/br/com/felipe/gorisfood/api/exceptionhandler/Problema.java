@@ -1,8 +1,9 @@
 package br.com.felipe.gorisfood.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
@@ -19,7 +20,9 @@ public class Problema {
 	private String detalhe;
 	
 	private String mensagemUsuario;
-	private LocalDateTime timestamp;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssXXX")
+	private OffsetDateTime timestamp;
 	private List<Objeto> objetos;
 
 	@Builder

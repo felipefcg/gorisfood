@@ -4,8 +4,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,9 +21,13 @@ public abstract class RestauranteMixin {
 	@JsonIgnore
 	private Endereco endereco;
 
-//	private OffsetDateTime dataCadastro;
-//	
-//	private OffsetDateTime dataAtualizacao;
+//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+	@JsonIgnore
+	private OffsetDateTime dataCadastro;
+	
+	@JsonIgnore
+//	@JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssXXX")
+	private OffsetDateTime dataAtualizacao;
 	
 	@JsonIgnore
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();

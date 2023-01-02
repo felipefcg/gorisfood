@@ -207,15 +207,17 @@ class RestauranteControllerIT {
 	private void prepararDados() {
 		databaseCleaner.clearTables();
 		
-		var cozinha = new Cozinha();
-		cozinha.setId(1L);
-		cozinha.setNome("Chinesa");
+		var cozinha = Cozinha.builder()
+				.id(1L)
+				.nome("Chinesa")
+				.build();
 		cozinhaRepository.save(cozinha);
 		
-		var restaurante1 = new Restaurante();
-		restaurante1.setNome("Restaurante XenXen");
-		restaurante1.setTaxaFrete(new BigDecimal(5));
-		restaurante1.setCozinha(cozinha);
+		var restaurante1 = Restaurante.builder()
+							.nome("Restaurante XenXen")
+							.cozinha(cozinha)
+							.taxaFrete(new BigDecimal(5))
+							.build();
 		restauranteExistente = restauranteRepository.save(restaurante1);
 		
 		quantidadeRegistros = restauranteRepository.count();

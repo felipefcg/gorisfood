@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +28,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import br.com.felipe.gorisfood.core.validation.Grupo;
 import br.com.felipe.gorisfood.core.validation.ValorZeroIncluiDescricao;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class Restaurante {
 	
 	@EqualsAndHashCode.Include
