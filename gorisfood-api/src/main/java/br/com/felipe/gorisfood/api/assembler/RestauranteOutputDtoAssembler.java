@@ -3,6 +3,8 @@ package br.com.felipe.gorisfood.api.assembler;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.felipe.gorisfood.api.model.output.CozinhaOutputDTO;
@@ -12,18 +14,13 @@ import br.com.felipe.gorisfood.domain.model.Restaurante;
 @Component
 public class RestauranteOutputDtoAssembler {
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	public RestauranteOutputDTO toDTO(Restaurante restaurante) {
-		CozinhaOutputDTO cozinhaOutputDTO = CozinhaOutputDTO.builder()
-												.id(restaurante.getCozinha().getId())
-												.nome(restaurante.getCozinha().getNome())
-												.build();
 		
-		return RestauranteOutputDTO.builder()
-				.id(restaurante.getId())
-				.nome(restaurante.getNome())
-				.taxaFrete(restaurante.getTaxaFrete())
-				.cozinha(cozinhaOutputDTO)
-				.build();
+		return modelMapper.map(restaurante, RestauranteOutputDTO.class); 
+		
 	}
 	
 	public List<RestauranteOutputDTO> toDtoList(List<Restaurante> restaurantes) {

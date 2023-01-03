@@ -1,9 +1,10 @@
 package br.com.felipe.gorisfood.api.model.input;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-public record CozinhaIdInputDTO(
-		Long id) {
-
+@Getter
+@Setter
+public class CozinhaIdInputDTO {
+		private Long id;
 }

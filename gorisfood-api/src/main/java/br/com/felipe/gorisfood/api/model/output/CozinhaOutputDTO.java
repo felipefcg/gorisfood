@@ -1,11 +1,11 @@
 package br.com.felipe.gorisfood.api.model.output;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-public record CozinhaOutputDTO(
-		Long id,
-		String nome
-		) {
-
+@Getter
+@Setter
+public class CozinhaOutputDTO {
+		private Long id;
+		private String nome;
 }

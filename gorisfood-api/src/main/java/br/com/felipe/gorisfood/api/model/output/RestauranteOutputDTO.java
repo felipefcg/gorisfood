@@ -2,13 +2,15 @@ package br.com.felipe.gorisfood.api.model.output;
 
 import java.math.BigDecimal;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
-public record RestauranteOutputDTO(
-		Long id,
-		String nome,
-		BigDecimal taxaFrete,
-		CozinhaOutputDTO cozinha) {
+@Getter
+@Setter
+public class RestauranteOutputDTO {
+		private Long id;
+		private String nome;
+		private BigDecimal taxaFrete;
+		private CozinhaOutputDTO cozinha;
 	
 }
