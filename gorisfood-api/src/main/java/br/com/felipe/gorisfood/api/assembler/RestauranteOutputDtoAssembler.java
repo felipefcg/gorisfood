@@ -10,7 +10,7 @@ import br.com.felipe.gorisfood.api.model.output.RestauranteOutputDTO;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
 @Component
-public class RestauranteDtoAssembler {
+public class RestauranteOutputDtoAssembler {
 	
 	public RestauranteOutputDTO toDTO(Restaurante restaurante) {
 		CozinhaOutputDTO cozinhaOutputDTO = CozinhaOutputDTO.builder()

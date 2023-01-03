@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.felipe.gorisfood.api.assembler.RestauranteDtoAssembler;
+import br.com.felipe.gorisfood.api.assembler.RestauranteOutputDtoAssembler;
+import br.com.felipe.gorisfood.api.assembler.RestauranteInputDtoDeassembler;
 import br.com.felipe.gorisfood.api.model.input.RestauranteInputDTO;
 import br.com.felipe.gorisfood.api.model.output.RestauranteOutputDTO;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
@@ -35,25 +36,28 @@ public class RestauranteController {
 	private CadastroRestauranteService service;
 
 	@Autowired
-	private RestauranteDtoAssembler restauranteDtoAssembler;
+	private RestauranteOutputDtoAssembler restauranteOutputDtoAssembler;
+	
+	@Autowired
+	private RestauranteInputDtoDeassembler restauranteInputDtoDeassembler;
 	
 	@GetMapping(consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<RestauranteOutputDTO> listar(){
-		return restauranteDtoAssembler.toDtoList(service.listar());
+		return restauranteOutputDtoAssembler.toDtoList(service.listar());
 	}
 	
 	@GetMapping(value =  "{id}", consumes = MediaType.ALL_VALUE)
 	public RestauranteOutputDTO buscar(@PathVariable Long id){
-		return restauranteDtoAssembler.toDTO(service.buscar(id));
+		return restauranteOutputDtoAssembler.toDTO(service.buscar(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteOutputDTO criar(@RequestBody @Valid RestauranteInputDTO restauranteDTO) {
 		try {	
-			Restaurante restaurante = toDomain(restauranteDTO);
-			return restauranteDtoAssembler.toDTO(service.criar(restaurante));
+			Restaurante restaurante = restauranteInputDtoDeassembler.toDomain(restauranteDTO);
+			return restauranteOutputDtoAssembler.toDTO(service.criar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
@@ -62,8 +66,8 @@ public class RestauranteController {
 	@PutMapping("{id}")
 	public RestauranteOutputDTO alterar(@PathVariable Long id, @RequestBody @Valid RestauranteInputDTO restauranteDTO) {
 		try {
-			Restaurante restaurante = toDomain(restauranteDTO);
-			return restauranteDtoAssembler.toDTO(service.alterar(id, restaurante));
+			Restaurante restaurante = restauranteInputDtoDeassembler.toDomain(restauranteDTO);
+			return restauranteOutputDtoAssembler.toDTO(service.alterar(id, restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
@@ -72,41 +76,30 @@ public class RestauranteController {
 	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteOutputDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
-		return restauranteDtoAssembler.toDtoList(service.buscarPorNomeECozinha(nome, cozinhaId));
+		return restauranteOutputDtoAssembler.toDtoList(service.buscarPorNomeECozinha(nome, cozinhaId));
 	}
 	
 	@GetMapping(value = "por-nome-e-taxa", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteOutputDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
-		return restauranteDtoAssembler.toDtoList(service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim));
+		return restauranteOutputDtoAssembler.toDtoList(service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim));
 	}
 	
 	@GetMapping(value = "por-nome-cozinha-e-taxa", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteOutputDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-		return restauranteDtoAssembler.toDtoList(service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal));
+		return restauranteOutputDtoAssembler.toDtoList(service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal));
 	}
 	
 	@GetMapping(value = "por-frete-gratis-e-nome", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteOutputDTO> buscarPorFreteGratisENome(String nome) {
-		return restauranteDtoAssembler.toDtoList(service.buscarPorFreteGratisENome(nome));
+		return restauranteOutputDtoAssembler.toDtoList(service.buscarPorFreteGratisENome(nome));
 	}
 	
 	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<RestauranteOutputDTO> buscarPrimeiro() {
-		return restauranteDtoAssembler.toDTO(service.buscarPrimeiro());
-	}
-
-	private Restaurante toDomain(RestauranteInputDTO restauranteDTO) {
-		Cozinha cozinha = Cozinha.builder()
-									.id(restauranteDTO.cozinha().id())
-									.build();
-		return Restaurante.builder()
-					.nome(restauranteDTO.nome())
-					.taxaFrete(restauranteDTO.taxaFrete())
-					.cozinha(cozinha)
-					.build();
+		return restauranteOutputDtoAssembler.toDTO(service.buscarPrimeiro());
 	}
 }
