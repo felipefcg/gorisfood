@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,13 +40,9 @@ public class CadastroRestauranteService {
 	}
 
 	@Transactional
-	public Restaurante alterar(Long id, Restaurante restaurante) {
-		Restaurante restauranteSalvo = buscar(id);
+	public Restaurante alterar(Restaurante restaurante) {
 		colocarCozinhaNoRestaurante(restaurante);
-		BeanUtils.copyProperties(restaurante, restauranteSalvo, 
-				"id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-		
-		return restauranteRepository.save(restauranteSalvo);
+		return restauranteRepository.save(restaurante);
 	}
 
 	@Transactional

@@ -66,8 +66,9 @@ public class RestauranteController {
 	@PutMapping("{id}")
 	public RestauranteOutputDTO alterar(@PathVariable Long id, @RequestBody @Valid RestauranteInputDTO restauranteDTO) {
 		try {
-			Restaurante restaurante = restauranteInputDtoDeassembler.toDomain(restauranteDTO);
-			return restauranteOutputDtoAssembler.toDTO(service.alterar(id, restaurante));
+			Restaurante restaurante = service.buscar(id);
+			restauranteInputDtoDeassembler.copyToDomain(restauranteDTO, restaurante);
+			return restauranteOutputDtoAssembler.toDTO(service.alterar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
