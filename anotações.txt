@@ -216,6 +216,13 @@ momento	que vamos salvar o registro.
 	* RFC 7807: https://www.rfc-editor.org/rfc/rfc7807
 	* JSON API: https://jsonapi.org/format/#error-objects / https://jsonapi.org/examples/#error-objects
 	* VND.ERROR: https://github.com/blongden/vnd.error
+
+* Forçar o Jackson/Spring a utilizar SNAKE CASE (Ex: taxa_frete) na serialização/deserialização do JSON ao invés de LOWER CAMEL CASE (Ex: taxaFrete)
+	* Por properties:
+	- spring.jackson.property-naming-strategy = SNAKE_CASE 
+	
+	* Programaticamente
+	- mapper.setNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 	
 * Forçar jackson a falhar quando é enviado um atributo que não faz parte do body/DTO e/ou que esta anotado com @JsonIgnore
 	* Por properties
