@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.model.input;
+package br.com.felipe.gorisfood.api.model.request;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RestauranteInputDTO {
+public class RestauranteRequestDTO {
 	
 	@NotBlank
 	private String nome;
@@ -27,6 +27,6 @@ public class RestauranteInputDTO {
 	@Valid
 //	@ConvertGroup(from = Default.class, to = Grupo.CozinhaId.class)
 	@NotNull
-	private CozinhaIdInputDTO cozinha;
+	private CozinhaIdRequestDTO cozinha;
 	
 }

@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.model.input;
+package br.com.felipe.gorisfood.api.model.request;
 
 import javax.validation.constraints.NotNull;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CozinhaIdInputDTO {
+public class CozinhaIdRequestDTO {
 	
 	@NotNull
 	private Long id;
