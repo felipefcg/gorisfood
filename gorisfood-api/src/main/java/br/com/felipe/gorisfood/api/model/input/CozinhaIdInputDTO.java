@@ -1,10 +1,14 @@
 package br.com.felipe.gorisfood.api.model.input;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class CozinhaIdInputDTO {
-		private Long id;
+	
+	@NotNull
+	private Long id;
 }

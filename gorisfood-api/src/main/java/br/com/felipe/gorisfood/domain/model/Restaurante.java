@@ -16,17 +16,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.com.felipe.gorisfood.core.validation.Grupo;
 import br.com.felipe.gorisfood.core.validation.ValorZeroIncluiDescricao;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,18 +43,12 @@ public class Restaurante {
 	@Column(name = "id")
 	private Long id;
 	
-	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
-	@NotNull
-	@PositiveOrZero
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	@Valid
-	@ConvertGroup(from = Default.class, to = Grupo.CozinhaId.class)
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="cozinha_id", nullable = false)
 	private Cozinha cozinha;
