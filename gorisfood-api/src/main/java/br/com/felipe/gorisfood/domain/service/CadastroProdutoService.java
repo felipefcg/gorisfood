@@ -33,16 +33,13 @@ public class CadastroProdutoService {
 	
 	@Transactional
 	public Produto criar(Produto novoProduto) {
-		inserirRestaurante(novoProduto);
-		return produtoRepository.save(novoProduto);
+		return alterar(novoProduto);
 	}
 
 	@Transactional
-	public Produto alterar(Long id, Produto produtoAlterado) {
-		Produto produtoSalvo = buscar(id);
-		inserirRestaurante(produtoAlterado);
-		BeanUtils.copyProperties(produtoAlterado, produtoSalvo, "id", "restaurante");
-		return produtoRepository.save(produtoSalvo);
+	public Produto alterar(Produto produto) {
+		inserirRestaurante(produto);
+		return produtoRepository.save(produto);
 	}
 	
 	@Transactional

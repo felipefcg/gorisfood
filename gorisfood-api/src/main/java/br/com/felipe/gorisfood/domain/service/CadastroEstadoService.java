@@ -17,7 +17,7 @@ import br.com.felipe.gorisfood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 	
-	private static final String ESTADO_EM_USO = "Estado Bom  %d não pode ser removida pois está em uso.";
+	private static final String ESTADO_EM_USO = "Estado %d não pode ser removida pois está em uso.";
 	
 	@Autowired
 	private EstadoRepository repository;
@@ -48,6 +48,7 @@ public class CadastroEstadoService {
 	public void remover(Long id) {
 		try {
 			repository.deleteById(id);
+			repository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExcpetion(
 					String.format(ESTADO_EM_USO, id));

@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.assembler.CidadeRequestDtoDesassembler;
+import br.com.felipe.gorisfood.api.assembler.CidadeResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.exceptionhandler.TipoProblema;
+import br.com.felipe.gorisfood.api.model.request.CidadeRequestDTO;
+import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
@@ -33,25 +37,34 @@ public class CidadeController {
 	@Autowired
 	private CadastroCidadeService service;
 	
+	@Autowired
+	private CidadeResponseDtoAssembler assembler;
+	
+	@Autowired
+	private CidadeRequestDtoDesassembler desassembler;
+	
 	@GetMapping(consumes = MediaType.ALL_VALUE)
-	public List<Cidade> listar() {
-		return service.listar();
+	public List<CidadeResponseDTO> listar() {
+		return assembler.toDtoList(service.listar());
 	}
 	
 	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
-	public Cidade buscar(@PathVariable Long id) {
-		return service.buscar(id);
+	public CidadeResponseDTO buscar(@PathVariable Long id) {
+		return assembler.toDto(service.buscar(id));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade criar(@RequestBody @Valid Cidade cidade) {
-		return  service.salvar(cidade);
+	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+		Cidade cidade = desassembler.toModel(cidadeDTO);
+		return  assembler.toDto(service.salvar(cidade));
 	}
 	
 	@PutMapping("{id}")
-	public Cidade alterar(@PathVariable Long id, @RequestBody Cidade cidade) {
-		return service.alterar(id, cidade);
+	public CidadeResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+		Cidade cidadeAtual = service.buscar(id);
+		desassembler.copyDtoToModel(cidadeDTO, cidadeAtual);
+		return assembler.toDto(service.alterar(cidadeAtual));
 	}
 	
 	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
@@ -59,7 +72,7 @@ public class CidadeController {
 	public void remover(@PathVariable Long id) {
 			service.remover(id);
 	}
-
+	
 	@ExceptionHandler(EstadoNaoEncontradoException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public Problema handleEstadoNaoEncontradoException(EstadoNaoEncontradoException e) {
@@ -71,5 +84,4 @@ public class CidadeController {
 				.detalhe(e.getMessage())
 				.build();
 	}
-
 }

@@ -2,7 +2,6 @@ package br.com.felipe.gorisfood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -46,11 +45,9 @@ public class CadastroCidadeService {
 	}
 
 	@Transactional
-	public Cidade alterar (Long id, Cidade cidade) {
-		Cidade cidadeAtual = buscar(id);
-		Estado estado = estadoService.buscar(cidade.getEstado().getId());
+	public Cidade alterar (Cidade cidadeAtual) {
 		
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+		Estado estado = estadoService.buscar(cidadeAtual.getEstado().getId());
 		cidadeAtual.setEstado(estado);
 		
 		return cidadeRepository.save(cidadeAtual);
