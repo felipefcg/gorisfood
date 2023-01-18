@@ -64,6 +64,8 @@ public class Restaurante {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataAtualizacao;
 	
+	private Boolean ativo = Boolean.TRUE;
+	
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento",
 			joinColumns = @JoinColumn(name = "restaurante_id"),
@@ -74,4 +76,12 @@ public class Restaurante {
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
+
+	public void ativar() {
+		this.ativo = Boolean.TRUE;
+	}
+	
+	public void inativar() {
+		this.ativo = Boolean.FALSE;
+	}
 }

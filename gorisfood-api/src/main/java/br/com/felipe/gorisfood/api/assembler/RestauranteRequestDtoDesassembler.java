@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.felipe.gorisfood.api.model.request.RestauranteRequestDTO;
+import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
@@ -24,6 +25,8 @@ public class RestauranteRequestDtoDesassembler {
 		 * br.com.felipe.gorisfood.domain.model.Cozinha was altered from 1 to 3
 		 */
 		restaurante.setCozinha(Cozinha.builder().build());
+		restaurante.getEndereco().setCidade(new Cidade());
+		
 		modelMapper.map(restauranteDTO, restaurante);
 	}
 }

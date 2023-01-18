@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.felipe.gorisfood.api.assembler.RestauranteResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.assembler.RestauranteRequestDtoDesassembler;
+import br.com.felipe.gorisfood.api.assembler.RestauranteResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.RestauranteRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.RestauranteResponseDTO;
+import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
-import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -58,7 +59,7 @@ public class RestauranteController {
 		try {	
 			Restaurante restaurante = restauranteRequestDtoDesassembler.toDomain(restauranteDTO);
 			return restauranteResponseDtoAssembler.toDTO(service.criar(restaurante));
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
 	}
@@ -69,7 +70,7 @@ public class RestauranteController {
 			Restaurante restaurante = service.buscar(id);
 			restauranteRequestDtoDesassembler.copyToDomain(restauranteDTO, restaurante);
 			return restauranteResponseDtoAssembler.toDTO(service.alterar(restaurante));
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
 		}
 	}
@@ -102,5 +103,25 @@ public class RestauranteController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<RestauranteResponseDTO> buscarPrimeiro() {
 		return restauranteResponseDtoAssembler.toDTO(service.buscarPrimeiro());
+	}
+	
+	@PutMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long id) {
+		try {
+			service.ativar(id);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativar(@PathVariable Long id) {
+		try {
+			service.inativar(id);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
+		}
 	}
 }

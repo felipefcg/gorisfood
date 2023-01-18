@@ -23,6 +23,9 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
 	
+	@Autowired
+	private CadastroCidadeService cidadeService;
+	
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
 	}
@@ -36,19 +39,19 @@ public class CadastroRestauranteService {
 	@Transactional
 	public Restaurante criar(Restaurante restaurante) {
 		colocarCozinhaNoRestaurante(restaurante);
+		colocarCidadeNoRestaurante(restaurante);
 		return restauranteRepository.save(restaurante);
 	}
 
 	@Transactional
 	public Restaurante alterar(Restaurante restaurante) {
-		colocarCozinhaNoRestaurante(restaurante);
-		return restauranteRepository.save(restaurante);
+		return criar(restaurante);
 	}
 
 	@Transactional
 	public Restaurante alterarParcialmente(Restaurante restauranteAtualizado) {
 		colocarCozinhaNoRestaurante(restauranteAtualizado);
-		
+		colocarCidadeNoRestaurante(restauranteAtualizado);
 		return restauranteRepository.save(restauranteAtualizado);
 	}
 	
@@ -59,7 +62,14 @@ public class CadastroRestauranteService {
 		
 		restaurante.setCozinha(cozinhaSalva);
 	}
-
+	
+	private void colocarCidadeNoRestaurante(Restaurante restaurante) {
+		var cidadeId = restaurante.getEndereco().getCidade().getId();
+		var cidade = cidadeService.buscar(cidadeId);
+			
+		restaurante.getEndereco().setCidade(cidade);
+	}
+	
 	public List<Restaurante> buscarPorNomeECozinha(String nome, Long cozinhaId) {
 		return restauranteRepository.consultaPorNome(nome, cozinhaId);
 	}
@@ -78,5 +88,17 @@ public class CadastroRestauranteService {
 
 	public Optional<Restaurante> buscarPrimeiro() {
 		return restauranteRepository.buscarPrimeiro();
+	}
+
+	public void ativar(Long id) {
+		var restaurante = buscar(id);
+		restaurante.ativar();
+		restauranteRepository.save(restaurante);
+	}
+	
+	public void inativar(Long id) {
+		var restaurante = buscar(id);
+		restaurante.inativar();
+		restauranteRepository.save(restaurante);
 	}
 }
