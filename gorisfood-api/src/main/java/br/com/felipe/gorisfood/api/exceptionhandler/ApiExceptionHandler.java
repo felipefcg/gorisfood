@@ -31,6 +31,7 @@ import br.com.felipe.gorisfood.api.exceptionhandler.Problema.Objeto;
 import br.com.felipe.gorisfood.domain.exception.EntidadeEmUsoExcpetion;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.exception.NegocioException;
 import br.com.felipe.gorisfood.domain.exception.SenhaInvalidaExcpetion;
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,8 +90,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(e, problema, null, status, request);
 	}
 
-	@ExceptionHandler(SenhaInvalidaExcpetion.class)
-	public ResponseEntity<Object> handleSenhaInvalidaExcpetion(SenhaInvalidaExcpetion e, WebRequest request) {
+	@ExceptionHandler({SenhaInvalidaExcpetion.class, NegocioException.class})
+	public ResponseEntity<Object> handleSenhaInvalidaExcpetion(NegocioException e, WebRequest request) {
 		
 		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 		

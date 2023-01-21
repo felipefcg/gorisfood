@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.felipe.gorisfood.domain.exception.NegocioException;
 import br.com.felipe.gorisfood.domain.exception.SenhaInvalidaExcpetion;
 import br.com.felipe.gorisfood.domain.exception.UsuarioNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Usuario;
@@ -31,6 +32,14 @@ public class CadastroUsuarioService {
 	
 	@Transactional
 	public Usuario criar(Usuario usuario) {
+		repository.detached(usuario);
+		
+		var optionalUsuarioCadastrado = repository.findByEmail(usuario.getEmail());
+		
+		if(optionalUsuarioCadastrado.isPresent() && !usuario.equals(optionalUsuarioCadastrado.get())) {
+			throw new NegocioException(String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
+		}
+		
 		return repository.save(usuario);
 	}
 	
@@ -42,7 +51,7 @@ public class CadastroUsuarioService {
 	@Transactional
 	public void alterarSenha(Usuario usuario, String senhaAntiga, String senhaNova) {
 		
-		if(usuario.senhaCoincide(senhaAntiga)) {
+		if(usuario.senhaNaoCoincide(senhaAntiga)) {
 			throw new SenhaInvalidaExcpetion(SENHA_NAO_CONRRESPONDENTE);
 		}
 		
