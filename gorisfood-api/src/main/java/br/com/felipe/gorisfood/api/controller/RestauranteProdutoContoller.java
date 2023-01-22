@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,10 +69,10 @@ public class RestauranteProdutoContoller {
 		return assembler.toDto(service.alterar(produto));
 	}
 	
-//	@DeleteMapping("{id}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-//		service.remover(produtoId);
-//	}
+	@DeleteMapping("{produtoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+		service.remover(produtoId, restauranteId);
+	}
 	
 }

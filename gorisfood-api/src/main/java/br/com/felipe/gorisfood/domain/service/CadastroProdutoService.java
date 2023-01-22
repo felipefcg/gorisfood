@@ -3,12 +3,12 @@ package br.com.felipe.gorisfood.domain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Produto;
-import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.ProdutoRepository;
 
 @Service
@@ -22,12 +22,26 @@ public class CadastroProdutoService {
 	
 	public List<Produto> listar(Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
-		return produtoRepository.findByRestaurante(restaurante);
+		return restaurante.getProdutos();
+//		return produtoRepository.findByRestaurante(restaurante);
 	}
 	
 	public Produto buscar(Long prodtuoId, Long restauranteId) {
+
+		//OPÇÃO 1
 		return produtoRepository.findByIdAndRestauranteId(prodtuoId, restauranteId)
 				.orElseThrow(() -> new ProdutoNaoEncontradoException(prodtuoId, restauranteId));
+		
+		//OPÇÃO 2
+//		var restaurante = restauranteService.buscar(restauranteId);
+//		return restaurante.getProdutos()
+//					.stream()
+//					.filter(p -> p.getId().equals(prodtuoId))
+//					.findFirst()
+//					.orElseThrow(() -> new ProdutoNaoEncontradoException(prodtuoId, restauranteId));
+			
+			
+		
 	}
 	
 	@Transactional
@@ -42,14 +56,11 @@ public class CadastroProdutoService {
 		return produtoRepository.save(produto);
 	}
 	
-//	@Transactional
-//	public void remover(Long id) {
-//		try {
-//			produtoRepository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			throw new ProdutoNaoEncontradoException(id);
-//		}
-//		
-//	}
+	@Transactional
+	public void remover(Long produtoId, Long restauranteId) {
+		if (produtoRepository.deleteByIdAndRestauranteId(produtoId, restauranteId)==0) {
+			throw new ProdutoNaoEncontradoException(produtoId, restauranteId);
+		}
+	}
 
 }
