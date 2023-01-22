@@ -32,7 +32,7 @@ import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 @RestController
 @RequestMapping(value = "restaurantes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController {
-
+	
 	@Autowired
 	private CadastroRestauranteService service;
 

@@ -2,9 +2,7 @@ package br.com.felipe.gorisfood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,42 +19,37 @@ public class CadastroProdutoService {
 	
 	@Autowired
 	private CadastroRestauranteService restauranteService;
-
-	public List<Produto> listar() {
-		return produtoRepository.findAll();
+	
+	public List<Produto> listar(Long restauranteId) {
+		var restaurante = restauranteService.buscar(restauranteId);
+		return produtoRepository.findByRestaurante(restaurante);
 	}
-
-	public Produto buscar(Long id) {
-		return produtoRepository.findById(id)
-				.orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+	
+	public Produto buscar(Long prodtuoId, Long restauranteId) {
+		return produtoRepository.findByIdAndRestauranteId(prodtuoId, restauranteId)
+				.orElseThrow(() -> new ProdutoNaoEncontradoException(prodtuoId, restauranteId));
 	}
 	
 	@Transactional
-	public Produto criar(Produto novoProduto) {
-		return alterar(novoProduto);
+	public Produto criar(Long restauranteId, Produto produto) {
+		var restaurante = restauranteService.buscar(restauranteId);
+		produto.setRestaurante(restaurante);
+		return produtoRepository.save(produto);
 	}
 
 	@Transactional
 	public Produto alterar(Produto produto) {
-		inserirRestaurante(produto);
 		return produtoRepository.save(produto);
 	}
 	
-	@Transactional
-	public void remover(Long id) {
-		try {
-			produtoRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ProdutoNaoEncontradoException(id);
-		}
-		
-	}
-	
-	private void inserirRestaurante(Produto produto) {
-		Long idRestaurante = produto.getRestaurante().getId();
-		Restaurante restaurante = restauranteService.buscar(idRestaurante);
-		produto.setRestaurante(restaurante);
-	}
-
+//	@Transactional
+//	public void remover(Long id) {
+//		try {
+//			produtoRepository.deleteById(id);
+//		} catch (EmptyResultDataAccessException e) {
+//			throw new ProdutoNaoEncontradoException(id);
+//		}
+//		
+//	}
 
 }

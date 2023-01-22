@@ -15,6 +15,4 @@ public class ProdutoResponseDTO {
 	private BigDecimal preco;
 	private Boolean ativo;
 	
-	private ProdutoRestauranteResponseDTO restaurante;
-
 }

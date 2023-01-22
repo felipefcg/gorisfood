@@ -8,7 +8,7 @@ import br.com.felipe.gorisfood.api.model.request.ProdutoRequestDTO;
 import br.com.felipe.gorisfood.domain.model.Produto;
 
 @Component
-public class ProdutoRequestDtoDesassembler {
+public class ProdutoRequestDtoDisassembler {
 
 	@Autowired
 	private ModelMapper mapper;
@@ -18,11 +18,7 @@ public class ProdutoRequestDtoDesassembler {
 	}
 
 	public void copyDtoToModel(ProdutoRequestDTO produtoDTO, Produto produto) {
-		/*
-		 * Para evitar org.hibernate.HibernateException: identifier of an instance of 
-		 * br.com.felipe.gorisfood.domain.model.Restaurante was altered from 1 to 5
-		 */
-		produto.setRestaurante(null);
+		
 		mapper.map(produtoDTO, produto);
 	}
 }

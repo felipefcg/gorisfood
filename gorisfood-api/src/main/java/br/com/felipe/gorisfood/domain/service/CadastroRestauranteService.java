@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.domain.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
+import br.com.felipe.gorisfood.domain.model.FormaPagamento;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 
@@ -25,6 +27,9 @@ public class CadastroRestauranteService {
 	
 	@Autowired
 	private CadastroCidadeService cidadeService;
+	
+	@Autowired
+	private CadastroFormaPagamentoService formaPagamentoService;
 	
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
@@ -100,5 +105,24 @@ public class CadastroRestauranteService {
 		var restaurante = buscar(id);
 		restaurante.inativar();
 		restauranteRepository.save(restaurante);
+	}
+
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		var restaurante = buscar(restauranteId);
+		var formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+	
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		var restaurante = buscar(restauranteId);
+		var formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+		restaurante.removerFormaPagamento(formaPagamento);
+	}
+
+	public Set<FormaPagamento> listarFormasPagamentoDoRestaurante(Long restauranteId) {
+		var restaurante = buscar(restauranteId);
+		return restaurante.getFormasPagamento();
 	}
 }
