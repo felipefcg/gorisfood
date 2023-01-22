@@ -68,6 +68,8 @@ public class Restaurante {
 	
 	private Boolean ativo = Boolean.TRUE;
 	
+	private Boolean aberto = Boolean.FALSE;
+	
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento",
 			joinColumns = @JoinColumn(name = "restaurante_id"),
@@ -80,11 +82,19 @@ public class Restaurante {
 	private List<Produto> produtos = new ArrayList<>();
 
 	public void ativar() {
-		this.ativo = Boolean.TRUE;
+		setAtivo(true);
 	}
 	
 	public void inativar() {
-		this.ativo = Boolean.FALSE;
+		setAtivo(false);
+	}
+	
+	public void abrir() {
+		setAberto(true);
+	}
+	
+	public void fechar() {
+		setAberto(false);
 	}
 	
 	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {

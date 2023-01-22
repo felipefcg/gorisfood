@@ -108,20 +108,24 @@ public class RestauranteController {
 	@PutMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long id) {
-		try {
-			service.ativar(id);
-		} catch (CozinhaNaoEncontradaException e) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
-		}
+		service.ativar(id);
 	}
 	
 	@DeleteMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long id) {
-		try {
-			service.inativar(id);
-		} catch (CozinhaNaoEncontradaException e) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
-		}
+		service.inativar(id);
+	}
+	
+	@PutMapping(value = "{id}/abertura", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void abrir(@PathVariable Long id) {
+		service.abrir(id);
+	}
+	
+	@PutMapping(value = "{id}/fechamento", consumes = MediaType.ALL_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void fechar(@PathVariable Long id) {
+		service.fechar(id);
 	}
 }

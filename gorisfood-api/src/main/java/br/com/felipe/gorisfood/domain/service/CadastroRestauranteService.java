@@ -121,8 +121,22 @@ public class CadastroRestauranteService {
 		restaurante.removerFormaPagamento(formaPagamento);
 	}
 
+	@Transactional
 	public Set<FormaPagamento> listarFormasPagamentoDoRestaurante(Long restauranteId) {
 		var restaurante = buscar(restauranteId);
 		return restaurante.getFormasPagamento();
 	}
+	
+	@Transactional
+	public void abrir(Long id) {
+		var restaurante = buscar(id);
+		restaurante.abrir();
+	}
+	
+	@Transactional
+	public void fechar (Long id) {
+		var restaurante = buscar(id);
+		restaurante.fechar();
+	}
+	
 }
