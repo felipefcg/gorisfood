@@ -68,19 +68,10 @@ public class CadastroGupoService {
 
 	@Transactional
 	public void removerPermissao(Long grupoId, Long permissaoId) {
-		try {
-			var grupo = buscar(grupoId);
-			
-			var permissao = new Permissao();
-			permissao.setId(permissaoId);
-			
-			if(!grupo.removerPermissao(permissao)) {
-				throw new PermissaoNaoEncontradaException(permissaoId, grupoId);
-			}
-		} catch (GrupoNaoEncontradoException e) {
-			throw new GrupoNaoEncontradoException(grupoId, permissaoId);
-		}
-		
+		var grupo = buscar(grupoId);
+		var permissao = new Permissao();
+		permissao.setId(permissaoId);
+		grupo.removerPermissao(permissao);
 	}
 
 
