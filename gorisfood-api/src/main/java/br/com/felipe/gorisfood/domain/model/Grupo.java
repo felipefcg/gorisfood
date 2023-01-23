@@ -1,6 +1,6 @@
 package br.com.felipe.gorisfood.domain.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,5 +31,13 @@ public class Grupo {
 	@JoinTable(name = "grupo_permissao",
 				joinColumns = @JoinColumn(name = "grupo_id", nullable = false),
 				inverseJoinColumns = @JoinColumn(name = "permissao_id", nullable = false))
-	private List<Permissao> permissoes;
+	private Set<Permissao> permissoes;
+
+	public boolean adicionarPermissao(Permissao permissao) {
+		return getPermissoes().add(permissao);
+	}
+	
+	public boolean removerPermissao(Permissao permissao) {
+		return getPermissoes().remove(permissao);
+	}
 }
