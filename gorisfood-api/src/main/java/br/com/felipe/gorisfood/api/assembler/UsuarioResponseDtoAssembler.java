@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -19,7 +20,7 @@ public class UsuarioResponseDtoAssembler {
 		return mapper.map(model, UsuarioResponseDTO.class);
 	}
 	
-	public List<UsuarioResponseDTO> toDtoList(List<Usuario> modelList) {
+	public List<UsuarioResponseDTO> toDtoList(Collection<Usuario> modelList) {
 		return modelList.stream()
 					.map(this::toDto)
 					.toList();

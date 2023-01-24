@@ -13,6 +13,7 @@ import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoExceptio
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.FormaPagamento;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
+import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 
 
@@ -30,6 +31,9 @@ public class CadastroRestauranteService {
 	
 	@Autowired
 	private CadastroFormaPagamentoService formaPagamentoService;
+	
+	@Autowired
+	private CadastroUsuarioService usuarioService;
 	
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
@@ -137,6 +141,23 @@ public class CadastroRestauranteService {
 	public void fechar (Long id) {
 		var restaurante = buscar(id);
 		restaurante.fechar();
+	}
+	
+	@Transactional
+	public void associarUsuarioResponsavel(Long restauranteId, Long usuarioId) {
+		var restaurante = buscar(restauranteId);
+		var usuario = usuarioService.buscar(usuarioId);
+		
+		restaurante.adicionarResponsavel(usuario);
+	}
+	
+	@Transactional
+	public void desassociarUsuarioResponsavel(Long restauranteId, Long usuarioId) {
+		var restaurante = buscar(restauranteId);
+		var usuario = new Usuario();
+		usuario.setId(usuarioId);
+		
+		restaurante.removerResponsavel(usuario);
 	}
 	
 }
