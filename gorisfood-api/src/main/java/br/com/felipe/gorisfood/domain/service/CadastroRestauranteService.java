@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.felipe.gorisfood.domain.exception.EntidadeInconsistenteException;
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.model.FormaPagamento;
@@ -111,6 +112,24 @@ public class CadastroRestauranteService {
 		restauranteRepository.save(restaurante);
 	}
 
+	@Transactional
+	public void ativar(List<Long> restauranteIds) {
+		try { 
+			restauranteIds.forEach(this::ativar);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new EntidadeInconsistenteException(e.getMessage());
+		}
+	}
+	
+	@Transactional
+	public void inativar(List<Long> restauranteIds) {
+		try {
+			restauranteIds.forEach(this::inativar);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new EntidadeInconsistenteException(e.getMessage());
+		}
+	}
+	
 	@Transactional
 	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		var restaurante = buscar(restauranteId);
