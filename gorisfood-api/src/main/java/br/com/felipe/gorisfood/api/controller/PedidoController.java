@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.PedidoResponseDtoAssembler;
+import br.com.felipe.gorisfood.api.assembler.PedidoResumidoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
 
 @RestController
@@ -23,9 +25,12 @@ public class PedidoController {
 	@Autowired
 	private PedidoResponseDtoAssembler pedidoAssembler;
 	
+	@Autowired
+	private PedidoResumidoResponseDtoAssembler pedidoResumidoAssembler;
+	
 	@GetMapping
-	public List<PedidoResponseDTO> listar() {
-		return pedidoAssembler.toDtoList(pedidoService.listar());
+	public List<PedidoResumidoResponseDTO> listar() {
+		return pedidoResumidoAssembler.toDtoList(pedidoService.listar());
 	}
 	
 	@GetMapping("{pedidoId}")
