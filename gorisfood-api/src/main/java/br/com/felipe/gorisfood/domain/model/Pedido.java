@@ -69,7 +69,22 @@ public class Pedido {
 	@Column(columnDefinition = "datetime")
 	private OffsetDateTime dataEntrega;
 	
+	public void calculaValorTotal() {
+		//frete +  itens
+		subtotal = itens.stream()
+					.map(ItemPedido::getPrecoTotal)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		setValorTotal(subtotal.add(taxaFrete));
+	}
 	
+	public void definirFrete(Restaurante restaurante) {
+		setTaxaFrete(restaurante.getTaxaFrete());
+	}
+	
+	public void adicionarPedidoAoItem() {
+		getItens().forEach(item -> item.setPedido(this));
+	}
 	
 	
 }
