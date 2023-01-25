@@ -11,10 +11,11 @@ import br.com.felipe.gorisfood.domain.model.Pedido;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 		@Query("from Pedido p "
-				+ " join fetch p.cliente"
-				+ " join fetch p.restaurante"
-				+ " join fetch p.restaurante.cozinha"
-				+ " join fetch p.enderecoEntrega.cidade"
-				+ " join fetch p.enderecoEntrega.cidade.estado")
+				+ " join fetch p.cliente c"
+				+ " join fetch p.restaurante r"
+				+ " join fetch r.cozinha"
+				+ " join fetch p.enderecoEntrega e"
+				+ " join fetch e.cidade ci"
+				+ " join fetch ci.estado")
 		List<Pedido> findAll();
 }
