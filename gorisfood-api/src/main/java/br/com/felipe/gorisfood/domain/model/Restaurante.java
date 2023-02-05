@@ -2,9 +2,7 @@ package br.com.felipe.gorisfood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -87,7 +85,7 @@ public class Restaurante {
 	private Set<Usuario> responsaveis = new HashSet<>();
 	
 	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> produtos = new ArrayList<>();
+	private Set<Produto> produtos = new HashSet<>();
 
 	
 	public void ativar() {
@@ -128,5 +126,13 @@ public class Restaurante {
 	
 	public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
 		return !aceitaFormaPagamento(formaPagamento);
+	}
+	
+	public boolean produtoPertenceAoRestaurante(Produto produto) {
+		return getProdutos().contains(produto);
+	}
+	
+	public boolean produtoNaoPertenceAoRestaurante(Produto produto) {
+		return !produtoPertenceAoRestaurante(produto);
 	}
 }

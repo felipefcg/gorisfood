@@ -1,9 +1,8 @@
 package br.com.felipe.gorisfood.domain.service;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,7 @@ public class CadastroProdutoService {
 	@Autowired
 	private CadastroRestauranteService restauranteService;
 	
-	public List<Produto> listar(Long restauranteId) {
+	public Set<Produto> listar(Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
 		return restaurante.getProdutos();
 //		return produtoRepository.findByRestaurante(restaurante);

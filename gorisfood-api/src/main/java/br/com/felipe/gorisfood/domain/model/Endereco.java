@@ -30,4 +30,7 @@ public class Endereco {
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
 	
+	public Long getCidadeId() {
+		return getCidade().getId();
+	}
 }

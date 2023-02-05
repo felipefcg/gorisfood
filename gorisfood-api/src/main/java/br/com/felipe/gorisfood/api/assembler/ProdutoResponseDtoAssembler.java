@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -20,7 +21,7 @@ public class ProdutoResponseDtoAssembler {
 		return mapper.map(produto, ProdutoResponseDTO.class);
 	}
 	
-	public List<ProdutoResponseDTO>	toDtoList(List<Produto> produtos) {
+	public List<ProdutoResponseDTO>	toDtoList(Collection<Produto> produtos) {
 		var tokenType = new TypeToken<List<ProdutoResponseDTO>>() {};
 		return mapper.map(produtos,tokenType.getType());
 	}
