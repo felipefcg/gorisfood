@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeInconsistenteException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
+import br.com.felipe.gorisfood.domain.exception.FormaPagamentoNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.PedidoNaoEncontradoException;
+import br.com.felipe.gorisfood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
+import br.com.felipe.gorisfood.domain.exception.UsuarioNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Pedido;
-import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
 import br.com.felipe.gorisfood.domain.repository.PedidoRepository;
 
@@ -27,6 +29,12 @@ public class EmissaoPedidoService {
 	
 	@Autowired
 	private CadastroCidadeService cidadeService;
+
+	@Autowired
+	private CadastroFormaPagamentoService formaPagamentoService;
+	
+	@Autowired
+	private CadastroProdutoService produtoService;
 	
 	@Autowired
 	private CadastroUsuarioService usuarioService;
@@ -41,57 +49,56 @@ public class EmissaoPedidoService {
 	}
 
 	@Transactional
-	public Pedido salvar(Pedido pedido) {
+	public Pedido emitir(Pedido pedido) {
 		
-		try {
-			var restaurante = restauranteService.buscar(pedido.getRestaurante().getId());
-			var formaPagamentoPedido = pedido.getFormaPagamento();
+		validarPedido(pedido);
+		validarItens(pedido);
+		pedido.setTaxaFrete(pedido.getRestaurante().getTaxaFrete());
+		pedido.calculaValorTotal();
+		pedido.setStatus(StatusPedido.CRIADO);
 			
-			var formaPagamentoRestaurante = restaurante.getFormasPagamento()
-				.stream()
-				.filter( fp -> fp.equals(formaPagamentoPedido))
-				.findFirst()
-				.orElseThrow(() -> 
-					new EntidadeInconsistenteException(
-						String.format("A forma de pagamento de codigo %s não é aceita pelo restaurante de código %d", 
-								formaPagamentoPedido.getId(), restaurante.getId()))
-				);
-			
-			var cidade = cidadeService.buscar(pedido.getEnderecoEntrega().getCidadeId());
-			
-			var itensPedido = pedido.getItens();
-			itensPedido.forEach(itemPedido -> {
-				var produtoPedido = itemPedido.getProduto();
-				var produtoRestaurante = restaurante
-						.getProdutos().stream()
-						.filter(p-> p.equals(produtoPedido))
-						.findFirst()
-						.orElseThrow(() ->
-							new EntidadeInconsistenteException(String.format("O produto código %d não pertence ao restaurante código %d", 
-									produtoPedido.getId(), restaurante.getId()))
-						);
-				
-				itemPedido.setProduto(produtoRestaurante);
-				itemPedido.setPrecoUnitario(produtoRestaurante.getPreco());
-				itemPedido.calcularPrecoTotal();
-			});
-			
-			pedido.setRestaurante(restaurante);
-			pedido.setFormaPagamento(formaPagamentoRestaurante);
-			pedido.setCliente(getCliente());
-			pedido.getEnderecoEntrega().setCidade(cidade);
-			pedido.definirFrete(restaurante);
-			pedido.calculaValorTotal();
-			pedido.adicionarPedidoAoItem();
-			pedido.setStatus(StatusPedido.CRIADO);
-			
-			return pedidoRepository.save(pedido);
-		} catch (RestauranteNaoEncontradoException | CidadeNaoEncontradaException e) {
-			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
-		} 
+		return pedidoRepository.save(pedido);
+		 
 	}
 	
-	private Usuario getCliente() {
-		return usuarioService.buscar(1L);
+	private void validarPedido(Pedido pedido) {
+		try  {
+			var restaurante = restauranteService.buscar(pedido.getRestaurante().getId());
+			var formaPagamento = formaPagamentoService.buscar(pedido.getFormaPagamento().getId());
+			var cidade = cidadeService.buscar(pedido.getEnderecoEntrega().getCidadeId()); 
+			var cliente = usuarioService.buscar(pedido.getCliente().getId());
+			
+			if (restaurante.naoAceitaFormaPagamento(formaPagamento)) {
+				throw new EntidadeInconsistenteException(
+						String.format("Forma de pagamento '%s' não é aceita por esse restaurante.", 
+								formaPagamento.getDescricao()));
+			}
+			
+			pedido.setRestaurante(restaurante);
+			pedido.setFormaPagamento(formaPagamento);
+			pedido.setCliente(cliente);
+			pedido.getEnderecoEntrega().setCidade(cidade);
+			
+		} catch (RestauranteNaoEncontradoException | FormaPagamentoNaoEncontradaException | 
+				 CidadeNaoEncontradaException	   | UsuarioNaoEncontradoException e) {
+			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
+		} 
+		
 	}
+	
+	private void validarItens(Pedido pedido) {
+		try {
+			var itensPedido = pedido.getItens();
+			itensPedido.forEach(itemPedido -> {
+				var produto = produtoService.buscar(itemPedido.getProduto().getId(), pedido.getRestaurante().getId());
+				
+				itemPedido.setPedido(pedido);
+				itemPedido.setProduto(produto);
+				itemPedido.setPrecoUnitario(produto.getPreco());
+			});
+		} catch (ProdutoNaoEncontradoException e) {
+			throw new EntidadeRelacionamentoNaoEncontradaException(e.getMessage());
+		}
+	}
+	
 }

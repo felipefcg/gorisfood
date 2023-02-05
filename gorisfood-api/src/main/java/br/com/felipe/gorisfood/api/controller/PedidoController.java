@@ -19,6 +19,7 @@ import br.com.felipe.gorisfood.api.assembler.PedidoResumidoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
 
 @RestController
@@ -50,6 +51,10 @@ public class PedidoController {
 	@PostMapping
 	public PedidoResponseDTO emitir(@RequestBody @Valid PedidoRequestDTO pedidoDTO) {
 		var pedido = pedidoDisassembler.toModel(pedidoDTO);
-		return pedidoAssembler.toDto(emissaoPedidoService.salvar(pedido));
+		pedido.setCliente(new Usuario());
+		pedido.getCliente().setId(1L);
+		
+		pedido = emissaoPedidoService.emitir(pedido);
+		return pedidoAssembler.toDto(pedido);
 	}
 }

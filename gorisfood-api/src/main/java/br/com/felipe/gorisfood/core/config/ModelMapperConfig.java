@@ -22,13 +22,6 @@ public class ModelMapperConfig {
 		modelMapper.createTypeMap(Endereco.class, EnderecoResponseDTO.class)
 			.<String>addMapping(model -> model.getCidade().getNome(), (dto, valor) -> dto.setCidade(valor))
 			.<String>addMapping(model -> model.getCidade().getEstado().getNome(), (dto, valor) -> dto.setEstado(valor));
-
-//		modelMapper.typeMap(PedidoRequestDTO.class, Pedido.class)
-//			.<List<ItemPedido>>addMapping( 
-//					src -> src.getItens(), 
-//					(dest, v) -> dest.setItens(v) )
-//			
-//		;
 		
 		modelMapper.createTypeMap(ItemPedidoResquestDTO.class, ItemPedido.class)
 			.addMappings( mapper -> {

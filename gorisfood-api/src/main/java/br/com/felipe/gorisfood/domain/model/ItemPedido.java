@@ -33,11 +33,22 @@ public class ItemPedido {
 	@JoinColumn(nullable = false)
 	private Produto produto;
 	
-	public BigDecimal calcularPrecoTotal() {
-		setPrecoTotal(
+	public void calcularPrecoTotal() {
+		
+		var precoUnitario = this.getPrecoUnitario();
+		var quantidade = this.getQuantidade();
+				
+		if(precoUnitario == null) {
+			precoUnitario = BigDecimal.ZERO;
+		}
+		
+		if(quantidade == null) {
+			quantidade = 0;
+		}
+		
+		this.setPrecoTotal(
 				getPrecoUnitario().multiply(new BigDecimal(quantidade))
 		);
 		
-		return precoTotal;
 	}
 }

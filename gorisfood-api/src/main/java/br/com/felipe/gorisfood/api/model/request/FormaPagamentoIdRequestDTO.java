@@ -1,6 +1,5 @@
 package br.com.felipe.gorisfood.api.model.request;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;

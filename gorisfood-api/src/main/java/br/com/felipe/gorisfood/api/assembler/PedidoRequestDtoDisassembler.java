@@ -16,4 +16,8 @@ public class PedidoRequestDtoDisassembler {
 	public Pedido toModel(PedidoRequestDTO dto) {
 		return mapper.map(dto, Pedido.class);
 	}
+	
+	public void copyToModel(PedidoRequestDTO dto, Pedido model) {
+		mapper.map(dto, model);
+	}
 }
