@@ -20,6 +20,7 @@ public class PedidoResponseDTO {
 	private OffsetDateTime dataCriacao;
 	private OffsetDateTime dataConfirmacao;
 	private OffsetDateTime dataCancelamento;
+	private OffsetDateTime dataEntrega;
 	private RestauranteResumidoResponseDTO restaurante;
 	private UsuarioResponseDTO cliente;
 	private FormaPagamentoResponseDTO formaPagamento;
