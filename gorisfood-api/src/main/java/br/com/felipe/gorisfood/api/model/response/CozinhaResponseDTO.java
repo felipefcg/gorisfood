@@ -1,11 +1,18 @@
 package br.com.felipe.gorisfood.api.model.response;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import br.com.felipe.gorisfood.api.model.view.RestauranteView;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class CozinhaResponseDTO {
-		private Long id;
-		private String nome;
+	
+	@JsonView(RestauranteView.Resumo.class)
+	private Long id;
+	
+	@JsonView(RestauranteView.Resumo.class)
+	private String nome;
 }
