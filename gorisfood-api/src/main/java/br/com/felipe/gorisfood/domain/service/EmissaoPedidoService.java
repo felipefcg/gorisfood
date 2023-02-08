@@ -15,7 +15,6 @@ import br.com.felipe.gorisfood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.UsuarioNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Pedido;
-import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
 import br.com.felipe.gorisfood.domain.repository.PedidoRepository;
 
 @Service
@@ -55,7 +54,6 @@ public class EmissaoPedidoService {
 		validarItens(pedido);
 		pedido.setTaxaFrete(pedido.getRestaurante().getTaxaFrete());
 		pedido.calculaValorTotal();
-		pedido.setStatus(StatusPedido.CRIADO);
 			
 		return pedidoRepository.save(pedido);
 		 

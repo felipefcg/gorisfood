@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import br.com.felipe.gorisfood.domain.exception.EntidadeInconsistenteException;
 import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,7 +39,7 @@ public class Pedido {
 	private BigDecimal valorTotal;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusPedido status;
+	private StatusPedido status = StatusPedido.CRIADO;
 	
 	@Embedded
 	private Endereco enderecoEntrega;
@@ -70,6 +71,31 @@ public class Pedido {
 	
 	@Column(columnDefinition = "datetime")
 	private OffsetDateTime dataEntrega;
+	
+	private void setStatus(StatusPedido novoStatus) {
+		
+		if(getStatus().naoPodeAlterarPara(novoStatus)) {
+			throw new EntidadeInconsistenteException(String.format("Status do pedido %d não pode ser alterado de %s para %s", 
+					getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
+		}
+		
+		this.status = novoStatus;
+	}
+	
+	public void confirmar() {
+		setStatus(StatusPedido.CONFIRMADO);
+		setDataConfirmacao(OffsetDateTime.now());
+	}
+	
+	public void entregar() {
+		setStatus(StatusPedido.ENTREGUE);
+		setDataEntrega(OffsetDateTime.now());
+	}
+	
+	public void cancelar() {
+		setStatus(StatusPedido.CANCELADO);
+		setDataCancelamento(OffsetDateTime.now());
+	}
 	
 	public void calculaValorTotal() {
 		getItens().forEach(ItemPedido::calcularPrecoTotal);
