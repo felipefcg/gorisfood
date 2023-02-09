@@ -500,3 +500,102 @@ momento	que vamos salvar o registro.
 				}
 			}
 	
+	
+***** Fazendo projeção de recursos com @JsonView do Jackson *****
+	Se quisermos criar um único DTO e definirmos várias projeções de retorno para ele podemos utilizar a annotation @JsonView para isso precisamos:
+	1 - Criar 1 ou mais interfaces que irá representar a projeção, não necessáriamente precisa ser aninhada igual ao exemplo abaixo:
+	Ex:
+		public interface RestauranteView {
+			public interface Resumo {}
+			public interface ApenasNome {}
+		}
+	
+	2 - Anotar os campos na classe DTO que serão mostrados na projeção
+	Ex:
+		public class RestauranteResponseDTO {
+			
+			@JsonView({
+				RestauranteView.Resumo.class,
+				RestauranteView.ApenasNome.class
+			})
+			private Long id;
+			
+			@JsonView({
+				RestauranteView.Resumo.class,
+				RestauranteView.ApenasNome.class
+			})
+			private String nome;
+			
+			@JsonView(RestauranteView.Resumo.class)
+			private BigDecimal taxaFrete;
+			
+			private Boolean ativo;
+			private Boolean aberto;
+			
+			@JsonView(RestauranteView.Resumo.class)
+			private CozinhaResponseDTO cozinha;
+			private EnderecoResponseDTO endereco;
+		}
+	
+	3.1 - Anotar o método Controller qual será a projeção que será retornado no método, caso a sua proejão seja fixa (estática)
+	Ex:
+		@JsonView(RestauranteView.Resumo.class)
+		@GetMapping(consumes = MediaType.ALL_VALUE)
+		@ResponseStatus(HttpStatus.OK)
+		public List<RestauranteResponseDTO> listar(){
+			return restauranteResponseDtoAssembler.toDtoList(service.listar());
+		}
+		
+	3.2 - Deixar o retorno do método como MappingJacksonValue, caso sua projeção seja dinâmica ou queira fazer as configurações programaticamente
+	EX:
+		@GetMapping(consumes = MediaType.ALL_VALUE)
+		@ResponseStatus(HttpStatus.OK)
+		public MappingJacksonValue listar(@RequestParam(required = false) String projecao ){
+			List<RestauranteResponseDTO> restaurantes = restauranteResponseDtoAssembler.toDtoList(service.listar());
+			MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantes);
+			restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+			
+			if("apenas-nome".equals(projecao)) {
+				restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+			} else if ("completo".equals(projecao)) {
+				restaurantesWrapper.setSerializationView(null);
+			}
+			
+			return restaurantesWrapper;
+		}
+		
+***** Limitando os campos retornados pela API com @JsonFilter do Jackson ****
+	Se desejar fazer uma sintonia fina e deixar na mão do cliente definir quais campos o mesmo deseja que retorne no payload para ele, podemos utilizar o @JsonFilter
+	1 - Anotar o DTO como a anotação e dar um nome para esse filter
+	Ex:
+		@JsonFilter("pedidoFilter")
+		public class PedidoResumidoResponseDTO {
+			private String codigo;
+			private BigDecimal subtotal;
+			private BigDecimal taxaFrete;
+			private BigDecimal valorTotal;
+			private StatusPedido status;
+			private OffsetDateTime dataCriacao;
+			private RestauranteResumidoResponseDTO restaurante;
+			private UsuarioResponseDTO cliente;
+		}
+		
+	2 - No método do Controller o retorno deve ser do tipo MappingJacksonValue, aonde será efetuado a aplicação do filtro
+	Ex:
+		@GetMapping
+		public MappingJacksonValue listar(@RequestParam(required = false) String[] campos) {
+			List<PedidoResumidoResponseDTO> pedidosDTO = pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
+
+			MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosDTO);
+			SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+			filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+			
+			if(ArrayUtils.isNotEmpty(campos)) {
+				filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos));
+			}
+			
+			pedidosWrapper.setFilters(filterProvider);
+			return pedidosWrapper;
+		}
+		
+		
