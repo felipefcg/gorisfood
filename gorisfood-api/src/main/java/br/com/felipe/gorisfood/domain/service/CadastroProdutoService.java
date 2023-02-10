@@ -19,10 +19,14 @@ public class CadastroProdutoService {
 	@Autowired
 	private CadastroRestauranteService restauranteService;
 	
-	public Set<Produto> listar(Long restauranteId) {
+	public Set<Produto> listar(Long restauranteId, boolean incluirInativos) {
 		var restaurante = restauranteService.buscar(restauranteId);
-		return restaurante.getProdutos();
-//		return produtoRepository.findByRestaurante(restaurante);
+		
+		if (incluirInativos) {
+			return restaurante.getProdutos();
+		}
+		
+		return produtoRepository.findAtivosByRestaurante(restaurante);
 	}
 	
 	public Produto buscar(Long prodtuoId, Long restauranteId) {
