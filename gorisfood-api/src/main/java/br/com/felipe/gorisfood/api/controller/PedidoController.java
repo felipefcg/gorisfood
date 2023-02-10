@@ -26,6 +26,7 @@ import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Usuario;
+import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
 
 @RestController
@@ -45,8 +46,8 @@ public class PedidoController {
 	private PedidoResumidoResponseDtoAssembler pedidoResumidoAssembler;
 	
 	@GetMapping
-	public List<PedidoResumidoResponseDTO> listar() {
-		return pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
+	public List<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter) {
+		return pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar(pedidoFilter));
 	}
 	
 //	@GetMapping

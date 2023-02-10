@@ -16,6 +16,8 @@ import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoExceptio
 import br.com.felipe.gorisfood.domain.exception.UsuarioNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.repository.PedidoRepository;
+import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
+import br.com.felipe.gorisfood.infrastructure.repository.specification.PedidoSpecs;
 
 @Service
 public class EmissaoPedidoService {
@@ -38,8 +40,8 @@ public class EmissaoPedidoService {
 	@Autowired
 	private CadastroUsuarioService usuarioService;
 	
-	public List<Pedido> listar(){
-		return pedidoRepository.findAll();
+	public List<Pedido> listar(PedidoFilter pedidoFilter){
+		return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
 	}
 	
 	public Pedido buscar(String codigoPedido) {
