@@ -44,26 +44,26 @@ public class PedidoController {
 	@Autowired
 	private PedidoResumidoResponseDtoAssembler pedidoResumidoAssembler;
 	
-//	@GetMapping
-//	public List<PedidoResumidoResponseDTO> listar() {
-//		return pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
-//	}
-	
 	@GetMapping
-	public MappingJacksonValue listar(@RequestParam(required = false) String[] campos) {
-		List<PedidoResumidoResponseDTO> pedidosDTO = pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
-
-		MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosDTO);
-		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-		filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
-		
-		if(ArrayUtils.isNotEmpty(campos)) {
-			filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos));
-		}
-		
-		pedidosWrapper.setFilters(filterProvider);
-		return pedidosWrapper;
+	public List<PedidoResumidoResponseDTO> listar() {
+		return pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
 	}
+	
+//	@GetMapping
+//	public MappingJacksonValue listar(@RequestParam(required = false) String[] campos) {
+//		List<PedidoResumidoResponseDTO> pedidosDTO = pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar());
+//
+//		MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosDTO);
+//		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//		filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+//		
+//		if(ArrayUtils.isNotEmpty(campos)) {
+//			filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos));
+//		}
+//		
+//		pedidosWrapper.setFilters(filterProvider);
+//		return pedidosWrapper;
+//	}
 	
 	@GetMapping("{codigoPedido}")
 	public PedidoResponseDTO buscar(@PathVariable String codigoPedido) {

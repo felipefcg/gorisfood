@@ -598,4 +598,36 @@ momento	que vamos salvar o registro.
 			return pedidosWrapper;
 		}
 		
+***** Squiggy para substituir o @JsonFilter *****
+	É uma lib terceira (sem grande expressão) poderosa para poder habilitar o filtro de forma mais "simplificada" e única.
+	Para isso precisamos:
+	1 - Baixar a lib (maven) em https://github.com/bohnman/squiggly
+	
+	2 - Criar a classe de configuração
+	Ex:
+		@Configuration
+		public class SquigglyConfig {
+
+			@Bean
+			public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilter(ObjectMapper objectMapper) {
+				Squiggly.init(objectMapper, new RequestSquigglyContextProvider("campos", null));
+				var urlPatterns = Arrays.asList("/pedidos/*","/restaurantes/*");
+				
+				var filteRegistrationBean = new FilterRegistrationBean<SquigglyRequestFilter>();
+				filteRegistrationBean.setFilter(new SquigglyRequestFilter());
+				filteRegistrationBean.setOrder(1);
+				filteRegistrationBean.setUrlPatterns(urlPatterns);
+				return filteRegistrationBean;
+			}
+		}
 		
+	3 - Caso necessite que o Tomcat Embedded aceite [] ou {} para o agrupamentode campo (Ex: valorTotal,cliente[id,nome]) devemos criar a classe:
+		@Component
+		public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
+
+			@Override
+			public void customize(TomcatServletWebServerFactory factory) {
+				factory.addConnectorCustomizers(connector -> connector.setProperty("relaxedQueryChars", "[]"));
+			}
+		 
+		}
