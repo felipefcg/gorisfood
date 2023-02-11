@@ -6,6 +6,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import br.com.felipe.gorisfood.api.assembler.PedidoResumidoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
@@ -46,8 +50,10 @@ public class PedidoController {
 	private PedidoResumidoResponseDtoAssembler pedidoResumidoAssembler;
 	
 	@GetMapping
-	public List<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter) {
-		return pedidoResumidoAssembler.toDtoList(emissaoPedidoService.listar(pedidoFilter));
+	public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable) {
+		Page<Pedido> pagePedidos = emissaoPedidoService.listar(pedidoFilter, pageable);
+		List<PedidoResumidoResponseDTO> pedidosResumidosDTO = pedidoResumidoAssembler.toDtoList(pagePedidos.getContent());
+		return new PageImpl<>(pedidosResumidosDTO, pageable, pagePedidos.getTotalElements());
 	}
 	
 //	@GetMapping

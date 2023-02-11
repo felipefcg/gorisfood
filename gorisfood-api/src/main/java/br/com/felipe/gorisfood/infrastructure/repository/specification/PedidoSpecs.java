@@ -1,15 +1,12 @@
 package br.com.felipe.gorisfood.infrastructure.repository.specification;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import br.com.felipe.gorisfood.domain.model.Pedido;
-import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -21,6 +18,12 @@ public class PedidoSpecs {
 		
 		return (root, query, builder) -> {
 			var predicates = new ArrayList<Predicate>();
+			
+			if(Pedido.class.equals(query.getResultType())) {
+				root.fetch("restaurante").fetch("cozinha");
+				root.fetch("cliente");
+				root.fetch("enderecoEntrega").fetch("cidade").fetch("estado");
+			}
 			
 			if(filter.getRestauranteId() != null) {
 				predicates.add(builder.equal(root.get("restaurante"), filter.getRestauranteId()));
