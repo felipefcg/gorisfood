@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.squiggly;
+package br.com.felipe.gorisfood.core.squiggly;
 
 //Referências:
 //- https://stackoverflow.com/a/53613678

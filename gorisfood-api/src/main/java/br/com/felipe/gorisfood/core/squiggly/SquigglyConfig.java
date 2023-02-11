@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.squiggly;
+package br.com.felipe.gorisfood.core.squiggly;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.core.config;
+package br.com.felipe.gorisfood.core.modelmapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
