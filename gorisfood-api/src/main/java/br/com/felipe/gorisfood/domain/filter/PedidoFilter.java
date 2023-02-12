@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.domain.repository.filter;
+package br.com.felipe.gorisfood.domain.filter;
 
 import java.time.OffsetDateTime;
 

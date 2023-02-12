@@ -6,8 +6,8 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
-import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

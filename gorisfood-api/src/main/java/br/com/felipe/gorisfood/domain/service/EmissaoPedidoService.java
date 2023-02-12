@@ -14,9 +14,9 @@ import br.com.felipe.gorisfood.domain.exception.PedidoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.exception.UsuarioNaoEncontradoException;
+import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.repository.PedidoRepository;
-import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import br.com.felipe.gorisfood.infrastructure.repository.specification.PedidoSpecs;
 
 @Service

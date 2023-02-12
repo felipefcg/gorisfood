@@ -24,9 +24,9 @@ import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.core.data.PageableTranslator;
+import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.Usuario;
-import br.com.felipe.gorisfood.domain.repository.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
 
 @RestController
@@ -92,7 +92,8 @@ public class PedidoController {
 			"status", "status",
 			"restaurante.id", "restaurante.id",
 			"restaurante.nome", "restaurante.nome",
-			"nomeCliente", "cliente.nome"
+//			"nomeCliente", "cliente.nome"
+			"cliente.nome", "cliente.nome"
 		);
 		
 		return PageableTranslator.translate(apiPageable, mapeamento);
