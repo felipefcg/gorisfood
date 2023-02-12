@@ -1,19 +1,20 @@
 package br.com.felipe.gorisfood.infrastructure.service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import br.com.felipe.gorisfood.domain.filter.VendaDiariaFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
 import br.com.felipe.gorisfood.domain.service.VendaQueryService;
 
-@Service
+@Repository
 public class VendaQueryServiceImpl implements VendaQueryService {
 
 	@PersistenceContext
@@ -26,13 +27,15 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		var criteriaQuery = criteriaBuilder.createQuery(VendaDiaria.class);
 		var root = criteriaQuery.from(Pedido.class);
 		
-		criteriaQuery.multiselect(
-					root.get("dataCriacao").as(LocalDate.class),
-					criteriaBuilder.count(root),
-					criteriaBuilder.sum(root.get("valorTotal")));
+		//date: é uma funcção do MySql, como o TO_DATE é do Oracle
+		var functionDateDataCriacao = criteriaBuilder.function("date", Date.class, root.get("dataCriacao"))
+													 .as(LocalDate.class);
 		
-		criteriaQuery.groupBy(root.get("dataCriacao").as(LocalDate.class));
+		var selection = criteriaBuilder.construct(VendaDiaria.class, 
+				functionDateDataCriacao, criteriaBuilder.count(root), criteriaBuilder.sum(root.get("valorTotal")));
 		
+		criteriaQuery.select(selection);
+		criteriaQuery.groupBy(functionDateDataCriacao);
 		
 		return em.createQuery(criteriaQuery).getResultList();
 	}

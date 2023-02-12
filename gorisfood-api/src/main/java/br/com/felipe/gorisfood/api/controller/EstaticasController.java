@@ -19,7 +19,7 @@ public class EstaticasController {
 	@Autowired
 	private VendaQueryService vendaQueryService;
 	
-	@GetMapping
+	@GetMapping("vendas-diarias")
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro) {
 		return vendaQueryService.consultaVendasDiaria(filtro);
 	}
