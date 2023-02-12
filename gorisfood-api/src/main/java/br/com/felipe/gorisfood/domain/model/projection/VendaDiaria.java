@@ -13,6 +13,6 @@ import lombok.Setter;
 public class VendaDiaria {
 	
 	private LocalDate data;
-	private Integer totalVendas;
+	private Long totalVendas;
 	private BigDecimal totalFaturado;
 }

@@ -22,20 +22,19 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 	@Override
 	public List<VendaDiaria> consultaVendasDiaria(VendaDiariaFilter filtro) {
 		
-//		var criteriaBuilder = em.getCriteriaBuilder();
-//		var criteriaQuery = criteriaBuilder.createQuery(Pedido.class);
-//		var root = criteriaQuery.from(Pedido.class);
-//		
-//		criteriaBuilder.count(root.get("restaurante"));
-////		criteriaBuilder.
-//		criteriaQuery.groupBy(root.get("dataCriacao").as(LocalDate.class));
-//		
-//		
-//		em.createQuery(criteriaQuery).getResultList()
-//			.stream()
-//			.forEach(v -> System.out.println(v));
+		var criteriaBuilder = em.getCriteriaBuilder();
+		var criteriaQuery = criteriaBuilder.createQuery(VendaDiaria.class);
+		var root = criteriaQuery.from(Pedido.class);
 		
-		return null;
+		criteriaQuery.multiselect(
+					root.get("dataCriacao").as(LocalDate.class),
+					criteriaBuilder.count(root),
+					criteriaBuilder.sum(root.get("valorTotal")));
+		
+		criteriaQuery.groupBy(root.get("dataCriacao").as(LocalDate.class));
+		
+		
+		return em.createQuery(criteriaQuery).getResultList();
 	}
 
 }
