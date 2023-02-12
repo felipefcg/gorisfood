@@ -24,7 +24,12 @@ spring:
   web:
     resources:
       add-mappings: false
-      
+  data:
+    web:
+      pageable:
+        size-parameter: tamanhoPagina #alterando o nome do campo do Pageable 
+        page-parameter: pagina #alterando o nome do campo do Pageable
+        default-page-size: 5    #alterando o valor default da qtd de elementos da página de forma global
 management:
   endpoints:
     web:

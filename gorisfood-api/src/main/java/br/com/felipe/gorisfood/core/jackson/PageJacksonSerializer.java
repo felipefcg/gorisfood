@@ -16,11 +16,11 @@ public class PageJacksonSerializer extends JsonSerializer<Page<?>> {
 	public void serialize(Page<?> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 		gen.writeStartObject();
 		
-		gen.writeObjectField("content", value.getContent());
-		gen.writeNumberField("size", value.getSize());
-		gen.writeNumberField("totalElements", value.getTotalElements());
-		gen.writeNumberField("totalPages", value.getTotalPages());
-		gen.writeNumberField("number", value.getNumber());		
+		gen.writeObjectField("conteudo", value.getContent());
+		gen.writeNumberField("tamanhoPagina", value.getSize());
+		gen.writeNumberField("totalElementos", value.getTotalElements());
+		gen.writeNumberField("totalPaginas", value.getTotalPages());
+		gen.writeNumberField("pagina", value.getNumber());		
 		
 		gen.writeEndObject();
 	}
