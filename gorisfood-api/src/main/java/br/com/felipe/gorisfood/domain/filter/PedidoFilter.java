@@ -15,7 +15,7 @@ public class PedidoFilter {
 	private Long clienteId;
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private OffsetDateTime dataCriacaoInico;
+	private OffsetDateTime dataCriacaoInicio;
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private OffsetDateTime dataCriacaoFim;

@@ -26,7 +26,9 @@ import br.com.felipe.gorisfood.domain.exception.EntidadeInconsistenteException;
 import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
+@FieldNameConstants
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

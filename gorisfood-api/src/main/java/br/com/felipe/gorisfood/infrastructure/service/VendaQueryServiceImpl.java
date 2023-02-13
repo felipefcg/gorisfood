@@ -2,6 +2,7 @@ package br.com.felipe.gorisfood.infrastructure.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.felipe.gorisfood.domain.filter.VendaDiariaFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
+import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
 import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
 import br.com.felipe.gorisfood.domain.service.VendaQueryService;
 
@@ -32,8 +34,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		var root = criteriaQuery.from(Pedido.class);
 		
 		//date: é uma funcção do MySql, como o TO_DATE é do Oracle
-		var functionDateDataCriacao = criteriaBuilder.function("date", Date.class, root.get("dataCriacao"))
-													 .as(LocalDate.class);
+		var functionDateDataCriacao = criteriaBuilder.function("date", Date.class, root.get("dataCriacao"));
 		
 		var selection = criteriaBuilder.construct(VendaDiaria.class, 
 				functionDateDataCriacao, criteriaBuilder.count(root), criteriaBuilder.sum(root.get("valorTotal")));
@@ -47,17 +48,20 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
 	private Predicate[] criarClausulasWhere(CriteriaBuilder builder, Root<Pedido> root, VendaDiariaFilter filtro) {
 		var predicates = new ArrayList<Predicate>();
+		predicates.add(root.get("status").in(Arrays.asList(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE)));
 		
 		if(filtro.getRestauranteId() !=  null) {
-			predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+			predicates.add(builder.equal(root.get(Pedido.Fields.restaurante), filtro.getRestauranteId()));
 		}
 		
 		if(filtro.getDataCriacaoInicio() !=  null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoInicio()));
+			predicates.add(builder.greaterThanOrEqualTo(root.get(Pedido.Fields.dataCriacao), 
+														filtro.getDataCriacaoInicio()));
 		}
 
 		if(filtro.getDataCriacaoFim() !=  null) {
-			predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoFim()));
+			predicates.add(builder.lessThanOrEqualTo(root.get(Pedido.Fields.dataCriacao), 
+													filtro.getDataCriacaoFim()));
 		}
 		
 		return predicates.toArray(new Predicate[0]);

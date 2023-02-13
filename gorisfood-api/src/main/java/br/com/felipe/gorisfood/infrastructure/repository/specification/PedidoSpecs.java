@@ -26,19 +26,19 @@ public class PedidoSpecs {
 			}
 			
 			if(filter.getRestauranteId() != null) {
-				predicates.add(builder.equal(root.get("restaurante"), filter.getRestauranteId()));
+				predicates.add(builder.equal(root.get(Pedido.Fields.restaurante), filter.getRestauranteId()));
 			}
 			
 			if(filter.getClienteId() != null) {
-				predicates.add(builder.equal(root.get("cliente"), filter.getClienteId()));
+				predicates.add(builder.equal(root.get(Pedido.Fields.cliente), filter.getClienteId()));
 			}
 			
-			if(filter.getDataCriacaoInico() != null) {
-				predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"), filter.getDataCriacaoInico()));
+			if(filter.getDataCriacaoInicio() != null) {
+				predicates.add(builder.greaterThanOrEqualTo(root.get(Pedido.Fields.dataCriacao), filter.getDataCriacaoInicio()));
 			}
 			
 			if(filter.getDataCriacaoFim() != null) {
-				predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filter.getDataCriacaoFim()));
+				predicates.add(builder.lessThanOrEqualTo(root.get(Pedido.Fields.dataCriacao), filter.getDataCriacaoFim()));
 			}
 			
 			return builder.and(predicates.toArray(new Predicate[0]));
