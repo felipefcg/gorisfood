@@ -7,5 +7,5 @@ import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
 
 public interface VendaQueryService {
 
-	List<VendaDiaria> consultaVendasDiaria(VendaDiariaFilter filtor);
+	List<VendaDiaria> consultaVendasDiaria(VendaDiariaFilter filtro, String timeOffset);
 }
