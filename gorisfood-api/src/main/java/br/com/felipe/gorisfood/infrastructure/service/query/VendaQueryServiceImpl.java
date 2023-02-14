@@ -1,6 +1,5 @@
-package br.com.felipe.gorisfood.infrastructure.service;
+package br.com.felipe.gorisfood.infrastructure.service.query;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
