@@ -35,7 +35,7 @@ public class EstatisticasController {
 	@GetMapping(path = "vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE )
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro, @RequestParam(defaultValue = "+00:00") String timeOffset) {
 		var report = vendaReportService.consultaVendasDiaria(filtro, timeOffset);
-		System.out.println("PDF");
+		
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_PDF)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diaria.pdf")
