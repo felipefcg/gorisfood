@@ -631,3 +631,11 @@ momento	que vamos salvar o registro.
 			}
 		 
 		}
+		
+***** Alterar tamanho máximo do arquivo e da requisição (MULTIPART) *******
+	O Spring por padrão ja define, de forma global, o tamanho máximo de cada arquivo para upload como 1MB e o tamanho máximo da requisição como 10MB, para alterarmos esses valores padrão podemos 
+alterar as propriedades abaixo nos arquivos de configuração:
+	spring.servlet.multipart.max-file-size=20KB
+	spring.servlet.multipart.max-request-size=3MB
+	
+	OBS: Podemos criar um Validation para customizar o tamanho máximo de cada arquivo e as suas respectivas mensagens de retorno

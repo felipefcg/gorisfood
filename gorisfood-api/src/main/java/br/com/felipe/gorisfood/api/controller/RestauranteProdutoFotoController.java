@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,7 @@ import br.com.felipe.gorisfood.api.model.request.FotoProtudoRequestDTO;
 public class RestauranteProdutoFotoController {
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, FotoProtudoRequestDTO fotoProduto) {
+	public void alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProtudoRequestDTO fotoProduto) {
 		System.out.println(fotoProduto.getDescricao());
 		
 		System.out.println(fotoProduto.getArquivo().getOriginalFilename());
