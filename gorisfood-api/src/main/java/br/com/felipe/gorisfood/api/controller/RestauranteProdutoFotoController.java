@@ -1,38 +1,54 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.UUID;
-
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.assembler.FotoProdutoRequestDtoDisassembler;
+import br.com.felipe.gorisfood.api.assembler.FotoProtutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FotoProtudoRequestDTO;
+import br.com.felipe.gorisfood.api.model.response.FotoProdutoReponseDTO;
+import br.com.felipe.gorisfood.domain.model.FotoProduto;
+import br.com.felipe.gorisfood.domain.model.Produto;
+import br.com.felipe.gorisfood.domain.model.Restaurante;
+import br.com.felipe.gorisfood.domain.service.CadastroFotoProdutoService;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
+	@Autowired
+	private FotoProdutoRequestDtoDisassembler disassembler;
+	
+	@Autowired
+	private FotoProtutoResponseDtoAssembler assembler;
+	
+	@Autowired
+	private CadastroFotoProdutoService fotoProdutoService;
+	
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProtudoRequestDTO fotoProduto) {
-		System.out.println(fotoProduto.getDescricao());
+	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProtudoRequestDTO fotoProduto) {
+		var fotoProdutoModel = disassembler.toModel(fotoProduto);
 		
-		System.out.println(fotoProduto.getArquivo().getOriginalFilename());
-		System.out.println(fotoProduto.getArquivo().getContentType());
+		fotoProdutoModel.setProduto(preencherProduto(produtoId, restauranteId));
+		fotoProdutoModel = fotoProdutoService.salvar(fotoProdutoModel);
+		return assembler.toDto(fotoProdutoModel);
+	}
+	
+	private Produto preencherProduto(Long produtoId, Long restauranteId) {
 		
-		var nomeArquivo = String.format("%s_%s", UUID.randomUUID().toString(), fotoProduto.getArquivo().getOriginalFilename());
-		var arquivoFoto = Path.of("C:\\Users\\Felipe Goriano\\Downloads\\teste", nomeArquivo);
-		
-		try {
-			fotoProduto.getArquivo().transferTo(arquivoFoto);
-		} catch (IllegalStateException | IOException e) {
-			throw new RuntimeException(e);
-		}
+		var produto = new Produto();
+		produto.setId(produtoId);
+		produto.setRestaurante( Restaurante
+									.builder()
+									.id(restauranteId)
+									.build());
+		return produto;
 	}
 
 }

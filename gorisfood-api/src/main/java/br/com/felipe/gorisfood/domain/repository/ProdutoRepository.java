@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoQueryRepository {
 	Set<Produto> findByRestaurante(Restaurante restaurante);
 	Optional<Produto> findByIdAndRestauranteId(Long id, Long restauranteId);
 	Integer deleteByIdAndRestauranteId(Long id, Long restauranteId);
