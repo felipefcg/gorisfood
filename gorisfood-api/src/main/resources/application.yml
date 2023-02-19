@@ -35,3 +35,8 @@ management:
     web:
       exposure:
         include: '*'
+        
+gorisfood:
+  storage:
+    local:
+      diretorio-fotos: /gorisfood/storage/fotos
