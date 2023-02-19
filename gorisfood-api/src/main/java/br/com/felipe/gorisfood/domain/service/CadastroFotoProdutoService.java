@@ -26,6 +26,7 @@ public class CadastroFotoProdutoService {
 	
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto, InputStream fotoInputStream) {
+		String nomeArquivoExistente = null;
 		var nomeArquivoStorage = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		var produto = cadastroProtudoService.buscar(foto.getProdutoId(), foto.getRestauranteId());
 		foto.setProduto(produto);
@@ -34,15 +35,18 @@ public class CadastroFotoProdutoService {
 		var fotoProdutoExistente = repository.findFotoById(foto.getProdutoId(), foto.getRestauranteId());
 		if(fotoProdutoExistente.isPresent()) {
 			repository.delete(fotoProdutoExistente.get());
+			nomeArquivoExistente = fotoProdutoExistente.get().getNomeArquivo();
 		}
 		
 		foto = repository.save(foto);
+		repository.flush();
+		
 		var novaFotoStorage = NovaFoto.builder()
 						.nomeArquivo(nomeArquivoStorage)
 						.inputStream(fotoInputStream)
 						.build();
 		
-		fotoStorage.armazenar(novaFotoStorage);
+		fotoStorage.substituir(nomeArquivoExistente, novaFotoStorage);
 		
 		return foto;
 	}
