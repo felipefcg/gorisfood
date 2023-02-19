@@ -1,5 +1,7 @@
 package br.com.felipe.gorisfood.api.controller;
 
+import java.io.IOException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import br.com.felipe.gorisfood.api.assembler.FotoProdutoRequestDtoDisassembler;
 import br.com.felipe.gorisfood.api.assembler.FotoProtutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FotoProdutoReponseDTO;
-import br.com.felipe.gorisfood.domain.model.FotoProduto;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroFotoProdutoService;
@@ -32,11 +33,11 @@ public class RestauranteProdutoFotoController {
 	private CadastroFotoProdutoService fotoProdutoService;
 	
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProtudoRequestDTO fotoProduto) {
+	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProtudoRequestDTO fotoProduto) throws IOException {
 		var fotoProdutoModel = disassembler.toModel(fotoProduto);
 		
 		fotoProdutoModel.setProduto(preencherProduto(produtoId, restauranteId));
-		fotoProdutoModel = fotoProdutoService.salvar(fotoProdutoModel);
+		fotoProdutoModel = fotoProdutoService.salvar(fotoProdutoModel, fotoProduto.getArquivo().getInputStream());
 		return assembler.toDto(fotoProdutoModel);
 	}
 	

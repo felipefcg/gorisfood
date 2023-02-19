@@ -1,12 +1,18 @@
 package br.com.felipe.gorisfood.domain.service;
 
-import com.lowagie.text.pdf.codec.Base64.InputStream;
+import java.io.InputStream;
+import java.util.UUID;
+
 
 import lombok.Builder;
 import lombok.Getter;
 
 public interface FotoStorageService {
 	void armazenar(NovaFoto novaFoto);
+	
+	default String gerarNomeArquivo(String nomeArquivo) {
+		return String.format("%s_%s", UUID.randomUUID().toString(), nomeArquivo);
+	}
 	
 	@Getter
 	@Builder
