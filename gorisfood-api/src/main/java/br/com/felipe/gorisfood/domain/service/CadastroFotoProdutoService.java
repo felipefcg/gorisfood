@@ -18,13 +18,16 @@ public class CadastroFotoProdutoService {
 	private CadastroProdutoService cadastroProtudoService;
 	
 	@Transactional
-	public FotoProduto salvar(FotoProduto fotoProduto) {
+	public FotoProduto salvar(FotoProduto foto) {
+
+		var produto = cadastroProtudoService.buscar(foto.getProdutoId(), foto.getRestauranteId());
+		foto.setProduto(produto);
 		
-		var produto = fotoProduto.getProduto();
-		var restaurante= produto.getRestaurante();
+		var fotoProdutoExistente = repository.findFotoById(foto.getProdutoId(), foto.getRestauranteId());
+		if(fotoProdutoExistente.isPresent()) {
+			repository.delete(fotoProdutoExistente.get());
+		}
 		
-		produto = cadastroProtudoService.buscar(produto.getId(), restaurante.getId());
-		fotoProduto.setProduto(produto);
-		return repository.salvarFotoProduto(fotoProduto);
+		return repository.save(foto);
 	}
 }

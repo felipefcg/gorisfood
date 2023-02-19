@@ -17,8 +17,15 @@ public class ProdutoRepositoryImpl implements ProdutoQueryRepository {
 
 	@Transactional
 	@Override
-	public FotoProduto salvarFotoProduto(FotoProduto fotoProduto) {
+	public FotoProduto save(FotoProduto fotoProduto) {
 		return em.merge(fotoProduto);
+	}
+
+	@Transactional
+	@Override
+	public void delete(FotoProduto fotoProduto) {
+		em.remove(fotoProduto);
+		
 	}
 
 

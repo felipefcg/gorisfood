@@ -28,4 +28,20 @@ public class FotoProduto {
 	private String descricao;
 	private String contentType;
 	private Long tamanho;
+	
+	public Long getProdutoId() {
+		if(getProduto() == null) {
+			return null;
+		}
+		
+		return getProduto().getId();
+	}
+	
+	public Long getRestauranteId() {
+		if(getProduto() == null || getProduto().getRestaurante() == null) {
+			return null;
+		}
+		
+		return getProduto().getRestaurante().getId();
+	}
 }
