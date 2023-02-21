@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import br.com.felipe.gorisfood.domain.exception.FotoProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.FotoProduto;
 import br.com.felipe.gorisfood.domain.repository.ProdutoRepository;
 import br.com.felipe.gorisfood.domain.service.FotoStorageService.NovaFoto;
@@ -49,5 +49,11 @@ public class CadastroFotoProdutoService {
 		fotoStorage.substituir(nomeArquivoExistente, novaFotoStorage);
 		
 		return foto;
+	}
+	
+	@Transactional
+	public FotoProduto buscar(Long restauranteId, Long produtoId) {
+		return  repository.findFotoById(restauranteId, produtoId)
+				.orElseThrow(() -> new FotoProdutoNaoEncontradoException(restauranteId, produtoId));
 	}
 }

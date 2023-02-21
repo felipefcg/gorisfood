@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.infrastructure.service.storage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -37,8 +38,20 @@ public class LocalFotoStorageService implements FotoStorageService {
 		}
 	}
 	
+	@Override
+	public InputStream recuperar(String nomaArquivo) {
+		var pathArquivo = getArquivoPath(nomaArquivo);
+		
+		try {
+			return Files.newInputStream(pathArquivo);
+		} catch (IOException e) {
+			throw new StorageException("Não foi possível recuperar o arquivo.", e);
+		}
+	}
+
 	private Path getArquivoPath(String nomeArquivo) {
 		return localStorage.resolve(Path.of(nomeArquivo));
 	}
+
 
 }
