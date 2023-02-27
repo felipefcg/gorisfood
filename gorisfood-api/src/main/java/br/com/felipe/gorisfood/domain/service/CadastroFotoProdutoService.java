@@ -2,10 +2,9 @@ package br.com.felipe.gorisfood.domain.service;
 
 import java.io.InputStream;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.exception.FotoProdutoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.FotoProduto;
@@ -55,5 +54,13 @@ public class CadastroFotoProdutoService {
 	public FotoProduto buscar(Long restauranteId, Long produtoId) {
 		return  repository.findFotoById(restauranteId, produtoId)
 				.orElseThrow(() -> new FotoProdutoNaoEncontradoException(restauranteId, produtoId));
+	}
+
+	@Transactional
+	public void remover(Long restauranteId, Long produtoId) {
+		var fotoRestaurante = buscar(restauranteId, produtoId);
+		repository.delete(fotoRestaurante);
+		repository.flush();
+		fotoStorage.remover(fotoRestaurante.getNomeArquivo());
 	}
 }

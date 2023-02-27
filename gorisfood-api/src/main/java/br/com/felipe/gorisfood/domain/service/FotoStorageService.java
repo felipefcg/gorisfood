@@ -16,11 +16,12 @@ public interface FotoStorageService {
 	}
 	
 	default void substituir(String nomeArquivoExistente, NovaFoto novaFoto) {
-		armazenar(novaFoto);
 		
 		if(nomeArquivoExistente != null) {
 			remover(nomeArquivoExistente);
 		}
+		
+		armazenar(novaFoto);
 	}
 	
 	@Getter
