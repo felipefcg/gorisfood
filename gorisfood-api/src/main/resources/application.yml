@@ -45,4 +45,4 @@ gorisfood:
 #      chave-acesso-secreta: 
       bucket: 'gorisfood'
       regiao: 'us-east-1'
-      diretorio: 'catalogo'
+      diretorio-fotos: 'catalogo'
