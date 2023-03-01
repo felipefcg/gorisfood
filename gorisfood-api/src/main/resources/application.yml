@@ -40,3 +40,9 @@ gorisfood:
   storage:
     local:
       diretorio-fotos: /gorisfood/storage/fotos
+    s3:
+#      id-chave-acesso: 
+#      chave-acesso-secreta: 
+      bucket: 'gorisfood'
+      regiao: 'us-east-1'
+      diretorio: 'catalogo'
