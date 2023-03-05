@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class RestauranteProdutoFotoController {
 	}
 	
 	@GetMapping(produces = MediaType.ALL_VALUE)
-	public ResponseEntity<InputStreamResource> buscarInputStream(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
+	public ResponseEntity<?> buscarInputStream(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestHeader(value = "accept", required = false) String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		try {
 			var foto = fotoProdutoService.buscar(restauranteId, produtoId);
@@ -61,11 +62,19 @@ public class RestauranteProdutoFotoController {
 			
 			verificarCompatibilidade(mediaTypeFoto, mediaTypeAceitos);
 			
-			var fotoInputStream = fotoStorage.recuperar(foto.getNomeArquivo());
+			var fotoRecuperada = fotoStorage.recuperar(foto.getNomeArquivo());
+			
+			if(fotoRecuperada.temUrl()) {
+				return ResponseEntity
+						.status(HttpStatus.FOUND)
+						.header(HttpHeaders.LOCATION, fotoRecuperada.getUrl())
+						.build();
+			}
 			
 			return ResponseEntity.ok()
 					.contentType(mediaTypeFoto)
-					.body(new InputStreamResource(fotoInputStream));
+					.body(new InputStreamResource(fotoRecuperada.getInputStream()));
+			
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
 		}

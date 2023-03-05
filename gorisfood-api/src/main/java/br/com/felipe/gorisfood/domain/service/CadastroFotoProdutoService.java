@@ -42,6 +42,8 @@ public class CadastroFotoProdutoService {
 		
 		var novaFotoStorage = NovaFoto.builder()
 						.nomeArquivo(nomeArquivoStorage)
+						.contentType(foto.getContentType())
+						.contentLength(foto.getTamanho())
 						.inputStream(fotoInputStream)
 						.build();
 		
