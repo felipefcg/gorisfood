@@ -58,3 +58,4 @@ gorisfood:
       diretorio-fotos: 'catalogo'
   email:
     remetente: teste.poc.dev+no-reply@gmail.com
+    impl: fake

@@ -1,6 +1,5 @@
 package br.com.felipe.gorisfood.infrastructure.service.email;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -12,17 +11,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
 import br.com.felipe.gorisfood.core.email.EmailProperties;
 import br.com.felipe.gorisfood.domain.service.EnvioEmailService;
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
-import freemarker.template.Template;
-import freemarker.template.TemplateNotFoundException;
 
-@Service
 public class SmtpEnvioEmailService implements EnvioEmailService{
 
 	private static final String ENCODING_UTF_8 = StandardCharsets.UTF_8.name();
@@ -46,7 +39,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 		}
 	}
 	
-	private MimeMessage criarMimeMessage(Mensagem msg) throws MessagingException {
+	protected MimeMessage criarMimeMessage(Mensagem msg) throws MessagingException {
 		var mimeMessage = mailSender.createMimeMessage();
 		var helper = new MimeMessageHelper(mimeMessage, ENCODING_UTF_8);
 		var corpo = processarTemplate(msg.getTemplate(), msg.getVariaveis());
