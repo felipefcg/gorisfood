@@ -52,4 +52,4 @@ gorisfood:
       regiao: 'us-east-1'
       diretorio-fotos: 'catalogo'
   email:
-    remetente: Gorisfoo <no-reply@gorisfood.com.br>
+    remetente: teste.poc.dev+no-reply@gmail.com
