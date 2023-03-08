@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.felipe.gorisfood.domain.repository.PedidoRepository;
-import br.com.felipe.gorisfood.domain.service.EnvioEmailService.Mensagem;
 
 @Service
 public class FluxoPedidoService {
@@ -21,6 +20,7 @@ public class FluxoPedidoService {
 		
 		var pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.confirmar();
+		pedidoRepository.save(pedido);
 		
 		
 	}
@@ -30,7 +30,6 @@ public class FluxoPedidoService {
 		
 		var pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.entregar();
-		pedidoRepository.save(pedido);
 	}
 	
 	@Transactional

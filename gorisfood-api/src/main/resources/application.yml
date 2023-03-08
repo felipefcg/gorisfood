@@ -58,6 +58,6 @@ gorisfood:
       diretorio-fotos: 'catalogo'
   email:
     remetente: teste.poc.dev+no-reply@gmail.com
-    impl: sandbox
+    impl: fake
     sandbox:
       destinatario: teste.poc.dev+sandbox@gmail.com
