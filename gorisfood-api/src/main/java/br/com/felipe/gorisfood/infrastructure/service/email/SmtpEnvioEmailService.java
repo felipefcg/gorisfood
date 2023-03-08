@@ -9,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import br.com.felipe.gorisfood.core.email.EmailProperties;
@@ -19,8 +18,9 @@ import freemarker.template.Configuration;
 public class SmtpEnvioEmailService implements EnvioEmailService{
 
 	private static final String ENCODING_UTF_8 = StandardCharsets.UTF_8.name();
+	
 	@Autowired
-	private EmailProperties emailProperties;
+	protected EmailProperties emailProperties;
 	
 	@Autowired
 	private JavaMailSender mailSender;
