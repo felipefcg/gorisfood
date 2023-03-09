@@ -23,6 +23,7 @@ import javax.persistence.PrePersist;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import br.com.felipe.gorisfood.domain.event.PedidoCanceladoEvent;
 import br.com.felipe.gorisfood.domain.event.PedidoConfirmadoEvent;
 import br.com.felipe.gorisfood.domain.exception.EntidadeInconsistenteException;
 import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
@@ -104,6 +105,7 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
 	public void cancelar() {
 		setStatus(StatusPedido.CANCELADO);
 		setDataCancelamento(OffsetDateTime.now());
+		registerEvent(new PedidoCanceladoEvent(this));
 	}
 	
 	public void calculaValorTotal() {

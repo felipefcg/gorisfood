@@ -17,26 +17,22 @@ public class FluxoPedidoService {
 	
 	@Transactional
 	public void confirmar (String codigoPedido) {
-		
 		var pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.confirmar();
 		pedidoRepository.save(pedido);
-		
-		
 	}
 	
 	@Transactional
 	public void entregar (String codigoPedido) {
-		
 		var pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.entregar();
 	}
 	
 	@Transactional
 	public void cancelar (String codigoPedido) {
-		
 		var pedido = emissaoPedidoService.buscar(codigoPedido);
 		pedido.cancelar();
+		pedidoRepository.save(pedido);
 	}
 	
 }
