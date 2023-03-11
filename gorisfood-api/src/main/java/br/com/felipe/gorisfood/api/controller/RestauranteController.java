@@ -37,6 +37,7 @@ import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontr
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
+@CrossOrigin(maxAge = 10)
 @RestController
 @RequestMapping(value = "restaurantes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController {
@@ -57,7 +58,6 @@ public class RestauranteController {
 //	}
 	
 	@JsonView(RestauranteView.Resumo.class)
-	@CrossOrigin
 	@GetMapping(consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<RestauranteResponseDTO> listar(){
