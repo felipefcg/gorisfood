@@ -33,6 +33,34 @@ function consultarFormasPagamento() {
     });
 }
 
+function cadastrarFormaPagamento() {
+    var formaPagamentoJson = JSON.stringify({
+        "descricao": $("#campo-descricao").val()
+    });
+      
+    $.ajax({
+        url: "http://localhost:8080/formas-pagamento",
+        type: "post",
+        data: formaPagamentoJson,
+        contentType: "application/json",
+
+        success: function (response) {
+            alert("Forma pagamento adicionadas!");
+            consultarFormasPagamento();
+        },
+        error: function (error) {
+            if (error.status == 400) {
+                var problema = error.responseJSON;
+                alert(problema.mensagemUsuario);
+            } else {
+                alert("Erro ao cadastrar forma de pagamento!");
+            }
+        }
+        
+    });
+    
+}
+
 function preencherTabela(formasPagamento) {
     $("#tabela tbody tr").remove();
 
@@ -48,4 +76,7 @@ function preencherTabela(formasPagamento) {
     });
 }
 
+
+
 $("#btn-consultar").click(consultarFormasPagamento);
+$("#btn-cadastrar").click(cadastrarFormaPagamento);
