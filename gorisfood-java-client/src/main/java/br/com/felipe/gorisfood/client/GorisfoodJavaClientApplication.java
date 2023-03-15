@@ -15,9 +15,9 @@ public class GorisfoodJavaClientApplication {
 			restauranteClient.listar()
 			.forEach(System.out::println);
 		} catch (ClientApiException e) {
-			if (e.getProblem() != null) {
-				System.out.println(e.getProblem());
-				System.out.println(e.getProblem().getMensagemUsuario());
+			if (e.getProblema() != null) {
+				System.out.println(e.getProblema());
+				System.out.println(e.getProblema().getMensagemUsuario());
 				return;
 			}
 			

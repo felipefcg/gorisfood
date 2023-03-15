@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.felipe.gorisfood.client.api.input.RestauranteInput;
+import br.com.felipe.gorisfood.client.model.RestauranteModel;
 import br.com.felipe.gorisfood.client.model.RestauranteResumoModel;
 import lombok.AllArgsConstructor;
 
@@ -21,7 +23,15 @@ public class RestauranteClient {
 			var restaurantes = restTemplate.getForObject(url+RESOURCE_PATH, RestauranteResumoModel[].class);
 			return Arrays.asList(restaurantes);
 		} catch (RestClientResponseException e) {
-			throw new ClientApiException(e.getMessage	(), e);
+			throw new ClientApiException(e.getMessage(), e);
+		}
+	}
+	
+	public RestauranteModel adicionar(RestauranteInput restaurante) {
+		try {
+			return restTemplate.postForObject(url+RESOURCE_PATH, restaurante, RestauranteModel.class);
+		} catch (RestClientResponseException e) {
+			throw new ClientApiException(e.getMessage(), e);
 		}
 	}
 }
