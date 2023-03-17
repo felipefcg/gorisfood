@@ -49,8 +49,11 @@ public class FormaPagamentoController {
 	}
 	
 	@GetMapping("{id}")
-	public FormaPagamentoResponseDTO buscar(@PathVariable Long id) {
-		return assembler.toDto(service.buscar(id));
+	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id) {
+		var pagamentoResponseDTO = assembler.toDto(service.buscar(id));
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.body(pagamentoResponseDTO);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +63,7 @@ public class FormaPagamentoController {
 	}
 	
 	@PutMapping(value =  "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public FormaPagamentoResponseDTO criar(@PathVariable Long id, 
+	public FormaPagamentoResponseDTO alterar(@PathVariable Long id, 
 			@Valid @RequestBody FormaPagamentoRequestDTO formaPagamentoDTO) {
 		
 		var formaPagamento = service.buscar(id);
