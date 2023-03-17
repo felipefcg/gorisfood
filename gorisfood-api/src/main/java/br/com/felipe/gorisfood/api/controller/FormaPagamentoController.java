@@ -52,7 +52,11 @@ public class FormaPagamentoController {
 	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id) {
 		var pagamentoResponseDTO = assembler.toDto(service.buscar(id));
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+//				.cacheControl(CacheControl.noCache())
+//				.cacheControl(CacheControl.noStore())
 				.body(pagamentoResponseDTO);
 	}
 	
