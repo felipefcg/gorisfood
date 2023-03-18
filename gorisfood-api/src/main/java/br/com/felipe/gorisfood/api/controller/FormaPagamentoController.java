@@ -1,6 +1,8 @@
 package br.com.felipe.gorisfood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
@@ -19,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FormaPagamentoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
+import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
@@ -34,17 +39,36 @@ public class FormaPagamentoController {
 	private CadastroFormaPagamentoService service;
 	
 	@Autowired
+	private FormaPagamentoRepository formaPagamentoRepository;
+	
+	@Autowired
 	private FormaPagamentoResponseDtoAssembler assembler;
 	
 	@Autowired
 	private FormaPagamentoRequestDtoDesassembler desassembler;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoResponseDTO>> listar() {
+	public ResponseEntity<List<FormaPagamentoResponseDTO>> listar(ServletWebRequest request) {
+		
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		String eTag = "0";
+		Optional<OffsetDateTime> dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+		 
+		if(dataUltimaAtualizacao.isPresent()) {
+			eTag = String.valueOf(dataUltimaAtualizacao
+									.get()
+									.toEpochSecond());
+		}
+		
+		if(request.checkNotModified(eTag)) {
+			return null;
+		}
+		
 		var formasPagamentoDTO = assembler.toDtoList(service.listar());
 		
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.eTag(eTag)
 				.body(formasPagamentoDTO);
 	}
 	
