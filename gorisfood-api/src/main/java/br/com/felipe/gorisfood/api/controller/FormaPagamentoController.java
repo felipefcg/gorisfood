@@ -28,6 +28,7 @@ import br.com.felipe.gorisfood.api.assembler.FormaPagamentoRequestDtoDesassemble
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FormaPagamentoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
+import br.com.felipe.gorisfood.domain.model.FormaPagamento;
 import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
 
@@ -73,7 +74,25 @@ public class FormaPagamentoController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id) {
+	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		String eTag = "0";
+		
+		var dataAtualizacao = formaPagamentoRepository.getDataAtualizacaoById(id);
+		
+		if (dataAtualizacao.isPresent()) {
+			eTag = String.valueOf(dataAtualizacao
+						.get()
+						.toEpochSecond()); 
+		}
+		
+		if(request.checkNotModified(eTag)) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_MODIFIED)
+					.eTag(eTag)
+					.build();
+		}
+		
 		var pagamentoResponseDTO = assembler.toDto(service.buscar(id));
 		return ResponseEntity.ok()
 //				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
