@@ -85,9 +85,16 @@
 		    <artifactId>squiggly-filter-jackson</artifactId>
 		    <version>${squiggly.filter.version}</version>
 		</dependency>
+		
+		<!-- Documentação OpenAPI (Swagger) -->
 		<dependency>
 			<groupId>io.springfox</groupId>
         	<artifactId>springfox-boot-starter</artifactId>
+        	<version>${spring-fox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+        	<artifactId>springfox-swagger-ui</artifactId>
         	<version>${spring-fox.version}</version>
 		</dependency>
 		
