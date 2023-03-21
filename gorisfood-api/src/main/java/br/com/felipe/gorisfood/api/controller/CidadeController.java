@@ -27,7 +27,10 @@ import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Api(tags = "Cidades")
 @RestController
 @RequestMapping(value = "cidades",
 				consumes = MediaType.APPLICATION_JSON_VALUE,

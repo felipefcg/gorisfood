@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name= "Restaurante", description = "Endpoints de acesso às informações relacionadas ao restaurante")
 @RestController
 @RequestMapping(value = "restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController {
