@@ -5,9 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import io.swagger.v3.oas.models.Paths;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -22,6 +25,16 @@ public class SpringFoxConfig {
 					.apis(RequestHandlerSelectors.basePackage("br.com.felipe.gorisfood.api"))
 					.paths(PathSelectors.any())
 //					.paths(PathSelectors.ant("/restaurantes/*"))
-					.build();
+					.build()
+				.apiInfo(apiInfo());				
+	}
+
+	private ApiInfo apiInfo() {
+		return new  ApiInfoBuilder()
+				.title("GorisFood API")
+				.description("API aberta para clientes e restaurantes")
+				.version("1")
+				.contact(new Contact("GorisFood", "http://gorisfood.com.br", "teste.poc.dev@gmail.com"))
+				.build();
 	}
 }
