@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,8 @@ import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Cidades")
 @RestController
@@ -46,16 +48,19 @@ public class CidadeController {
 	@Autowired
 	private CidadeRequestDtoDesassembler desassembler;
 	
+	@ApiOperation("Lista as cidades")
 	@GetMapping(consumes = MediaType.ALL_VALUE)
 	public List<CidadeResponseDTO> listar() {
 		return assembler.toDtoList(service.listar());
 	}
-	
+
+	@ApiOperation("Busca uma cidade por ID")	
 	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toDto(service.buscar(id));
 	}
 	
+	@ApiOperation("Cadastra uma cidade")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
@@ -63,17 +68,21 @@ public class CidadeController {
 		return  assembler.toDto(service.salvar(cidade));
 	}
 	
+	@ApiOperation("Atualiza uma cidade por ID")
 	@PutMapping("{id}")
-	public CidadeResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+	public CidadeResponseDTO alterar(@PathVariable Long id, 
+									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidadeAtual = service.buscar(id);
 		desassembler.copyDtoToModel(cidadeDTO, cidadeAtual);
 		return assembler.toDto(service.alterar(cidadeAtual));
 	}
 	
+	@ApiOperation(value = "Exclui uma cidade por ID")
 	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public ResponseEntity<Void> remover(@PathVariable Long id) {
 			service.remover(id);
+			return ResponseEntity.noContent().build();
 	}
 	
 	@ExceptionHandler(EstadoNaoEncontradoException.class)
