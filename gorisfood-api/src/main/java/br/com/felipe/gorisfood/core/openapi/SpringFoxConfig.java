@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.core.openapi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,15 +36,59 @@ public class SpringFoxConfig {
 					.build()
 				.useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+				.globalResponses(HttpMethod.POST, globalPostResponseMessages())
+				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 				.tags(new Tag("Cidades", "Gerencia as cidades"))
 				.apiInfo(apiInfo());				
 	}
 
 	private List<Response> globalGetResponseMessages() {
 		return Arrays.asList(
-					getResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor"),
-					getResponseMessage(HttpStatus.NOT_ACCEPTABLE, "Recurso não possui representação que poderia ser aceita pelo consumidor")
+					global406ResponseMessages(),
+					global500ResponseMessages()
 				);
+	}
+	
+	private List<Response> globalPostResponseMessages() {
+		return Arrays.asList(
+					global400ResponseMessages(),
+					global406ResponseMessages(),
+					global415ResponseMessages(),
+					global500ResponseMessages()
+				);
+	}
+	
+	private List<Response> globalPutResponseMessages() {
+		return Arrays.asList(
+				global400ResponseMessages(),
+				global406ResponseMessages(),
+				global415ResponseMessages(),
+				global500ResponseMessages()
+			);
+	}
+	
+	private List<Response> globalDeleteResponseMessages() {
+		return Arrays.asList(
+				global400ResponseMessages(),
+				global500ResponseMessages()
+			);
+	}
+	
+	private Response global400ResponseMessages() {
+		return getResponseMessage(HttpStatus.BAD_REQUEST, "Requisição inválida (erro do cliente)");
+	}
+	
+	private Response global406ResponseMessages() {
+		return getResponseMessage(HttpStatus.NOT_ACCEPTABLE, "Erro interno do servidor");
+	}
+	
+	private Response global415ResponseMessages() {
+		return getResponseMessage(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Requisição recusada porque o corpo está em um formato não suportado");
+	}
+	
+	private Response global500ResponseMessages() {
+		return getResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "Recurso não possui representação que poderia ser aceita pelo consumidor");
 	}
 
 	private Response getResponseMessage(HttpStatus httpStatus, String message) {
