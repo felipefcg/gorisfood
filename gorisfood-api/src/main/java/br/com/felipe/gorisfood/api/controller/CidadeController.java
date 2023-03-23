@@ -56,21 +56,21 @@ public class CidadeController {
 
 	@ApiOperation("Busca uma cidade por ID")	
 	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
-	public CidadeResponseDTO buscar(@PathVariable Long id) {
+	public CidadeResponseDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1" ) @PathVariable Long id) {
 		return assembler.toDto(service.buscar(id));
 	}
 	
 	@ApiOperation("Cadastra uma cidade")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+	public CidadeResponseDTO criar(@ApiParam(value = "Representação de uma nova cidade") @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidade = desassembler.toModel(cidadeDTO);
 		return  assembler.toDto(service.salvar(cidade));
 	}
 	
 	@ApiOperation("Atualiza uma cidade por ID")
 	@PutMapping("{id}")
-	public CidadeResponseDTO alterar(@PathVariable Long id, 
+	public CidadeResponseDTO alterar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long id, 
 									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidadeAtual = service.buscar(id);
 		desassembler.copyDtoToModel(cidadeDTO, cidadeAtual);
@@ -80,7 +80,7 @@ public class CidadeController {
 	@ApiOperation(value = "Exclui uma cidade por ID")
 	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> remover(@PathVariable Long id) {
+	public ResponseEntity<Void> remover(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long id) {
 			service.remover(id);
 			return ResponseEntity.noContent().build();
 	}
