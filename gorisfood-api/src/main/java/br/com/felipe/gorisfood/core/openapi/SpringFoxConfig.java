@@ -2,18 +2,22 @@ package br.com.felipe.gorisfood.core.openapi;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ExampleBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -87,28 +91,54 @@ public class SpringFoxConfig {
 	}
 	
 	private Response global400ResponseMessages() {
-		return getResponseMessage(HttpStatus.BAD_REQUEST, "Requisição inválida (erro do cliente)");
+		return getResponseMessageComProblemaModel(HttpStatus.BAD_REQUEST, "Requisição inválida (erro do cliente)");
 	}
 	
 	private Response global406ResponseMessages() {
-		return getResponseMessage(HttpStatus.NOT_ACCEPTABLE, "Erro interno do servidor");
+		return getResponseMessageSemProblemaModel(HttpStatus.NOT_ACCEPTABLE, "Recurso não possui representação que poderia ser aceita pelo consumidor");
 	}
 	
 	private Response global415ResponseMessages() {
-		return getResponseMessage(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Requisição recusada porque o corpo está em um formato não suportado");
+		return getResponseMessageSemProblemaModel(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Requisição recusada porque o corpo está em um formato não suportado");
 	}
 	
 	private Response global500ResponseMessages() {
-		return getResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "Recurso não possui representação que poderia ser aceita pelo consumidor");
+		return getResponseMessageComProblemaModel(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
 	}
 
-	private Response getResponseMessage(HttpStatus httpStatus, String message) {
+	private Response getResponseMessageComProblemaModel(HttpStatus httpStatus, String message) {
+		
+		return new ResponseBuilder()
+				.code(String.valueOf(httpStatus.value()))
+				.description(message)
+				.representation( MediaType.APPLICATION_JSON )
+					.apply( getProblemaModelReference() )
+				.build();
+	}
+
+	private Response getResponseMessageSemProblemaModel(HttpStatus httpStatus, String message) {
+		
 		return new ResponseBuilder()
 				.code(String.valueOf(httpStatus.value()))
 				.description(message)
 				.build();
 	}
 
+	private Consumer<RepresentationBuilder> getProblemaModelReference() {
+		
+		return r -> r.model(
+						m -> m.name("Problema")
+								.referenceModel( 
+									ref ->  ref.key(
+										k -> k.qualifiedModelName(
+											q -> q.name("Problema")
+													.namespace("br.com.felipe.gorisfood.api.exceptionhandler")
+										)
+									)
+								)
+					);
+	}
+	
 	private ApiInfo apiInfo() {
 		return new  ApiInfoBuilder()
 				.title("GorisFood API")
