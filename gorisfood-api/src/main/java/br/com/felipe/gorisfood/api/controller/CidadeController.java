@@ -31,6 +31,11 @@ import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 
 @Api(tags = "Cidades")
 @RestController
@@ -54,13 +59,30 @@ public class CidadeController {
 		return assembler.toDtoList(service.listar());
 	}
 
-	@ApiOperation("Busca uma cidade por ID")	
+	@ApiOperation("Busca uma cidade por ID")
+	@ApiResponses({
+		@ApiResponse(responseCode = "400", description = "ID da cidade inválido",  
+					content = {@Content(schema = @Schema(implementation = Problema.class),
+										mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		),
+		@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+					 content = {@Content(schema = @Schema(implementation = Problema.class), 
+					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		)
+	})
 	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
 	public CidadeResponseDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1" ) @PathVariable Long id) {
 		return assembler.toDto(service.buscar(id));
 	}
 	
 	@ApiOperation("Cadastra uma cidade")
+	@ApiResponses({
+		@ApiResponse(responseCode = "201", description = "Cidade cadastrada"),
+		@ApiResponse(responseCode = "422", description = "ID do estado não cadastrado", 
+					 content = {@Content(schema = @Schema(implementation = Problema.class), 
+					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		)
+	})
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@ApiParam(value = "Representação de uma nova cidade") @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
@@ -69,6 +91,17 @@ public class CidadeController {
 	}
 	
 	@ApiOperation("Atualiza uma cidade por ID")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Cidade atualizada"),
+		@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+					content = {@Content(schema = @Schema(implementation = Problema.class), 
+							   mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		),
+		@ApiResponse(responseCode = "422", description = "ID do estado não cadastrado", 
+					 content = {@Content(schema = @Schema(implementation = Problema.class), 
+					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		)
+	})
 	@PutMapping("{id}")
 	public CidadeResponseDTO alterar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long id, 
 									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
@@ -78,6 +111,13 @@ public class CidadeController {
 	}
 	
 	@ApiOperation(value = "Exclui uma cidade por ID")
+	@ApiResponses({
+		@ApiResponse(responseCode = "204", description = "Cidade excluida"),
+		@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+					 content = {@Content(schema = @Schema(implementation = Problema.class), 
+										 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+		)
+	})
 	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> remover(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long id) {

@@ -31,6 +31,7 @@ import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.domain.model.FormaPagamento;
 import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +75,7 @@ public class FormaPagamentoController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
+	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, @ApiIgnore ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		String eTag = "0";
 		
