@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import br.com.felipe.gorisfood.api.assembler.RestauranteRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.RestauranteResponseDtoAssembler;
+import br.com.felipe.gorisfood.api.controller.openapi.RestauranteControllerOpenApi;
 import br.com.felipe.gorisfood.api.model.request.RestauranteRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.RestauranteResponseDTO;
 import br.com.felipe.gorisfood.api.model.view.RestauranteView;
@@ -35,11 +36,9 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
-@Api(tags = "Restaurante")
-@Tag(name= "Restaurante", description = "Endpoints de acesso às informações relacionadas ao restaurante")
 @RestController
 @RequestMapping(value = "restaurantes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteController {
+public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@Autowired
 	private CadastroRestauranteService service;
@@ -61,7 +60,6 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<RestauranteResponseDTO> listar(){
 		return restauranteResponseDtoAssembler.toDtoList(service.listar());
-				
 	}
 	
 	@JsonView(RestauranteView.ApenasNome.class)
