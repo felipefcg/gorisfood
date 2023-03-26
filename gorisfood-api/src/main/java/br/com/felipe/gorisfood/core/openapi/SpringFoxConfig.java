@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,8 +15,8 @@ import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
+import br.com.felipe.gorisfood.core.openapi.model.PageableModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ExampleBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -49,7 +50,9 @@ public class SpringFoxConfig {
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 				.additionalModels(typeResolver.resolve(Problema.class))
-				.tags(new Tag("Cidades", "Gerencia as cidades"))
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.tags(new Tag("Cidades", "Gerencia as cidades"),
+					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"))
 				.apiInfo(apiInfo());				
 	}
 	

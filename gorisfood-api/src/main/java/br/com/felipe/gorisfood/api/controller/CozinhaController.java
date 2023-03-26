@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.CozinhaRequestDesassembler;
 import br.com.felipe.gorisfood.api.assembler.CozinhaResponseDtoAssembler;
+import br.com.felipe.gorisfood.api.controller.openapi.CozinhaControlerOpenApi;
 import br.com.felipe.gorisfood.api.model.request.CozinhaRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
@@ -31,7 +32,7 @@ import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 
 @RestController
 @RequestMapping("cozinhas")
-public class CozinhaController {
+public class CozinhaController implements CozinhaControlerOpenApi {
 
 	@Autowired
 	private CadastroCozinhaService service;
@@ -42,6 +43,7 @@ public class CozinhaController {
 	@Autowired
 	private CozinhaRequestDesassembler desassembler;
 	
+	//TODO: Pageable não está funcionando corretamente
 	@GetMapping
 	public Page<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
 		Page<Cozinha> cozinhaPage = service.listar(pagable);
