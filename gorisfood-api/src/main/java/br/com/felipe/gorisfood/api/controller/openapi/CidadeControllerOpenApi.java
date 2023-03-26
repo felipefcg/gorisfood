@@ -3,7 +3,6 @@ package br.com.felipe.gorisfood.api.controller.openapi;
 import java.util.List;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.request.CidadeRequestDTO;
@@ -68,5 +67,5 @@ public interface CidadeControllerOpenApi {
 										 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public ResponseEntity<Void> remover(@ApiParam(value = "ID de uma cidade", example = "1") Long id);
+	public void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long id);
 }

@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +31,7 @@ import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 
 
 @RestController
-@RequestMapping(value = "cidades",
-				consumes = MediaType.APPLICATION_JSON_VALUE,
+@RequestMapping(path = "cidades",
 				produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
@@ -46,17 +44,17 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeRequestDtoDesassembler desassembler;
 	
-	@GetMapping(consumes = MediaType.ALL_VALUE)
+	@GetMapping
 	public List<CidadeResponseDTO> listar() {
 		return assembler.toDtoList(service.listar());
 	}
 
-	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "{id}")
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toDto(service.buscar(id));
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidade = desassembler.toModel(cidadeDTO);
@@ -64,7 +62,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	}
 	
 	
-	@PutMapping("{id}")
+	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeResponseDTO alterar(@PathVariable Long id, 
 									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidadeAtual = service.buscar(id);
@@ -72,11 +70,11 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return assembler.toDto(service.alterar(cidadeAtual));
 	}
 	
-	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
+	@DeleteMapping(value = "{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> remover(@PathVariable Long id) {
+	public void remover(@PathVariable Long id) {
 			service.remover(id);
-			return ResponseEntity.noContent().build();
+//			return ResponseEntity.noContent().build();
 	}
 	
 	@ExceptionHandler(EstadoNaoEncontradoException.class)
