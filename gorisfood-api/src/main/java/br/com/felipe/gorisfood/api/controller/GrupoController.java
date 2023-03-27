@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.GrupoRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.GrupoResponseDtoAssembler;
-import br.com.felipe.gorisfood.api.controller.openapi.GrupoControllerOpenApi;
 import br.com.felipe.gorisfood.api.model.request.GrupoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.GrupoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController

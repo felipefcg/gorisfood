@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.CozinhaRequestDesassembler;
 import br.com.felipe.gorisfood.api.assembler.CozinhaResponseDtoAssembler;
-import br.com.felipe.gorisfood.api.controller.openapi.CozinhaControlerOpenApi;
 import br.com.felipe.gorisfood.api.model.request.CozinhaRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.CozinhaControlerOpenApi;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 

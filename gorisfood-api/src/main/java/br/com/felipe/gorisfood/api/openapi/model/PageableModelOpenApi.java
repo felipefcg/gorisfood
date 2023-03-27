@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.core.openapi.model;
+package br.com.felipe.gorisfood.api.openapi.model;
 
 import java.util.List;
 

@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.CidadeRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.CidadeResponseDtoAssembler;
-import br.com.felipe.gorisfood.api.controller.openapi.CidadeControllerOpenApi;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.exceptionhandler.TipoProblema;
 import br.com.felipe.gorisfood.api.model.request.CidadeRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.CidadeControllerOpenApi;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;

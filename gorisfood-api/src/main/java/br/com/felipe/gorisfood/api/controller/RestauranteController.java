@@ -23,10 +23,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import br.com.felipe.gorisfood.api.assembler.RestauranteRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.RestauranteResponseDtoAssembler;
-import br.com.felipe.gorisfood.api.controller.openapi.RestauranteControllerOpenApi;
 import br.com.felipe.gorisfood.api.model.request.RestauranteRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.RestauranteResponseDTO;
 import br.com.felipe.gorisfood.api.model.view.RestauranteView;
+import br.com.felipe.gorisfood.api.openapi.controller.RestauranteControllerOpenApi;
 import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;

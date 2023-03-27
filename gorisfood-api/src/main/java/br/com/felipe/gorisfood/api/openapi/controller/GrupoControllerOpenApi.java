@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.controller.openapi;
+package br.com.felipe.gorisfood.api.openapi.controller;
 
 import java.util.List;
 

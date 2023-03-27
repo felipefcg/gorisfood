@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.controller.openapi;
+package br.com.felipe.gorisfood.api.openapi.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
