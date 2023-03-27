@@ -31,7 +31,7 @@ import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 
 @RestController
-@RequestMapping("cozinhas")
+@RequestMapping(path = "cozinhas" , produces = MediaType.APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControlerOpenApi {
 
 	@Autowired

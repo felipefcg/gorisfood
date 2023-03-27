@@ -2,10 +2,12 @@ package br.com.felipe.gorisfood.api.openapi.model;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@ApiModel("Page")
 @Getter
 @Setter
 public class PagedModelOpenApi<T> {

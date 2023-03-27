@@ -17,13 +17,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
-import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
+import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
+import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -55,10 +57,13 @@ public class SpringFoxConfig {
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+//				.alternateTypeRules(													// TODO: Removido esse código em detrimento da lina abaixo
+//					AlternateTypeRules.newRule(											// ".alternateTypeRules(buildPageTypeRole(CozinhaResponseDTO.class))"
+//						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 	// que deixa o código mais limpo e sem a necessidade de ficar recriando 
+//						CozinhasModelOpenApi.class))									// classes vazias. Conforme explicado na classe CozinhasModelOpenApi
 				.alternateTypeRules(
-					AlternateTypeRules.newRule(
-						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 
-						CozinhasModelOpenApi.class))
+						buildPageTypeRole(CozinhaResponseDTO.class),
+						buildPageTypeRole(PedidoResumidoResponseDTO.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"))
 				.apiInfo(apiInfo());				
@@ -67,6 +72,13 @@ public class SpringFoxConfig {
 	@Bean
 	public JacksonModuleRegistrar springFoxJacksonConfig() {
 		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
+	}
+	
+	private <T> AlternateTypeRule buildPageTypeRole(Class<T> classResponseDTO) {
+		var typeResolver = new TypeResolver();
+		return AlternateTypeRules.newRule(
+				typeResolver.resolve(Page.class, classResponseDTO), 
+				typeResolver.resolve(PagedModelOpenApi.class, classResponseDTO));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
