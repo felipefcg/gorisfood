@@ -43,7 +43,6 @@ public class CozinhaController implements CozinhaControlerOpenApi {
 	@Autowired
 	private CozinhaRequestDesassembler desassembler;
 	
-	//TODO: Pageable não está funcionando corretamente
 	@GetMapping
 	public Page<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
 		Page<Cozinha> cozinhaPage = service.listar(pagable);
