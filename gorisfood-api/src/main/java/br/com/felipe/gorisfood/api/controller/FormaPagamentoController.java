@@ -75,7 +75,7 @@ public class FormaPagamentoController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, @ApiIgnore ServletWebRequest request) {
+	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		String eTag = "0";
 		
