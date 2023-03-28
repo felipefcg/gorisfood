@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Cozinhas")
-public interface CozinhaControlerOpenApi {
+public interface CozinhaControllerOpenApi {
 
 	@ApiOperation("Lista as cozinhas com paginação")
 	public Page<CozinhaResponseDTO> listar (Pageable pagable);

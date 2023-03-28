@@ -28,14 +28,13 @@ import br.com.felipe.gorisfood.api.assembler.FormaPagamentoRequestDtoDesassemble
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FormaPagamentoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
-import br.com.felipe.gorisfood.domain.model.FormaPagamento;
+import br.com.felipe.gorisfood.api.openapi.controller.FormasPagamentoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class FormaPagamentoController {
+public class FormaPagamentoController implements FormasPagamentoControllerOpenApi {
 
 	@Autowired
 	private CadastroFormaPagamentoService service;
@@ -105,6 +104,7 @@ public class FormaPagamentoController {
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoResponseDTO criar(@Valid @RequestBody FormaPagamentoRequestDTO formaPagamentoDTO) {
 		var formaPagamento = desassembler.toModel(formaPagamentoDTO); 
 		return assembler.toDto(service.salvar(formaPagamento));
