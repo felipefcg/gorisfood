@@ -21,15 +21,24 @@ import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
+import io.swagger.models.RefModel;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ModelSpecificationBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
+import springfox.documentation.schema.ModelSpecification;
+import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.ParameterStyle;
+import springfox.documentation.service.ParameterType;
+import springfox.documentation.service.RequestParameter;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
@@ -56,6 +65,7 @@ public class SpringFoxConfig {
 				.globalResponses(HttpMethod.POST, globalPostResponseMessages())
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+				.globalRequestParameters(builderParameters())
 				.ignoredParameterTypes(ServletWebRequest.class)
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
@@ -66,11 +76,24 @@ public class SpringFoxConfig {
 				.alternateTypeRules(
 						buildPageTypeRole(CozinhaResponseDTO.class),
 						buildPageTypeRole(PedidoResumidoResponseDTO.class))
-				.tags(new Tag("Cidades", "Gerencia as cidades"),
-					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"))
+				.tags(new Tag("Cidades", "Gerencia as cidades"), 
+					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
+					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"))
 				.apiInfo(apiInfo());				
 	}
-	
+
+	private List<RequestParameter> builderParameters() {
+		return Arrays.asList(
+					new RequestParameterBuilder()
+						.name("campos")
+						.description("Nome das propriedades para filtrar ana resposta, separado por vírgula")
+						.in(ParameterType.QUERY)
+						.required(true)
+						.query( q -> q.model( m -> m.scalarModel(ScalarType.STRING)))
+						.build()
+				);
+	}
+
 	@Bean
 	public JacksonModuleRegistrar springFoxJacksonConfig() {
 		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
