@@ -21,6 +21,7 @@ import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.models.RefModel;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ModelSpecificationBuilder;
@@ -65,7 +66,10 @@ public class SpringFoxConfig {
 				.globalResponses(HttpMethod.POST, globalPostResponseMessages())
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-				.globalRequestParameters(builderParameters())
+//				.globalRequestParameters(builderParameters())							// TODO: Removido o código de parâmetro global dessa config pois o parâmetro
+																						// de exemplo "campos" está habilitado para apenas 2 endpoints e foi 
+																						// migrado a configuração para esse parâmetro através das anotaçãos 
+																						// @ApiImplicitParams e @ApiImplicitParam nos respctivos endpoints 
 				.ignoredParameterTypes(ServletWebRequest.class)
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
@@ -78,7 +82,8 @@ public class SpringFoxConfig {
 						buildPageTypeRole(PedidoResumidoResponseDTO.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
-					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"))
+					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+					  new Tag("Pedidos", "Gerencia os pedidos"))
 				.apiInfo(apiInfo());				
 	}
 

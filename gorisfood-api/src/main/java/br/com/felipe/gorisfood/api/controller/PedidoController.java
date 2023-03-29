@@ -23,15 +23,17 @@ import br.com.felipe.gorisfood.api.assembler.PedidoResumidoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.PedidoControllerOpenApi;
 import br.com.felipe.gorisfood.core.data.PageableTranslator;
 import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
+import io.swagger.annotations.ApiImplicitParams;
 
 @RestController
 @RequestMapping(value = "pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired
 	private EmissaoPedidoService emissaoPedidoService;
@@ -44,7 +46,7 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoResumidoResponseDtoAssembler pedidoResumidoAssembler;
-	
+
 	@GetMapping
 	public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable) {
 		Page<Pedido> pagePedidos = emissaoPedidoService.listar(pedidoFilter, traduzirPageable(pageable));
