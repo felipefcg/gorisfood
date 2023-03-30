@@ -2,6 +2,7 @@ package br.com.felipe.gorisfood.api.model.request;
 
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class RestauranteIdRequestDTO {
 
+	@ApiModelProperty(example = "1", required = true)
 	@NotNull
 	private Long id;
 }

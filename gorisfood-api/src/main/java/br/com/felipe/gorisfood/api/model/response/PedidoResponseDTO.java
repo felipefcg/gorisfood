@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import br.com.felipe.gorisfood.domain.model.enums.StatusPedido;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,17 +13,36 @@ import lombok.Setter;
 @Setter
 public class PedidoResponseDTO {
 	
+	@ApiModelProperty(example = "1e387510-6710-434b-b761-609e8ca29d31")
 	private String codigo;
+	
+	@ApiModelProperty(example = "174.40")
 	private BigDecimal subtotal;
+	
+	@ApiModelProperty(example = "9.50")
 	private BigDecimal taxaFrete;
+	
+	@ApiModelProperty(example = "183.9")
 	private BigDecimal valorTotal;
+	
+	@ApiModelProperty(example = "CANCELADO")
 	private StatusPedido status;
+	
+	@ApiModelProperty(example = "2023-03-29T10:42:37Z")
 	private OffsetDateTime dataCriacao;
+	
+	@ApiModelProperty(example = "2023-03-29T10:42:37Z")
 	private OffsetDateTime dataConfirmacao;
+	
+	@ApiModelProperty(example = "2023-03-29T10:42:37Z")
 	private OffsetDateTime dataCancelamento;
+	
+	@ApiModelProperty(example = "2023-03-29T10:42:37Z")
 	private OffsetDateTime dataEntrega;
+	
 	private RestauranteResumidoResponseDTO restaurante;
 	private UsuarioResponseDTO cliente;
+	
 	private FormaPagamentoResponseDTO formaPagamento;
 	private EnderecoResponseDTO enderecoEntrega;
 	private List<ItemPedidoResponseDTO> itens;
