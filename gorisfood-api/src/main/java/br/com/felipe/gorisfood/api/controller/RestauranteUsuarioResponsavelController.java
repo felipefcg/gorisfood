@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.UsuarioResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.UsuarioResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(value = "restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteUsuarioResponsavelController {
+public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
 	@Autowired
 	private CadastroRestauranteService restauranteService;
