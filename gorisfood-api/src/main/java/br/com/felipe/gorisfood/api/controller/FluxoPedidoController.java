@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.openapi.controller.FluxoPedidoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.FluxoPedidoService;
 
 @RequestMapping(value = "pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-public class FluxoPedidoController {
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
 	@Autowired
 	private FluxoPedidoService fluxoPedidoService;
-	
 	
 	@PutMapping("confirmado")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
