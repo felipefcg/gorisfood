@@ -37,7 +37,7 @@ public interface PedidoControllerOpenApi {
 			  		  content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 	  				  schema = @Schema(implementation = Problema.class)))
 	})
-	public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
+	Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
 	
 	
 	@ApiOperation("Pesquisa os pedidos por código")
@@ -55,7 +55,7 @@ public interface PedidoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})	
-	public PedidoResponseDTO buscar(@PathVariable String codigoPedido);
+	PedidoResponseDTO buscar(@PathVariable String codigoPedido);
 	
 	@ApiOperation("Registra um pedido")
 	@ApiResponses({
@@ -65,5 +65,5 @@ public interface PedidoControllerOpenApi {
 					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public PedidoResponseDTO emitir(@RequestBody @Valid PedidoRequestDTO pedidoDTO);
+	PedidoResponseDTO emitir(@RequestBody @Valid PedidoRequestDTO pedidoDTO);
 }

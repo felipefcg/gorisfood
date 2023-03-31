@@ -22,7 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public interface CozinhaControllerOpenApi {
 
 	@ApiOperation("Lista as cozinhas com paginação")
-	public Page<CozinhaResponseDTO> listar (Pageable pagable);
+	Page<CozinhaResponseDTO> listar (Pageable pagable);
 	
 	@ApiOperation("Busca uma cozinha por ID")
 	@ApiResponses({
@@ -35,11 +35,11 @@ public interface CozinhaControllerOpenApi {
 				 			schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public CozinhaResponseDTO buscar (Long id);
+	CozinhaResponseDTO buscar (Long id);
 	
 	@ApiOperation("Cadastra uma cozinha")
 	@ApiResponse(responseCode = "201", description = "Cozinha Cadastrada")
-	public CozinhaResponseDTO criar(CozinhaRequestDTO cozinhaDTO);
+	CozinhaResponseDTO criar(CozinhaRequestDTO cozinhaDTO);
 	
 	@ApiOperation("Atualiza uma cozinha por ID")
 	@ApiResponses({
@@ -49,7 +49,7 @@ public interface CozinhaControllerOpenApi {
 				 			schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public CozinhaResponseDTO alterar(Long id, CozinhaRequestDTO cozinhaDTO);
+	CozinhaResponseDTO alterar(Long id, CozinhaRequestDTO cozinhaDTO);
 	
 	@ApiOperation("Exclui uma cozinha por ID")
 	@ApiResponses({
@@ -59,9 +59,9 @@ public interface CozinhaControllerOpenApi {
 				 			schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public void remover(Long id);
+	void remover(Long id);
 	
 	@ApiIgnore
 	@ApiOperation("Busca a primeira cozinha cadastrada na aplicação - Testes")
-	public Optional<Cozinha> buscarPrimeiro();
+	Optional<Cozinha> buscarPrimeiro();
 }

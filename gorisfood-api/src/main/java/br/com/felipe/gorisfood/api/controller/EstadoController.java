@@ -21,11 +21,12 @@ import br.com.felipe.gorisfood.api.assembler.EstadoRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.EstadoResponseAssembler;
 import br.com.felipe.gorisfood.api.model.request.EstadoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.EstadoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.EstadoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroEstadoService;
 
 @RestController
-@RequestMapping(value = "estados", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public class EstadoController {
+@RequestMapping(value = "estados", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EstadoController implements EstadoControllerOpenApi {
 
 	@Autowired
 	private CadastroEstadoService service;
@@ -36,29 +37,29 @@ public class EstadoController {
 	@Autowired
 	private EstadoRequestDtoDesassembler desassembler;
 	
-	@GetMapping(consumes = MediaType.ALL_VALUE)
+	@GetMapping
 	public List<EstadoResponseDTO> listar() {
 		return assembler.toDtoList(service.listar());
 	}
 	
-	@GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "{id}")
 	public EstadoResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toDto(service.buscar(id));
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public EstadoResponseDTO criar(@RequestBody @Valid EstadoRequestDTO estadoDTO) {
 		return assembler.toDto(service.salvar(desassembler.toModel(estadoDTO)));
 	}
 	
-	@PutMapping("{id}")
+	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public EstadoResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid EstadoRequestDTO estadoDTO){
 		var estado = desassembler.toModel(estadoDTO);
 		return assembler.toDto(service.atualizar(id, estado));
 	}
 	
-	@DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
+	@DeleteMapping(value = "{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
 		service.remover(id);

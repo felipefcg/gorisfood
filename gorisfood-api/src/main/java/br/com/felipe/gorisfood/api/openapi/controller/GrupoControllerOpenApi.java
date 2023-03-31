@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os grupos de usuários")
-	public List<GrupoResponseDTO> listar();
+	List<GrupoResponseDTO> listar();
 	
 	@ApiOperation("Busca o grupo por ID")
 	@ApiResponses ({
@@ -33,7 +33,7 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public GrupoResponseDTO buscar(Long id);
+	GrupoResponseDTO buscar(Long id);
 	
 	@ApiOperation("Exclui um grupo por ID")
 	@ApiResponses ({
@@ -47,13 +47,13 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public void excluir(Long id);
+	void excluir(Long id);
 	
 	@ApiOperation("Cadastra um novo grupo")
 	@ApiResponses ({
 		@ApiResponse( responseCode = "201", description = "Grupo cadastrado")
 	})
-	public GrupoResponseDTO criar(GrupoRequestDTO dto) ;
+	GrupoResponseDTO criar(GrupoRequestDTO dto) ;
 
 	@ApiOperation("Atualiza um grupo por ID")
 	@ApiResponses ({
@@ -66,5 +66,5 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public GrupoResponseDTO alterar(Long id,  GrupoRequestDTO dto);
+	GrupoResponseDTO alterar(Long id,  GrupoRequestDTO dto);
 }

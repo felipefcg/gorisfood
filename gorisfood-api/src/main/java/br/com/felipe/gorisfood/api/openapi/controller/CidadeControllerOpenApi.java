@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CidadeControllerOpenApi {
 	
 	@ApiOperation("Lista as cidades")
-	public List<CidadeResponseDTO> listar();
+	List<CidadeResponseDTO> listar();
 
 	@ApiOperation("Busca uma cidade por ID")
 	@ApiResponses({
@@ -33,7 +33,7 @@ public interface CidadeControllerOpenApi {
 					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public CidadeResponseDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1" ) Long id);
+	CidadeResponseDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1" ) Long id);
 	
 	@ApiOperation("Cadastra uma cidade")
 	@ApiResponses({
@@ -43,7 +43,7 @@ public interface CidadeControllerOpenApi {
 					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public CidadeResponseDTO criar(@ApiParam(value = "Representação de uma nova cidade") CidadeRequestDTO cidadeDTO);
+	CidadeResponseDTO criar(@ApiParam(value = "Representação de uma nova cidade") CidadeRequestDTO cidadeDTO);
 	
 	@ApiOperation("Atualiza uma cidade por ID")
 	@ApiResponses({
@@ -57,7 +57,7 @@ public interface CidadeControllerOpenApi {
 					 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public CidadeResponseDTO alterar(@ApiParam(value = "ID de uma cidade", example = "1") Long id, CidadeRequestDTO cidadeDTO);
+	CidadeResponseDTO alterar(@ApiParam(value = "ID de uma cidade", example = "1") Long id, CidadeRequestDTO cidadeDTO);
 	
 	@ApiOperation(value = "Exclui uma cidade por ID")
 	@ApiResponses({
@@ -67,5 +67,5 @@ public interface CidadeControllerOpenApi {
 										 mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	public void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long id);
+	void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long id);
 }
