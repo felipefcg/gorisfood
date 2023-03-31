@@ -22,12 +22,13 @@ import br.com.felipe.gorisfood.api.assembler.ProdutoRequestDtoDisassembler;
 import br.com.felipe.gorisfood.api.assembler.ProdutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.ProdutoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.ProdutoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.RestauranteProdutoContollerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(value = "restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteProdutoContoller {
+public class RestauranteProdutoContoller implements RestauranteProdutoContollerOpenApi {
 
 	@Autowired
 	private CadastroProdutoService service;
