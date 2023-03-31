@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
 @RestController
-@RequestMapping(value = "restaurantes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@Autowired
@@ -56,14 +56,14 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 //	}
 	
 	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping(consumes = MediaType.ALL_VALUE)
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<RestauranteResponseDTO> listar(){
 		return restauranteResponseDtoAssembler.toDtoList(service.listar());
 	}
 	
 	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params = "projecao=apenas-nome", consumes = MediaType.ALL_VALUE)
+	@GetMapping(params = "projecao=apenas-nome")
 	@ResponseStatus(HttpStatus.OK)
 	public List<RestauranteResponseDTO> listarApenasNome(){
 		return restauranteResponseDtoAssembler.toDtoList(service.listar());
@@ -97,7 +97,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return restauranteResponseDtoAssembler.toDTO(service.buscar(id));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteResponseDTO criar(@RequestBody @Valid RestauranteRequestDTO restauranteDTO) {
 		try {	
@@ -108,7 +108,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
-	@PutMapping("{id}")
+	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid RestauranteRequestDTO restauranteDTO) {
 		try {
 			Restaurante restaurante = service.buscar(id);
@@ -119,43 +119,43 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
-	@GetMapping(value = "por-nome", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "por-nome")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
 		return restauranteResponseDtoAssembler.toDtoList(service.buscarPorNomeECozinha(nome, cozinhaId));
 	}
 	
-	@GetMapping(value = "por-nome-e-taxa", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "por-nome-e-taxa")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteResponseDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
 		return restauranteResponseDtoAssembler.toDtoList(service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim));
 	}
 	
-	@GetMapping(value = "por-nome-cozinha-e-taxa", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "por-nome-cozinha-e-taxa")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteResponseDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 		return restauranteResponseDtoAssembler.toDtoList(service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal));
 	}
 	
-	@GetMapping(value = "por-frete-gratis-e-nome", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "por-frete-gratis-e-nome")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RestauranteResponseDTO> buscarPorFreteGratisENome(String nome) {
 		return restauranteResponseDtoAssembler.toDtoList(service.buscarPorFreteGratisENome(nome));
 	}
 	
-	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
+	@GetMapping(value = "primeiro")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<RestauranteResponseDTO> buscarPrimeiro() {
 		return restauranteResponseDtoAssembler.toDTO(service.buscarPrimeiro());
 	}
 	
-	@PutMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
+	@PutMapping(value = "{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long id) {
 		service.ativar(id);
 	}
 	
-	@DeleteMapping(value = "{id}/ativo", consumes = MediaType.ALL_VALUE)
+	@DeleteMapping(value = "{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long id) {
 		service.inativar(id);
@@ -173,13 +173,13 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		service.inativar(id);
 	}
 	
-	@PutMapping(value = "{id}/abertura", consumes = MediaType.ALL_VALUE)
+	@PutMapping(value = "{id}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void abrir(@PathVariable Long id) {
 		service.abrir(id);
 	}
 	
-	@PutMapping(value = "{id}/fechamento", consumes = MediaType.ALL_VALUE)
+	@PutMapping(value = "{id}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void fechar(@PathVariable Long id) {
 		service.fechar(id);

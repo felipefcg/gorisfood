@@ -14,7 +14,7 @@ public class EnderecoResponseDTO {
 	@ApiModelProperty(example = "Rua das pedreiras")
 	private String logradouro;
 	
-	@ApiModelProperty(example = "S/N")
+	@ApiModelProperty(example = "1000")
 	private String numero;
 	
 	@ApiModelProperty(example = "casa 2")
