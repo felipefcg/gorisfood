@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(value = "restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteFormaPagamentoController {
+public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
 	@Autowired
 	private CadastroRestauranteService restauranteService;
