@@ -1,16 +1,17 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FotoProdutoReponseDTO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +53,8 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 	})
 	public FotoProdutoReponseDTO alterarFoto(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 											 @ApiParam(value = "ID do produto", required = true) Long produtoId, 
-											 FotoProtudoRequestDTO fotoProduto) throws IOException;
+											 FotoProtudoRequestDTO fotoProduto, 
+											 @ApiParam(value = "Arquivo da foto do produto (máximo 500KB, apenas JPG e PNG)", required = true) MultipartFile arquivo) throws IOException;
 
 	@ApiOperation("Exclui a foto do produto de um restaurante")
 	@ApiResponses({
