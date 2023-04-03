@@ -48,7 +48,7 @@ management:
         
 gorisfood:
   storage:
-    tipo: s3
+    tipo: local
     local:
       diretorio-fotos: /gorisfood/storage/fotos
     s3:

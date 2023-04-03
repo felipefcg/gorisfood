@@ -25,6 +25,7 @@ import br.com.felipe.gorisfood.api.assembler.FotoProdutoRequestDtoDisassembler;
 import br.com.felipe.gorisfood.api.assembler.FotoProtutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.FotoProdutoReponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
@@ -33,7 +34,7 @@ import br.com.felipe.gorisfood.domain.service.FotoStorageService;
 
 @RestController
 @RequestMapping(value =  "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteProdutoFotoController {
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
 	@Autowired
 	private FotoProdutoRequestDtoDisassembler disassembler;
