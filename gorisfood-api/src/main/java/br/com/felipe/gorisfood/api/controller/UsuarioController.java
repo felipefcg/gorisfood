@@ -22,11 +22,12 @@ import br.com.felipe.gorisfood.api.model.request.SenhaRequestDTO;
 import br.com.felipe.gorisfood.api.model.request.UsuarioComSenhaRequestDTO;
 import br.com.felipe.gorisfood.api.model.request.UsuarioRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.UsuarioResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.UsuarioControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(value =  "usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerOpenApi {
 
 	@Autowired
 	private UsuarioResponseDtoAssembler assembler;
@@ -60,7 +61,7 @@ public class UsuarioController {
 		return assembler.toDto(service.alterar(usuario));
 	}
 	
-	@PutMapping(value = "{id}/senha", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "{id}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long id, @Valid @RequestBody SenhaRequestDTO dto) {
 		var usuario = service.buscar(id);
