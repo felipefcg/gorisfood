@@ -36,11 +36,11 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 		 		   content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public FotoProdutoReponseDTO buscar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	FotoProdutoReponseDTO buscar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 			 							@ApiParam(value = "ID do produto", required = true) Long produtoId);
 	
 	@ApiOperation(value = "Busca a foto do produto de um restaurante", hidden = true)
-	public ResponseEntity<?> buscarInputStream(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ResponseEntity<?> buscarInputStream(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 			 								   @ApiParam(value = "ID do produto", required = true) Long produtoId, 
 			 								   @ApiParam(value = "Content Type que deseja o retorno", required = false) String acceptHeader) throws HttpMediaTypeNotAcceptableException ;
 
@@ -51,7 +51,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 		 		 	 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 						 schema = @Schema(implementation = Problema.class))})
 	})
-	public FotoProdutoReponseDTO alterarFoto(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	FotoProdutoReponseDTO alterarFoto(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 											 @ApiParam(value = "ID do produto", required = true) Long produtoId, 
 											 FotoProtudoRequestDTO fotoProduto, 
 											 @ApiParam(value = "Arquivo da foto do produto (máximo 500KB, apenas JPG e PNG)", required = true) MultipartFile arquivo) throws IOException;
@@ -63,6 +63,6 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void remover(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void remover(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 						@ApiParam(value = "ID do produto", required = true) Long produtoId);
 }

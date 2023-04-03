@@ -33,7 +33,7 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public List<ProdutoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	List<ProdutoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 										  @ApiParam(value = "Indica se deve ou não incluir produtos inativos no resultado da listagem",
 												    example = "false", defaultValue = "false") boolean incluirInativos);
 	
@@ -46,7 +46,7 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public ProdutoResponseDTO buscar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ProdutoResponseDTO buscar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 									 @ApiParam(value = "ID do produto", required = true) Long produtoId);
 	
 	@ApiOperation("Cadastra um produto de um restaurante")
@@ -56,7 +56,7 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public ProdutoResponseDTO criar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ProdutoResponseDTO criar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 									ProdutoRequestDTO produtoDTO);
 	
 	@ApiOperation("Atualiza um produto de um restaurante")
@@ -66,7 +66,7 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public ProdutoResponseDTO alterar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ProdutoResponseDTO alterar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 									  @ApiParam(value = "ID do produto", required = true) Long produtoId, 
 									  ProdutoRequestDTO produtoDTO);
 	
@@ -78,6 +78,6 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void remover(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void remover(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 						@ApiParam(value = "ID do produto", required = true) Long produtoId); 
 }

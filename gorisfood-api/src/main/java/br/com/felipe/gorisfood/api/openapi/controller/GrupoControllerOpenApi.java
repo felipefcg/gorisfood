@@ -9,6 +9,7 @@ import br.com.felipe.gorisfood.api.model.request.GrupoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +34,7 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	GrupoResponseDTO buscar(Long id);
+	GrupoResponseDTO buscar(@ApiParam(value = "ID do grupo") Long id);
 	
 	@ApiOperation("Exclui um grupo por ID")
 	@ApiResponses ({
@@ -47,7 +48,7 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	void excluir(Long id);
+	void excluir(@ApiParam(value = "ID do grupo") Long id);
 	
 	@ApiOperation("Cadastra um novo grupo")
 	@ApiResponses ({
@@ -66,5 +67,5 @@ public interface GrupoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	GrupoResponseDTO alterar(Long id,  GrupoRequestDTO dto);
+	GrupoResponseDTO alterar(@ApiParam(value = "ID do grupo") Long id,  GrupoRequestDTO dto);
 }

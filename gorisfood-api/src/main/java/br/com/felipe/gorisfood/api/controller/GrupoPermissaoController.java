@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.PermissaoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController
 @RequestMapping(value =  "grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class GrupoPermissaoController {
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
 	@Autowired
 	private CadastroGupoService grupoService; 

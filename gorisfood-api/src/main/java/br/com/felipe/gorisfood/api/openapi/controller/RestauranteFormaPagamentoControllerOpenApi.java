@@ -26,7 +26,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public List<FormaPagamentoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
+	List<FormaPagamentoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
 	
 	@ApiOperation("Associação de restaurante com forma de pagamento")
 	@ApiResponses({
@@ -35,7 +35,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 						 @ApiParam(value = "ID da forma de pagamento", required = true) Long formaPagamentoId);
 
 	@ApiOperation("Desassociação de restaurante com forma de pagamento")
@@ -45,6 +45,6 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 							@ApiParam(value = "ID da forma de pagamento", required = true) Long formaPagamentoId);
 }

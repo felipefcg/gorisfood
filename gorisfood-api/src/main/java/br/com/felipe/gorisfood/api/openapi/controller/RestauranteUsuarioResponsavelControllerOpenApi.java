@@ -26,7 +26,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public List<UsuarioResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
+	List<UsuarioResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
 	
 	@ApiOperation("Associação de restaurante com usuário responsável")
 	@ApiResponses({
@@ -35,7 +35,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 						 @ApiParam(value = "ID do usuário", required = true) Long usuarioId);
 	
 	@ApiOperation("Desssociação de restaurante com usuário responsável")
@@ -45,6 +45,6 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	public void desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	void desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 							@ApiParam(value = "ID do usuário", required = true)Long usuarioId);
 }
