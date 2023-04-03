@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.assembler.GrupoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.controller.UsuarioGrupoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(value = "usuarios/{usuarioId}/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UsuarioGrupoController {
+public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
 	@Autowired
 	private CadastroUsuarioService usuarioService;
