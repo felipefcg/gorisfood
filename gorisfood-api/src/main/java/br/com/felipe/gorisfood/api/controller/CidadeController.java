@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.ResourceUriHelper;
 import br.com.felipe.gorisfood.api.assembler.CidadeRequestDtoDesassembler;
 import br.com.felipe.gorisfood.api.assembler.CidadeResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -58,7 +59,10 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidade = desassembler.toModel(cidadeDTO);
-		return  assembler.toDto(service.salvar(cidade));
+		CidadeResponseDTO cidadeDto = assembler.toDto(service.salvar(cidade));
+		
+		ResourceUriHelper.addUriInResponseHeader(cidadeDto.getId());
+		return cidadeDto;
 	}
 	
 	
