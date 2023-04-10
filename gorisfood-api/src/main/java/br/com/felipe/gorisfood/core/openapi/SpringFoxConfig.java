@@ -85,7 +85,8 @@ public class SpringFoxConfig {
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
 					  new Tag("Pedidos", "Gerencia os pedidos"),
 					  new Tag("Produtos", "Gerencia os produtos de restaurantes"),
-					  new Tag("Usuários", "Gerencia os usuários"))
+					  new Tag("Usuários", "Gerencia os usuários"),
+					  new Tag("Estatísticas", "Estatísticas do GorisFood"))
 				.apiInfo(apiInfo());				
 	}
 
