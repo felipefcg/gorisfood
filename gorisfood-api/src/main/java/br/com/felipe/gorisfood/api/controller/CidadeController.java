@@ -1,11 +1,12 @@
 package br.com.felipe.gorisfood.api.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,10 +55,23 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@GetMapping(value = "{id}")
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
 		CidadeResponseDTO dto = assembler.toDto(service.buscar(id));
-		dto.add(Link.of("http://localhost:8080/cidades/1"));
-		dto.add(Link.of("http://localhost:8080/cidades", "cidades"));
+//		dto.add(Link.of("http://localhost:8080/cidades/1"));
+//		dto.add(Link.of("http://localhost:8080/cidades", "cidades"));
+//		dto.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		dto.add(linkTo(this.getClass())
+					.slash(dto.getId())
+					.withSelfRel()
+				);
 		
-		dto.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		dto.add(linkTo(this.getClass())
+					.withRel("cidades")
+				);
+		
+		dto.getEstado()
+			.add(linkTo(EstadoController.class)
+					.slash(dto.getEstado().getId())
+					.withSelfRel()
+				);
 		return dto;
 	}
 	
