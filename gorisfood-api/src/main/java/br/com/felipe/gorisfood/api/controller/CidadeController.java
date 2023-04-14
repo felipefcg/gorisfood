@@ -51,80 +51,19 @@ public class CidadeController implements CidadeControllerOpenApi {
 	
 	@GetMapping
 	public CollectionModel<CidadeResponseDTO> listar() {
-		 var dtoList = assembler.toDtoList(service.listar());
-		 var collectionModel = CollectionModel.of(dtoList);
-		 
-		 collectionModel.add(
-				 linkTo(this.getClass())
-				 .withSelfRel()
- 			);
-		 
-		 collectionModel.forEach( c ->{
-			 c.add(linkTo(
-						methodOn(this.getClass())
-						.buscar(c.getId()))
-					.withSelfRel());
-			 
-			 c.add(linkTo(
-						methodOn(this.getClass())
-						.listar())
-					.withRel("cidades"));
-			 
-			 c.getEstado().add(linkTo(
-							   		methodOn(EstadoController.class)
-							   		.buscar(c.getEstado().getId()))
-								.withSelfRel());
-		 });
-		 
-		 return collectionModel;
+		 return assembler.toCollectionModel(service.listar());
 	}
 
 	@GetMapping(value = "{id}")
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
-		CidadeResponseDTO dto = assembler.toDto(service.buscar(id));
-//		dto.add(Link.of("http://localhost:8080/cidades/1"));
-//		dto.add(Link.of("http://localhost:8080/cidades", "cidades"));
-//		dto.getEstado().add(Link.of("http://localhost:8080/estados/1"));
-		
-//		dto.add(linkTo(this.getClass())
-//					.slash(dto.getId())
-//					.withSelfRel()
-//				);
-//		
-//		dto.add(linkTo(this.getClass())
-//					.withRel("cidades")
-//				);
-//		
-//		dto.getEstado()
-//			.add(linkTo(EstadoController.class)
-//					.slash(dto.getEstado().getId())
-//					.withSelfRel()
-//				);
-		
-		dto.add(linkTo(
-					methodOn(this.getClass())
-					.buscar(dto.getId()))
-				.withSelfRel());
-
-		dto.add(linkTo(
-					methodOn(this.getClass())
-					.listar())
-				.withRel("cidades"));
-
-		dto.getEstado()
-		   .add(linkTo(
-				   methodOn(EstadoController.class)
-				   .buscar(dto.getEstado().getId()))
-				.withSelfRel());
-		
-		return dto;
+		return assembler.toModel(service.buscar(id));
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidade = desassembler.toModel(cidadeDTO);
-		CidadeResponseDTO cidadeDto = assembler.toDto(service.salvar(cidade));
+		CidadeResponseDTO cidadeDto = assembler.toModel(service.salvar(cidade));
 		
 		ResourceUriHelper.addUriInResponseHeader(cidadeDto.getId());
 		return cidadeDto;
@@ -136,7 +75,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
 		Cidade cidadeAtual = service.buscar(id);
 		desassembler.copyDtoToModel(cidadeDTO, cidadeAtual);
-		return assembler.toDto(service.alterar(cidadeAtual));
+		return assembler.toModel(service.alterar(cidadeAtual));
 	}
 	
 	@DeleteMapping(value = "{id}")
