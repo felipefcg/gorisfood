@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,7 +53,12 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@GetMapping(value = "{id}")
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
-		return assembler.toDto(service.buscar(id));
+		CidadeResponseDTO dto = assembler.toDto(service.buscar(id));
+		dto.add(Link.of("http://localhost:8080/cidades/1"));
+		dto.add(Link.of("http://localhost:8080/cidades", "cidades"));
+		
+		dto.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		return dto;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
