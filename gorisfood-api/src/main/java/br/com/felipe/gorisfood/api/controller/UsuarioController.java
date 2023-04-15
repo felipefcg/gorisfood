@@ -1,10 +1,9 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,26 +38,26 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	private CadastroUsuarioService service;
 	
 	@GetMapping
-	public List<UsuarioResponseDTO> listar(){
-		return assembler.toDtoList(service.listar()); 
+	public CollectionModel<UsuarioResponseDTO> listar(){
+		return assembler.toCollectionModel(service.listar()); 
 	}
 	
 	@GetMapping("{id}")
 	public UsuarioResponseDTO buscar(@PathVariable Long id){
-		return assembler.toDto(service.buscar(id)); 
+		return assembler.toModel(service.buscar(id)); 
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UsuarioResponseDTO criar(@Valid @RequestBody UsuarioComSenhaRequestDTO dto) {
 		var usuario = desassembler.toModel(dto);
-		return assembler.toDto(service.criar(usuario));
+		return assembler.toModel(service.criar(usuario));
 	}
 	
 	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UsuarioResponseDTO alterar(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
 		var usuario = service.buscar(id);
 		desassembler.copyDtoToModel(dto, usuario);
-		return assembler.toDto(service.alterar(usuario));
+		return assembler.toModel(service.alterar(usuario));
 	}
 	
 	@PutMapping(value = "{id}/senha")

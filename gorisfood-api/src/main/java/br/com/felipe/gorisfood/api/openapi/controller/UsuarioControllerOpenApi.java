@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -21,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface UsuarioControllerOpenApi {
 
 	@ApiOperation("Lista os usuários")
-	public List<UsuarioResponseDTO> listar();
+	public CollectionModel<UsuarioResponseDTO> listar();
 	
 	@ApiOperation("Busca um usuário por ID")
 	@ApiResponses({

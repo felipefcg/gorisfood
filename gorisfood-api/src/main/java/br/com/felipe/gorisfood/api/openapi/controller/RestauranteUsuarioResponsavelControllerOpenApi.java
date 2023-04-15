@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -26,7 +25,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	List<UsuarioResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
+	CollectionModel<UsuarioResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId);
 	
 	@ApiOperation("Associação de restaurante com usuário responsável")
 	@ApiResponses({

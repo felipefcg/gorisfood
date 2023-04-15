@@ -1,8 +1,7 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +28,9 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	private UsuarioResponseDtoAssembler usuarioAssembler;
 	
 	@GetMapping
-	public List<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
+	public CollectionModel<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
-		return usuarioAssembler.toDtoList(restaurante.getResponsaveis()); 
+		return usuarioAssembler.toCollectionModel(restaurante.getResponsaveis()); 
 	}
 	
 	@PutMapping("{usuarioId}")
