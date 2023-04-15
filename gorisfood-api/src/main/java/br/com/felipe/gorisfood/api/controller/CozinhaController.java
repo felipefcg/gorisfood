@@ -1,15 +1,15 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,30 +43,31 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Autowired
 	private CozinhaRequestDesassembler desassembler;
 	
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedAssembler;
+	
 	@GetMapping
-	public Page<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
+	public PagedModel<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
 		Page<Cozinha> cozinhaPage = service.listar(pagable);
-		List<CozinhaResponseDTO> cozinhasResponseDTO = assembler.toDtoList(cozinhaPage.getContent());
-		
-		return new PageImpl<>(cozinhasResponseDTO, pagable, cozinhaPage.getTotalElements());
+		return pagedAssembler.toModel(cozinhaPage, assembler);
 	}
 	
 	@GetMapping("{id}")
 	public CozinhaResponseDTO buscar (@PathVariable Long id) {
-		return assembler.toDto(service.buscar(id));
+		return assembler.toModel(service.buscar(id));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaResponseDTO criar(@RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
-		return assembler.toDto(service.salvar(desassembler.toModel(cozinhaDTO)));
+		return assembler.toModel(service.salvar(desassembler.toModel(cozinhaDTO)));
 	}
 	
 	@PutMapping("{id}")
 	public CozinhaResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
 		Cozinha cozinhaAtual = service.buscar(id);
 		desassembler.copyDtoToModel(cozinhaDTO, cozinhaAtual);
-		return assembler.toDto(service.salvar(cozinhaAtual));
+		return assembler.toModel(service.salvar(cozinhaAtual));
 			
 	}
 	

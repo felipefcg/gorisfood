@@ -2,8 +2,8 @@ package br.com.felipe.gorisfood.api.openapi.controller;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -22,7 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public interface CozinhaControllerOpenApi {
 
 	@ApiOperation("Lista as cozinhas com paginação")
-	Page<CozinhaResponseDTO> listar (Pageable pagable);
+	PagedModel<CozinhaResponseDTO> listar (Pageable pagable);
 	
 	@ApiOperation("Busca uma cozinha por ID")
 	@ApiResponses({
