@@ -1,5 +1,8 @@
 package br.com.felipe.gorisfood.api.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -30,7 +33,12 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@GetMapping
 	public CollectionModel<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
-		return usuarioAssembler.toCollectionModel(restaurante.getResponsaveis()); 
+		return usuarioAssembler.toCollectionModel(restaurante.getResponsaveis())
+				.removeLinks()
+				.add(linkTo(
+						methodOn(this.getClass())
+						.listar(restauranteId))
+					.withSelfRel()); 
 	}
 	
 	@PutMapping("{usuarioId}")
