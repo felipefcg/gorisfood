@@ -1,10 +1,9 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,25 +37,25 @@ public class EstadoController implements EstadoControllerOpenApi {
 	private EstadoRequestDtoDesassembler desassembler;
 	
 	@GetMapping
-	public List<EstadoResponseDTO> listar() {
-		return assembler.toDtoList(service.listar());
+	public CollectionModel<EstadoResponseDTO> listar() {
+		return assembler.toCollectionModel(service.listar());
 	}
 	
 	@GetMapping(value = "{id}")
 	public EstadoResponseDTO buscar(@PathVariable Long id) {
-		return assembler.toDto(service.buscar(id));
+		return assembler.toModel(service.buscar(id));
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public EstadoResponseDTO criar(@RequestBody @Valid EstadoRequestDTO estadoDTO) {
-		return assembler.toDto(service.salvar(desassembler.toModel(estadoDTO)));
+		return assembler.toModel(service.salvar(desassembler.toModel(estadoDTO)));
 	}
 	
 	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public EstadoResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid EstadoRequestDTO estadoDTO){
 		var estado = desassembler.toModel(estadoDTO);
-		return assembler.toDto(service.atualizar(id, estado));
+		return assembler.toModel(service.atualizar(id, estado));
 	}
 	
 	@DeleteMapping(value = "{id}")

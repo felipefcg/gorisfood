@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -24,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tags;
 public interface EstadoControllerOpenApi {
 
 	@ApiOperation("Lista os estados")
-	List<EstadoResponseDTO> listar();
+	CollectionModel<EstadoResponseDTO> listar();
 	
 	@ApiOperation("Busca um estado por ID")
 	@ApiResponses({
