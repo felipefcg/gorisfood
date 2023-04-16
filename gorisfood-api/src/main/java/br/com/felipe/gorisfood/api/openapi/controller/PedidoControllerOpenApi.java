@@ -2,8 +2,8 @@ package br.com.felipe.gorisfood.api.openapi.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +37,7 @@ public interface PedidoControllerOpenApi {
 			  		  content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 	  				  schema = @Schema(implementation = Problema.class)))
 	})
-	Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
+	PagedModel<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable);
 	
 	
 	@ApiOperation("Pesquisa os pedidos por código")

@@ -33,4 +33,8 @@ public class Endereco {
 	public Long getCidadeId() {
 		return getCidade().getId();
 	}
+	
+	public Long getEstadoId() {
+		return getCidade().getEstado().getId();
+	}
 }

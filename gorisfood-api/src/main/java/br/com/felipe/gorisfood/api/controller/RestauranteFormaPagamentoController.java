@@ -1,8 +1,7 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +28,8 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private FormaPagamentoResponseDtoAssembler formaPagamentoAssembler;
 	
 	@GetMapping
-	public List<FormaPagamentoResponseDTO> listar(@PathVariable Long restauranteId){
-		return formaPagamentoAssembler.toDtoList(restauranteService.listarFormasPagamentoDoRestaurante(restauranteId));
+	public CollectionModel<FormaPagamentoResponseDTO> listar(@PathVariable Long restauranteId){
+		return formaPagamentoAssembler.toCollectionModel(restauranteService.listarFormasPagamentoDoRestaurante(restauranteId));
 	}
 	
 	@PutMapping("{formaPagamentoId}")

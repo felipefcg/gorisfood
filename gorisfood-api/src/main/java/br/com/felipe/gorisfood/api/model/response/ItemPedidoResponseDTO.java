@@ -2,13 +2,15 @@ package br.com.felipe.gorisfood.api.model.response;
 
 import java.math.BigDecimal;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ItemPedidoResponseDTO {
+public class ItemPedidoResponseDTO extends RepresentationModel<ItemPedidoResponseDTO> {
 	
 	@ApiModelProperty(example = "1")
 	private Long produtoId;

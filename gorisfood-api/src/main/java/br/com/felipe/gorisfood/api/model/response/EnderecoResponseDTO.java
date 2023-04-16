@@ -1,12 +1,14 @@
 package br.com.felipe.gorisfood.api.model.response;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EnderecoResponseDTO {
+public class EnderecoResponseDTO extends RepresentationModel<EnderecoResponseDTO> {
 	
 	@ApiModelProperty(example = "00000-000")
 	private String cep;

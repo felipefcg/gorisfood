@@ -1,13 +1,13 @@
 package br.com.felipe.gorisfood.api.controller;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +49,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 	private FormaPagamentoRequestDtoDesassembler desassembler;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoResponseDTO>> listar(ServletWebRequest request) {
+	public ResponseEntity<CollectionModel<FormaPagamentoResponseDTO>> listar(ServletWebRequest request) {
 		
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		String eTag = "0";
@@ -65,7 +65,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 			return null;
 		}
 		
-		var formasPagamentoDTO = assembler.toDtoList(service.listar());
+		var formasPagamentoDTO = assembler.toCollectionModel(service.listar());
 		
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
@@ -93,7 +93,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 					.build();
 		}
 		
-		var pagamentoResponseDTO = assembler.toDto(service.buscar(id));
+		var pagamentoResponseDTO = assembler.toModel(service.buscar(id));
 		return ResponseEntity.ok()
 //				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
@@ -107,7 +107,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoResponseDTO criar(@Valid @RequestBody FormaPagamentoRequestDTO formaPagamentoDTO) {
 		var formaPagamento = desassembler.toModel(formaPagamentoDTO); 
-		return assembler.toDto(service.salvar(formaPagamento));
+		return assembler.toModel(service.salvar(formaPagamento));
 	}
 	
 	@PutMapping(value =  "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -116,7 +116,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 		
 		var formaPagamento = service.buscar(id);
 		desassembler.copyDtoToModel(formaPagamentoDTO, formaPagamento); 
-		return assembler.toDto(service.alterar(formaPagamento));
+		return assembler.toModel(service.alterar(formaPagamento));
 	}
 	
 	@DeleteMapping("{id}")

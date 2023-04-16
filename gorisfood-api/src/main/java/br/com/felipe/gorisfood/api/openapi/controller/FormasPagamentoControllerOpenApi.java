@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface FormasPagamentoControllerOpenApi {
 
 	@ApiOperation("Lista as formas de pagamento")
-	ResponseEntity<List<FormaPagamentoResponseDTO>> listar(ServletWebRequest request);
+	ResponseEntity<CollectionModel<FormaPagamentoResponseDTO>> listar(ServletWebRequest request);
 	
 	@ApiOperation("Busca uma forma de pagamento por ID")
 	@ApiResponses({
