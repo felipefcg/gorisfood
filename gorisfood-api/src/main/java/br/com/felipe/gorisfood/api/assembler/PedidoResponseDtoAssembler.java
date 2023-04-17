@@ -14,6 +14,7 @@ import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.controller.CidadeController;
 import br.com.felipe.gorisfood.api.controller.EstadoController;
 import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
@@ -33,31 +34,22 @@ import br.com.felipe.gorisfood.domain.model.Pedido;
 public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoResponseDTO> {
 
 	private static final Class<PedidoController> PEDIDO_CONTROLLER_CLASS = PedidoController.class;
+	
+	@Autowired
+	private ModelMapper mapper;
+	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	public PedidoResponseDtoAssembler() {
 		super(PEDIDO_CONTROLLER_CLASS, PedidoResponseDTO.class);
 	}
-
-	@Autowired
-	private ModelMapper mapper;
 	
 	public PedidoResponseDTO toModel(Pedido pedido) {
 		var pedidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResponseDTO);
 		
-		var pageVariables = new TemplateVariables(
-				new TemplateVariable("pagina", VariableType.REQUEST_PARAM),
-				new TemplateVariable("tamanhoPagina", VariableType.REQUEST_PARAM),
-				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
-		
-		var filtroVariables = new TemplateVariables(
-				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
-				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
-				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
-				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
-		
-		var pedidosUrl = linkTo(PEDIDO_CONTROLLER_CLASS).toUri().toString();
-		
-		pedidoResponseDTO.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables.concat(filtroVariables)), "pedidos"));
+		pedidoResponseDTO.add(gorisLinks.linkToPedidos());
 		
 		montaLinkRestaurante(pedidoResponseDTO.getRestaurante());
 		montaLinkUsuario(pedidoResponseDTO.getCliente());
