@@ -24,6 +24,7 @@ import br.com.felipe.gorisfood.api.model.request.PedidoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.controller.PedidoControllerOpenApi;
+import br.com.felipe.gorisfood.core.data.PageWrapper;
 import br.com.felipe.gorisfood.core.data.PageableTranslator;
 import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
@@ -48,10 +49,13 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+
+	private PageWrapper<Pedido> pagePedidos;
 	
 	@GetMapping
 	public PagedModel<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable) {
 		Page<Pedido> pagePedidos = emissaoPedidoService.listar(pedidoFilter, traduzirPageable(pageable));
+		pagePedidos = new PageWrapper<>(pagePedidos, pageable);
 		return pagedResourcesAssembler.toModel(pagePedidos, pedidoResumidoAssembler);
 	}
 	
