@@ -44,18 +44,20 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		var pedidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResponseDTO);
 		
-		var templateVariables = new TemplateVariables(
+		var pageVariables = new TemplateVariables(
 				new TemplateVariable("pagina", VariableType.REQUEST_PARAM),
 				new TemplateVariable("tamanhoPagina", VariableType.REQUEST_PARAM),
 				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 		
+		var filtroVariables = new TemplateVariables(
+				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
+		
 		var pedidosUrl = linkTo(PEDIDO_CONTROLLER_CLASS).toUri().toString();
 		
-		pedidoResponseDTO.add(Link.of(UriTemplate.of(pedidosUrl, templateVariables), "pedidos"));
-		
-//		pedidoResponseDTO.add(
-//			linkTo(PEDIDO_CONTROLLER_CLASS)
-//			.withRel("pedidos"));
+		pedidoResponseDTO.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables.concat(filtroVariables)), "pedidos"));
 		
 		montaLinkRestaurante(pedidoResponseDTO.getRestaurante());
 		montaLinkUsuario(pedidoResponseDTO.getCliente());
