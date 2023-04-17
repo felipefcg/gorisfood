@@ -6,6 +6,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariable.VariableType;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +44,18 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		var pedidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResponseDTO);
 		
-		pedidoResponseDTO.add(
-			linkTo(PEDIDO_CONTROLLER_CLASS)
-			.withRel("pedidos"));
+		var templateVariables = new TemplateVariables(
+				new TemplateVariable("pagina", VariableType.REQUEST_PARAM),
+				new TemplateVariable("tamanhoPagina", VariableType.REQUEST_PARAM),
+				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
+		
+		var pedidosUrl = linkTo(PEDIDO_CONTROLLER_CLASS).toUri().toString();
+		
+		pedidoResponseDTO.add(Link.of(UriTemplate.of(pedidosUrl, templateVariables), "pedidos"));
+		
+//		pedidoResponseDTO.add(
+//			linkTo(PEDIDO_CONTROLLER_CLASS)
+//			.withRel("pedidos"));
 		
 		montaLinkRestaurante(pedidoResponseDTO.getRestaurante());
 		montaLinkUsuario(pedidoResponseDTO.getCliente());
