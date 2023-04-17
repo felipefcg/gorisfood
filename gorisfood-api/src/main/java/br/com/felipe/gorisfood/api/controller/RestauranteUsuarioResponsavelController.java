@@ -1,8 +1,5 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.assembler.UsuarioResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.UsuarioResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
@@ -30,15 +28,15 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@Autowired
 	private UsuarioResponseDtoAssembler usuarioAssembler;
 	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	@GetMapping
 	public CollectionModel<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
 		return usuarioAssembler.toCollectionModel(restaurante.getResponsaveis())
 				.removeLinks()
-				.add(linkTo(
-						methodOn(this.getClass())
-						.listar(restauranteId))
-					.withSelfRel()); 
+				.add(gorisLinks.linkToResponsaveisRestaurante(restauranteId)); 
 	}
 	
 	@PutMapping("{usuarioId}")

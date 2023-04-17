@@ -1,16 +1,13 @@
 package br.com.felipe.gorisfood.api.assembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.controller.CidadeController;
-import br.com.felipe.gorisfood.api.controller.EstadoController;
 import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 
@@ -20,6 +17,8 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 	@Autowired
 	private ModelMapper mapper;
 
+	@Autowired
+	private GorisLinks gorisLinks;
 	public CidadeResponseDtoAssembler() {
 		super(CidadeController.class, CidadeResponseDTO.class);
 	}
@@ -29,16 +28,10 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		CidadeResponseDTO cidadeModel = createModelWithId(cidade.getId(), cidade);
 		mapper.map(cidade, cidadeModel);
 		
-		cidadeModel.add(linkTo(
-						 methodOn(CidadeController.class)
-					 	.listar())
-					.withRel("cidades"));
+		cidadeModel.add(gorisLinks.linkToCidades("cidades"));
 
 		cidadeModel.getEstado()
-					.add(linkTo(
-					   methodOn(EstadoController.class)
-					   .buscar(cidadeModel.getEstado().getId()))
-					.withSelfRel());
+					.add(gorisLinks.linkToEstado(cidadeModel.getEstado().getId()));
 		
 		return cidadeModel;
 	}
@@ -47,10 +40,7 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 	@Override
 	public CollectionModel<CidadeResponseDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
 		return super.toCollectionModel(entities)
-				.add(linkTo(
-						methodOn(CidadeController.class)
-						.listar())
-					.withSelfRel());
+				.add(gorisLinks.linkToCidades());
 	}
 	
 }
