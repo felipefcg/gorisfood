@@ -39,6 +39,10 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 				item.add(gorisLinks.linkToProduto(item.getProdutoId(), pedidoResponseDTO.getRestaurante().getId(), "produto"))
 			);
 
+		var codigoPedido = pedido.getCodigo();
+		pedidoResponseDTO.add(gorisLinks.cancelamentoPedido(codigoPedido, "cancelar"));
+		pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
+		pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
 		return pedidoResponseDTO;
 	}
 

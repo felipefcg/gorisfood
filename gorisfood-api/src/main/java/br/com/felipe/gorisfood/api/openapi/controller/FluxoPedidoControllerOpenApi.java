@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import io.swagger.annotations.Api;
@@ -22,7 +23,7 @@ public interface FluxoPedidoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public void confirmar(@ApiParam(value = "Código do Pedido", 
+	public ResponseEntity<Void> confirmar(@ApiParam(value = "Código do Pedido", 
 									example = "1e387510-6710-434b-b761-609e8ca29d31") 
 						 String codigoPedido);
 	
@@ -34,7 +35,7 @@ public interface FluxoPedidoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public void entregar(@ApiParam(value = "Código do Pedido", 
+	public ResponseEntity<Void> entregar(@ApiParam(value = "Código do Pedido", 
 								example = "1e387510-6710-434b-b761-609e8ca29d31") 
 						 String codigoPedido);
 	
@@ -46,7 +47,7 @@ public interface FluxoPedidoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	public void cancelar(@ApiParam(value = "Código do Pedido", 
+	public ResponseEntity<Void> cancelar(@ApiParam(value = "Código do Pedido", 
 								example = "1e387510-6710-434b-b761-609e8ca29d31") 
 						 String codigoPedido);
 }

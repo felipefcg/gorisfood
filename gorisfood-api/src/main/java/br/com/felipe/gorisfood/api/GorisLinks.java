@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.controller.CidadeController;
 import br.com.felipe.gorisfood.api.controller.CozinhaController;
 import br.com.felipe.gorisfood.api.controller.EstadoController;
+import br.com.felipe.gorisfood.api.controller.FluxoPedidoController;
 import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.PedidoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteController;
@@ -126,6 +127,24 @@ public class GorisLinks {
 		var pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 		
 		return Link.of(UriTemplate.of(pedidosUrl, filtroVariables.concat(PAGE_VARIABLES)), "pedidos");
+	}
+	
+	public Link confirmacaoPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).confirmar(codigoPedido))
+				.withRel(rel)
+				.withType("PUT");
+	}
+	
+	public Link cancelamentoPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).cancelar(codigoPedido))
+				.withRel(rel)
+				.withType("PUT");
+	}
+	
+	public Link entregaPedido(String codigoPedido, String rel) {
+		return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido))
+				.withRel(rel)
+				.withType("PUT");
 	}
 	
 	//Produtos
