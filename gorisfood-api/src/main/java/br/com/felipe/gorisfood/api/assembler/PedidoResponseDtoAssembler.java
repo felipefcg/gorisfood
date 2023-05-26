@@ -40,9 +40,18 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 			);
 
 		var codigoPedido = pedido.getCodigo();
-		pedidoResponseDTO.add(gorisLinks.cancelamentoPedido(codigoPedido, "cancelar"));
-		pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
-		pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
+		if(pedido.podeConfirmar()) {
+			pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
+		}
+		
+		if(pedido.podeCancelar()) {
+			pedidoResponseDTO.add(gorisLinks.cancelamentoPedido(codigoPedido, "cancelar"));
+		}
+		
+		if(pedido.podeEntregar()) {
+			pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
+		}
+		
 		return pedidoResponseDTO;
 	}
 
