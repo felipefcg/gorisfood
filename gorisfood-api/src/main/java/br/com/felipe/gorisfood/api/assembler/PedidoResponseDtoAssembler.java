@@ -31,8 +31,9 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		pedidoResponseDTO.getRestaurante().add(gorisLinks.linkToRestaurante(pedidoResponseDTO.getRestaurante().getId()));
 		pedidoResponseDTO.getCliente().add(gorisLinks.linkToUsuario(pedidoResponseDTO.getCliente().getId()));
 		pedidoResponseDTO.getFormaPagamento().add(gorisLinks.linkToFormaPagamento(pedidoResponseDTO.getFormaPagamento().getId()));
-		pedidoResponseDTO.getEnderecoEntrega().add(gorisLinks.linkToCidade(pedido.getEnderecoEntrega().getCidadeId(), "cidade"));
-		pedidoResponseDTO.getEnderecoEntrega().add(gorisLinks.linkToEstado(pedido.getEnderecoEntrega().getEstadoId(), "estado"));
+		pedidoResponseDTO.getEnderecoEntrega()
+			.add(gorisLinks.linkToCidade(pedido.getEnderecoEntrega().getCidadeId(), "cidade"))
+			.add(gorisLinks.linkToEstado(pedido.getEnderecoEntrega().getEstadoId(), "estado"));
 		
 		pedidoResponseDTO.getItens()
 			.forEach( item -> 

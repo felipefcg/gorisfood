@@ -5,35 +5,56 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
+import br.com.felipe.gorisfood.api.controller.RestauranteController;
+import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.EnderecoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.RestauranteResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
 @Component
-public class RestauranteResponseDtoAssembler {
+public class RestauranteResponseDtoAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteResponseDTO> {
 	
+	public RestauranteResponseDtoAssembler() {
+		super(RestauranteController.class, RestauranteResponseDTO.class);
+	}
+
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private GorisLinks gorisLinks;
 	
-	public RestauranteResponseDTO toDTO(Restaurante restaurante) {
+	@Override
+	public RestauranteResponseDTO toModel(Restaurante restaurante) {
 		
-		return modelMapper.map(restaurante, RestauranteResponseDTO.class); 
+		var restauranteResponseDTO = createModelWithId(restaurante.getId(), restaurante);
+		modelMapper.map(restaurante, restauranteResponseDTO);
+		
+		restauranteResponseDTO.getCozinha()
+			.add(gorisLinks.linkToCozinha(restaurante.getCozinha().getId()));
+		
+		restauranteResponseDTO.getEndereco()
+			.add(gorisLinks.linkToCidade(restaurante.getEndereco().getCidadeId(), "cidade"))
+			.add(gorisLinks.linkToEstado(restaurante.getEndereco().getEstadoId(), "estado"));
+		
+		restauranteResponseDTO
+			.add(gorisLinks.linkToRestaurantes("restaurantes"))
+			.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formas-pagamento"))
+			.add(gorisLinks.linkToResponsaveisRestaurante(restaurante.getId(), "responsaveis"));
+		
+		return restauranteResponseDTO;
 		
 	}
 	
-	public List<RestauranteResponseDTO> toDtoList(List<Restaurante> restaurantes) {
-		return restaurantes.stream()
-					.map(r -> toDTO(r))
-					.toList();
+	@Override
+	public CollectionModel<RestauranteResponseDTO> toCollectionModel(Iterable<? extends Restaurante> restaurantes) {
+		return super.toCollectionModel(restaurantes)
+				.add(gorisLinks.linkToRestaurantes());
 	}
-	
-	public Optional<RestauranteResponseDTO> toDTO(Optional<Restaurante> restaurante) {
-		if(restaurante.isEmpty()) {
-			return Optional.empty();
-		}
-		
-		return Optional.of(toDTO(restaurante.get()));
-		
-	}
+
 }

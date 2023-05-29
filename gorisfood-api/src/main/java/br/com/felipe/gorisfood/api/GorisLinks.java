@@ -18,6 +18,7 @@ import br.com.felipe.gorisfood.api.controller.FluxoPedidoController;
 import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.PedidoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteController;
+import br.com.felipe.gorisfood.api.controller.RestauranteFormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteProdutoContoller;
 import br.com.felipe.gorisfood.api.controller.RestauranteUsuarioResponsavelController;
 import br.com.felipe.gorisfood.api.controller.UsuarioController;
@@ -63,6 +64,11 @@ public class GorisLinks {
 				.withRel(rel);
 	}
 	
+	public Link linkToCozinha(Long cozinhaId) {
+		return linkTo(methodOn(CozinhaController.class).buscar(cozinhaId))
+				.withSelfRel();
+	}
+	
 	//Estados
 	public Link linkToEstados() {
 		return linkTo(EstadoController.class)
@@ -103,6 +109,11 @@ public class GorisLinks {
 	public Link linkToFormaPagamento(Long formaPagamentoId, String rel) {
 		return linkTo(methodOn(FormaPagamentoController.class).buscar(formaPagamentoId, null))
 			   .withRel(rel);
+	}
+	
+	public Link linkToFormasPagamentoRestaurantes(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId))
+				   .withRel(rel);
 	}
 	
 	//Grupos Usuario
@@ -179,6 +190,16 @@ public class GorisLinks {
 			   .withRel(rel);
 	}
 	
+	public Link linkToRestaurantes(String rel) {
+		return linkTo(RestauranteController.class)
+				.withRel(rel);
+	}
+
+	public Link linkToRestaurantes() {
+		return linkTo(RestauranteController.class)
+				.withSelfRel();
+	}
+
 	//Usuarios
 	public Link linkToUsuario(Long usuarioId) {
 		return linkTo(methodOn(UsuarioController.class).buscar(usuarioId))
@@ -199,7 +220,6 @@ public class GorisLinks {
 		return linkTo(UsuarioController.class)
 			   .withRel(rel);
 	}
-	
 	
 	
 }

@@ -4,11 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.request.RestauranteRequestDTO;
+import br.com.felipe.gorisfood.api.model.response.RestauranteApenasNomeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.RestauranteResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.RestauranteBasicoResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +31,10 @@ public interface RestauranteControllerOpenApi {
 	@ApiOperation(value = "Listar restaurantes")
 	@ApiImplicitParam(value = "Nome da projeção de restaurantes", 
 						name = "projecao", paramType = "query", dataTypeClass = String.class, allowableValues = "apenas-nome")
-	List<RestauranteResponseDTO> listar();
+	CollectionModel<RestauranteBasicoResponseDTO> listar();
 	
 	@ApiOperation(value = "Listar restaurantes", hidden = true)
-	List<RestauranteResponseDTO> listarApenasNome();
+	CollectionModel<RestauranteApenasNomeResponseDTO> listarApenasNome();
 
 	@ApiOperation(value = "Busca um restaurante por ID")
 	@ApiResponses({
@@ -71,7 +75,7 @@ public interface RestauranteControllerOpenApi {
 			 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 			 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void ativar(@ApiParam(value = "ID do restaurante", example = "1") Long id);
+	ResponseEntity<Void> ativar(@ApiParam(value = "ID do restaurante", example = "1") Long id);
 	
 	@ApiOperation(value = "Inativa um restaurante por ID")
 	@ApiResponses({
@@ -80,7 +84,7 @@ public interface RestauranteControllerOpenApi {
 			 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 			 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void inativar(@ApiParam(value = "ID do restaurante") Long id);
+	ResponseEntity<Void> inativar(@ApiParam(value = "ID do restaurante") Long id);
 	
 	@ApiOperation(value = "Ativa múltiplos restaurantes")
 	@ApiResponses({
@@ -89,7 +93,7 @@ public interface RestauranteControllerOpenApi {
 				 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 				 					schema = @Schema(implementation = Problema.class))})
 	})
-	void ativarMultiplos(@ApiParam(value = "Lista de IDs de restaurante") List<Long> id);
+	ResponseEntity<Void> ativarMultiplos(@ApiParam(value = "Lista de IDs de restaurante") List<Long> id);
 	
 	@ApiOperation(value = "Inativa múltiplos restaurantes")
 	@ApiResponses({
@@ -98,7 +102,7 @@ public interface RestauranteControllerOpenApi {
 				 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 				 					schema = @Schema(implementation = Problema.class))})
 	})
-	void inativarMultiplos(@ApiParam(value = "Lista de IDs de restaurante") List<Long> id);
+	ResponseEntity<Void> inativarMultiplos(@ApiParam(value = "Lista de IDs de restaurante") List<Long> id);
 	
 	@ApiOperation(value = "Abre um restaurante por ID")
 	@ApiResponses({
@@ -107,7 +111,7 @@ public interface RestauranteControllerOpenApi {
 			 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 			 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void abrir(@ApiParam(value = "ID do restaurante", example = "1") Long id);
+	ResponseEntity<Void> abrir(@ApiParam(value = "ID do restaurante", example = "1") Long id);
 	
 	@ApiOperation(value = "Fecha um restaurante por ID")
 	@ApiResponses({
@@ -116,23 +120,23 @@ public interface RestauranteControllerOpenApi {
 			 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 			 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void fechar(@ApiParam(value = "ID do restaurante", example = "1") Long id);
+	ResponseEntity<Void> fechar(@ApiParam(value = "ID do restaurante", example = "1") Long id);
 	
 	
 	//Endpoints ignorados para continuidade do estudo, deixados habilitados apenas para exemplificação de implementações JPA
-	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
-	List<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId);
-
-	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
-	List<RestauranteResponseDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim);
-	
-	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
-	List<RestauranteResponseDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal);
-
-	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
-	List<RestauranteResponseDTO> buscarPorFreteGratisENome(String nome);
-
-	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
-	Optional<RestauranteResponseDTO> buscarPrimeiro();	
+//	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
+//	CollectionModel<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId);
+//
+//	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
+//	List<RestauranteResponseDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim);
+//	
+//	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
+//	List<RestauranteResponseDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal);
+//
+//	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
+//	List<RestauranteResponseDTO> buscarPorFreteGratisENome(String nome);
+//
+//	@ApiIgnore(value = "Pois esse endpoint foi criado apenas para testes e exemplificação de implementações JPA")
+//	Optional<RestauranteResponseDTO> buscarPrimeiro();	
 
 }
