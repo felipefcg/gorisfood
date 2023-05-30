@@ -28,7 +28,7 @@ public class PedidoResumidoResponseDtoAssembler extends RepresentationModelAssem
 		var pedidoResumidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResumidoResponseDTO);
 		
-		pedidoResumidoResponseDTO.add(gorisLinks.linkToPedidos());
+		pedidoResumidoResponseDTO.add(gorisLinks.linkToPedidos("pedidos"));
 		
 		pedidoResumidoResponseDTO.getRestaurante().add(
 				gorisLinks.linkToRestaurante(pedido.getRestaurante().getId()));

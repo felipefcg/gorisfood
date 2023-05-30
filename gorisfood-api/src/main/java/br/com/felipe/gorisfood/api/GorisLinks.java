@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.api;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.bouncycastle.asn1.iana.IANAObjectIdentifiers;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
@@ -127,7 +128,7 @@ public class GorisLinks {
 	}
 	
 	//Pedidos
-	public Link linkToPedidos() {
+	public Link linkToPedidos(String rel) {
 		
 		var filtroVariables = new TemplateVariables(
 				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
@@ -137,7 +138,7 @@ public class GorisLinks {
 		
 		var pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 		
-		return Link.of(UriTemplate.of(pedidosUrl, filtroVariables.concat(PAGE_VARIABLES)), "pedidos");
+		return Link.of(UriTemplate.of(pedidosUrl, filtroVariables.concat(PAGE_VARIABLES)), rel);
 	}
 	
 	public Link confirmacaoPedido(String codigoPedido, String rel) {
@@ -191,15 +192,23 @@ public class GorisLinks {
 	}
 	
 	public Link linkToRestaurantes(String rel) {
-		return linkTo(RestauranteController.class)
-				.withRel(rel);
+		return templateToRestaurante(rel);
 	}
 
 	public Link linkToRestaurantes() {
-		return linkTo(RestauranteController.class)
-				.withSelfRel();
+		 return templateToRestaurante(IanaLinkRelations.SELF_VALUE);
 	}
 
+	private Link templateToRestaurante(String rel) {
+		Link restauranteLink = linkTo(RestauranteController.class)
+				.withRel(rel);
+		
+		UriTemplate restauranteUriTemplate = restauranteLink
+		 		.getTemplate()
+				.with(new TemplateVariable("projecao", VariableType.REQUEST_PARAM));
+		 
+		 return Link.of(restauranteUriTemplate, restauranteLink.getRel());
+	}
 	public Link linkToRestauranteAbrir(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteController.class).abrir(restauranteId))
 				.withRel(rel);
