@@ -47,6 +47,23 @@ public class RestauranteResponseDtoAssembler extends RepresentationModelAssemble
 			.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formas-pagamento"))
 			.add(gorisLinks.linkToResponsaveisRestaurante(restaurante.getId(), "responsaveis"));
 		
+		if(restaurante.ativacaoPermitida()) {
+			restauranteResponseDTO.add(gorisLinks.linkToRestauranteInativar(restaurante.getId(), "inativar"));
+		} 
+		
+		if(restaurante.inativacaoPermitida()){
+			restauranteResponseDTO.add(gorisLinks.linkToRestauranteAtivar(restaurante.getId(), "ativar"));
+		}
+		
+		if(restaurante.aberturaPermitida()){
+			restauranteResponseDTO.add(gorisLinks.linkToRestauranteAbrir(restaurante.getId(), "abrir"));
+		}
+		
+		if(restaurante.fechamentoPermitido()) {
+			restauranteResponseDTO.add(gorisLinks.linkToRestauranteFechar(restaurante.getId(), "fechar"));
+		} 
+		
+
 		return restauranteResponseDTO;
 		
 	}

@@ -200,6 +200,26 @@ public class GorisLinks {
 				.withSelfRel();
 	}
 
+	public Link linkToRestauranteAbrir(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).abrir(restauranteId))
+				.withRel(rel);
+	}
+	
+	public Link linkToRestauranteFechar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).fechar(restauranteId))
+				.withRel(rel);
+	}
+	
+	public Link linkToRestauranteAtivar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).ativar(restauranteId))
+				.withRel(rel);
+	}
+	
+	public Link linkToRestauranteInativar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).inativar(restauranteId))
+				.withRel(rel);
+	}
+	
 	//Usuarios
 	public Link linkToUsuario(Long usuarioId) {
 		return linkTo(methodOn(UsuarioController.class).buscar(usuarioId))
