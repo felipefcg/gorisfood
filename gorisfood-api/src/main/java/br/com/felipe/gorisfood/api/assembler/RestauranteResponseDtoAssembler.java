@@ -44,7 +44,7 @@ public class RestauranteResponseDtoAssembler extends RepresentationModelAssemble
 		
 		restauranteResponseDTO
 			.add(gorisLinks.linkToRestaurantes("restaurantes"))
-			.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formas-pagamento"))
+			.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formasPagamento"))
 			.add(gorisLinks.linkToResponsaveisRestaurante(restaurante.getId(), "responsaveis"));
 		
 		if(restaurante.ativacaoPermitida()) {

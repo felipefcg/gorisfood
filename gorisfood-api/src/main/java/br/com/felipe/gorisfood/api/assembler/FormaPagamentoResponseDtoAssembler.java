@@ -29,13 +29,19 @@ public class FormaPagamentoResponseDtoAssembler extends RepresentationModelAssem
 		var formaPagamentoResponseDTO = createModelWithId(formaPagamento.getId(), formaPagamento);
 		mapper.map(formaPagamento, formaPagamentoResponseDTO);
 		
-		formaPagamentoResponseDTO.add(gorisLinks.linkToFormasPagamento("formas-pagamento"));
+		formaPagamentoResponseDTO.add(gorisLinks.linkToFormasPagamento("formasPagamento"));
 		
 		return formaPagamentoResponseDTO;
 	}
 	
 	@Override
 	public CollectionModel<FormaPagamentoResponseDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
-		return super.toCollectionModel(entities).add(gorisLinks.linkToFormasPagamento());
+		return super.toCollectionModel(entities)
+				.add(gorisLinks.linkToFormasPagamento());
+	}
+	
+	public CollectionModel<FormaPagamentoResponseDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities, Long restauranteId) {
+		return super.toCollectionModel(entities)
+				.add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId));
 	}
 }

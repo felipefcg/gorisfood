@@ -29,7 +29,10 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	
 	@GetMapping
 	public CollectionModel<FormaPagamentoResponseDTO> listar(@PathVariable Long restauranteId){
-		return formaPagamentoAssembler.toCollectionModel(restauranteService.listarFormasPagamentoDoRestaurante(restauranteId));
+		return formaPagamentoAssembler.toCollectionModel(
+				restauranteService.listarFormasPagamentoDoRestaurante(restauranteId),
+				restauranteId
+		);
 	}
 	
 	@PutMapping("{formaPagamentoId}")
