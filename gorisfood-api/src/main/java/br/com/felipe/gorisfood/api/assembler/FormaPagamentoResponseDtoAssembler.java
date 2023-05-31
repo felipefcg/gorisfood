@@ -40,8 +40,4 @@ public class FormaPagamentoResponseDtoAssembler extends RepresentationModelAssem
 				.add(gorisLinks.linkToFormasPagamento());
 	}
 	
-	public CollectionModel<FormaPagamentoResponseDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities, Long restauranteId) {
-		return super.toCollectionModel(entities)
-				.add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId));
-	}
 }
