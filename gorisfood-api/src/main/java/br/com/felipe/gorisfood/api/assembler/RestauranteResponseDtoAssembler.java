@@ -32,20 +32,22 @@ public class RestauranteResponseDtoAssembler extends RepresentationModelAssemble
 	@Override
 	public RestauranteResponseDTO toModel(Restaurante restaurante) {
 		
-		var restauranteResponseDTO = createModelWithId(restaurante.getId(), restaurante);
+		var restauranteResponseDTO = createModelWithId(restaurante.getId(), restaurante)
+				.add(gorisLinks.linkToRestaurantes("restaurantes"))
+				.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formasPagamento"))
+				.add(gorisLinks.linkToResponsaveisRestaurante(restaurante.getId(), "responsaveis"))
+				.add(gorisLinks.linkToProdutos(restaurante.getId(), "produtos"));
+		
 		modelMapper.map(restaurante, restauranteResponseDTO);
 		
 		restauranteResponseDTO.getCozinha()
 			.add(gorisLinks.linkToCozinha(restaurante.getCozinha().getId()));
 		
-		restauranteResponseDTO.getEndereco()
-			.add(gorisLinks.linkToCidade(restaurante.getEndereco().getCidadeId(), "cidade"))
-			.add(gorisLinks.linkToEstado(restaurante.getEndereco().getEstadoId(), "estado"));
-		
-		restauranteResponseDTO
-			.add(gorisLinks.linkToRestaurantes("restaurantes"))
-			.add(gorisLinks.linkToFormasPagamentoRestaurantes(restaurante.getId(), "formasPagamento"))
-			.add(gorisLinks.linkToResponsaveisRestaurante(restaurante.getId(), "responsaveis"));
+		if(restauranteResponseDTO.getEndereco() != null) {
+			restauranteResponseDTO.getEndereco()
+				.add(gorisLinks.linkToCidade(restaurante.getEndereco().getCidadeId(), "cidade"))
+				.add(gorisLinks.linkToEstado(restaurante.getEndereco().getEstadoId(), "estado"));
+		}
 		
 		if(restaurante.ativacaoPermitida()) {
 			restauranteResponseDTO.add(gorisLinks.linkToRestauranteInativar(restaurante.getId(), "inativar"));

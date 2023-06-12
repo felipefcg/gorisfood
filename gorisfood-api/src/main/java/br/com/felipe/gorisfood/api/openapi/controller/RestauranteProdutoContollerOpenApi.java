@@ -1,13 +1,7 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.request.ProdutoRequestDTO;
@@ -33,9 +27,9 @@ public interface RestauranteProdutoContollerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	List<ProdutoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	CollectionModel<ProdutoResponseDTO> listar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 										  @ApiParam(value = "Indica se deve ou não incluir produtos inativos no resultado da listagem",
-												    example = "false", defaultValue = "false") boolean incluirInativos);
+												    example = "false", defaultValue = "false") Boolean incluirInativos);
 	
 	@ApiOperation("Busca o produto de um restaurante")
 	@ApiResponses({

@@ -3,7 +3,6 @@ package br.com.felipe.gorisfood.api;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import org.bouncycastle.asn1.iana.IANAObjectIdentifiers;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
@@ -186,6 +185,16 @@ public class GorisLinks {
 	public Link linkToProduto(Long produtoId, Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteProdutoContoller.class).buscar(restauranteId, produtoId))
 			  .withRel(rel);
+	}
+	
+	public Link linkToProdutos(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteProdutoContoller.class).listar(restauranteId, null))
+			  .withRel(rel);
+	}
+	
+	public Link linkToProdutos(Long restauranteId) {
+		return linkTo(methodOn(RestauranteProdutoContoller.class).listar(restauranteId, null))
+			  .withSelfRel();
 	}
 	
 	//Responsaveis Restaurante
