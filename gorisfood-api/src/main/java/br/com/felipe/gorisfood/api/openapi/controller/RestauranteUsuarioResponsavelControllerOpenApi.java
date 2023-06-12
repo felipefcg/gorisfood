@@ -2,6 +2,7 @@ package br.com.felipe.gorisfood.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.UsuarioResponseDTO;
@@ -34,7 +35,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ResponseEntity<Void> associar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 						 @ApiParam(value = "ID do usuário", required = true) Long usuarioId);
 	
 	@ApiOperation("Desssociação de restaurante com usuário responsável")
@@ -44,6 +45,6 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		 		 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 		 		 					schema = @Schema(implementation = Problema.class))})
 	})
-	void desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
+	ResponseEntity<Void> desassociar(@ApiParam(value = "ID do restaurante", required = true) Long restauranteId, 
 							@ApiParam(value = "ID do usuário", required = true)Long usuarioId);
 }

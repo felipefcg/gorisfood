@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,20 +35,28 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@GetMapping
 	public CollectionModel<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
-		return usuarioAssembler.toCollectionModel(restaurante.getResponsaveis())
+		 var usuarioCollectionModel = usuarioAssembler.toCollectionModel(restaurante.getResponsaveis())
 				.removeLinks()
-				.add(gorisLinks.linkToResponsaveisRestaurante(restauranteId)); 
+				.add(gorisLinks.linkToResponsaveisRestaurante(restauranteId))
+				.add(gorisLinks.linkToResponsaveisRestauranteAssociar(restauranteId, "associar"));
+		 
+		 usuarioCollectionModel.getContent()
+		 	.forEach( u -> u.add(
+		 			gorisLinks.linkToResponsaveisRestauranteDesassociar(restauranteId, u.getId(), "desassociar"))
+		 	);
+		 	
+		 return usuarioCollectionModel;
 	}
 	
 	@PutMapping("{usuarioId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
 		restauranteService.associarUsuarioResponsavel(restauranteId, usuarioId);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("{usuarioId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
 		restauranteService.desassociarUsuarioResponsavel(restauranteId, usuarioId);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -198,6 +198,16 @@ public class GorisLinks {
 	    return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
 	}
 	
+	public Link linkToResponsaveisRestauranteAssociar(Long restauranteId, String rel) {
+	    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+	            .associar(restauranteId, null)).withRel(rel);
+	}
+	
+	public Link linkToResponsaveisRestauranteDesassociar(Long restauranteId, Long usuarioId, String rel) {
+	    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+	            .desassociar(restauranteId, usuarioId)).withRel(rel);
+	}
+	
 	//Restaurantes
 	public Link linkToRestaurante(Long restauranteId) {
 		return linkTo(methodOn(RestauranteController.class).buscar(restauranteId))
@@ -267,6 +277,7 @@ public class GorisLinks {
 		return linkTo(UsuarioController.class)
 			   .withRel(rel);
 	}
+
 
 	
 	
