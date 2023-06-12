@@ -129,6 +129,12 @@ public class GorisLinks {
 				
 	}
 	
+	public Link linkToFormasPagamentoRestaurantesAssociar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+							.associar(restauranteId, null))
+						.withRel(rel);
+	}
+	
 	//Grupos Usuario
 	public Link linkToGruposUsuario(Long usuarioId, String rel) {
 	    return linkTo(methodOn(UsuarioGrupoController.class)

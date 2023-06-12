@@ -37,7 +37,8 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 		var formasPagamentoDTO = formaPagamentoAssembler.toCollectionModel(
 				restauranteService.listarFormasPagamentoDoRestaurante(restauranteId)
 			).removeLinks()
-			 .add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId));
+			 .add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId))
+			 .add(gorisLinks.linkToFormasPagamentoRestaurantesAssociar(restauranteId, "associar"));
 
 		formasPagamentoDTO.getContent()
 			.forEach( formaPagamentoDTO -> 
