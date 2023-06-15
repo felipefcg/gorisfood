@@ -20,6 +20,7 @@ import br.com.felipe.gorisfood.api.controller.PedidoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteController;
 import br.com.felipe.gorisfood.api.controller.RestauranteFormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteProdutoContoller;
+import br.com.felipe.gorisfood.api.controller.RestauranteProdutoFotoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteUsuarioResponsavelController;
 import br.com.felipe.gorisfood.api.controller.UsuarioController;
 import br.com.felipe.gorisfood.api.controller.UsuarioGrupoController;
@@ -197,6 +198,10 @@ public class GorisLinks {
 			  .withSelfRel();
 	}
 	
+	public Link linkToProdutoFoto(Long restauranteId, Long produtoId, String rel) {
+		return linkTo(methodOn(RestauranteProdutoFotoController.class).buscar(restauranteId, produtoId))
+				.withRel(rel);
+	}
 	//Responsaveis Restaurante
 	public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
 	    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)

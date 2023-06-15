@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.api.model.response;
 
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FotoProdutoReponseDTO {
+public class FotoProdutoReponseDTO extends RepresentationModel<FotoProdutoReponseDTO> {
 	
 	@ApiModelProperty(example = "e15cf75c-fc83-440c-9b1c-3f093402045b_Prime-Rib.jpg")
 	private String nomeArquivo;

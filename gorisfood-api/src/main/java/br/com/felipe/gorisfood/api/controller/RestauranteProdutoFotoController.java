@@ -52,7 +52,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	
 	@GetMapping
 	public FotoProdutoReponseDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-		return assembler.toDto(fotoProdutoService.buscar(restauranteId, produtoId));
+		return assembler.toModel(fotoProdutoService.buscar(restauranteId, produtoId));
 	}
 	
 	@GetMapping(produces = MediaType.ALL_VALUE)
@@ -92,7 +92,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		
 		fotoProdutoModel.setProduto(preencherProduto(produtoId, restauranteId));
 		fotoProdutoModel = fotoProdutoService.salvar(fotoProdutoModel, fotoProduto.getArquivo().getInputStream());
-		return assembler.toDto(fotoProdutoModel);
+		return assembler.toModel(fotoProdutoModel);
 	}
 	
 	@DeleteMapping

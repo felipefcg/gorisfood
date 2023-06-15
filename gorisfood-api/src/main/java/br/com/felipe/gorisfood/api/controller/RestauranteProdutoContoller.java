@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.assembler.ProdutoRequestDtoDisassembler;
 import br.com.felipe.gorisfood.api.assembler.ProdutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.request.ProdutoRequestDTO;
 import br.com.felipe.gorisfood.api.model.response.ProdutoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.controller.RestauranteProdutoContollerOpenApi;
+import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 
 @RestController
@@ -37,16 +39,21 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 	@Autowired
 	private ProdutoRequestDtoDisassembler desassembler;
 	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public CollectionModel<ProdutoResponseDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false) Boolean incluirInativos){
+	public CollectionModel<ProdutoResponseDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos){
 		
 		return assembler.toCollectionModel(service.listar(restauranteId, incluirInativos), restauranteId);
 	}
 	
 	@GetMapping("{produtoId}")
 	public ProdutoResponseDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId){
-		return assembler.toModel(service.buscar(produtoId, restauranteId));
+		Produto produto = service.buscar(produtoId, restauranteId);
+		return assembler.toModel(produto)
+				.add(gorisLinks.linkToProdutoFoto(produto.getRestaurante().getId(), produto.getId(), "foto"));
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
