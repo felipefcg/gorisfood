@@ -6,23 +6,41 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
+import br.com.felipe.gorisfood.api.controller.GrupoController;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Grupo;
 
 @Component
-public class GrupoResponseDtoAssembler {
+public class GrupoResponseDtoAssembler extends RepresentationModelAssemblerSupport<Grupo, GrupoResponseDTO> {
+
+	public GrupoResponseDtoAssembler() {
+		super(GrupoController.class, GrupoResponseDTO.class);
+	}
 
 	@Autowired
 	private ModelMapper mapper;
 	
-	public GrupoResponseDTO toDto(Grupo model) {
-		return mapper.map(model, GrupoResponseDTO.class);
+	@Autowired
+	private GorisLinks gorisLinks;
+	
+	@Override
+	public GrupoResponseDTO toModel(Grupo grupo) {
+		var model = createModelWithId(grupo.getId(), grupo)
+						.add(gorisLinks.linkToGrupos("grupos"))
+						.add(gorisLinks.linkToPermissoes(grupo.getId(), "permissoes"));
+		mapper.map(grupo, model);
+		return model;
 	}
 	
-	public List<GrupoResponseDTO> toDtoList(Collection<Grupo> modelList) {
-		var typeToken = new TypeToken<List<GrupoResponseDTO>> () {};
-		return mapper.map(modelList, typeToken.getType());
+	@Override
+	public CollectionModel<GrupoResponseDTO> toCollectionModel(Iterable<? extends Grupo> grupos) {
+		return super.toCollectionModel(grupos)
+				.add(gorisLinks.linkToGrupos());
 	}
+	
 }

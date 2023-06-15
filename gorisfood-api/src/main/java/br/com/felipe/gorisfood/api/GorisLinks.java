@@ -16,6 +16,8 @@ import br.com.felipe.gorisfood.api.controller.CozinhaController;
 import br.com.felipe.gorisfood.api.controller.EstadoController;
 import br.com.felipe.gorisfood.api.controller.FluxoPedidoController;
 import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
+import br.com.felipe.gorisfood.api.controller.GrupoController;
+import br.com.felipe.gorisfood.api.controller.GrupoPermissaoController;
 import br.com.felipe.gorisfood.api.controller.PedidoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteController;
 import br.com.felipe.gorisfood.api.controller.RestauranteFormaPagamentoController;
@@ -143,6 +145,22 @@ public class GorisLinks {
 
 	public Link linkToGruposUsuario(Long usuarioId) {
 	    return linkToGruposUsuario(usuarioId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToGrupos() {
+		return linkTo(methodOn(GrupoController.class).listar())
+				.withSelfRel();
+	}
+	
+	public Link linkToGrupos(String rel) {
+		return linkTo(methodOn(GrupoController.class).listar())
+				.withRel(rel);
+	}
+	
+	//Permisso~es
+	public Link linkToPermissoes(Long grupoId, String rel) {
+		return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId))
+				.withRel(rel);
 	}
 	
 	//Pedidos

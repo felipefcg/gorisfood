@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -21,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os grupos de usuários")
-	List<GrupoResponseDTO> listar();
+	CollectionModel<GrupoResponseDTO> listar();
 	
 	@ApiOperation("Busca o grupo por ID")
 	@ApiResponses ({

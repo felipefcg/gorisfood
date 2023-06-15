@@ -1,10 +1,9 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,13 +37,13 @@ public class GrupoController implements GrupoControllerOpenApi {
 	private GrupoResponseDtoAssembler assembler;
 	
 	@GetMapping
-	public List<GrupoResponseDTO> listar(){
-		return assembler.toDtoList(service.listar());
+	public CollectionModel<GrupoResponseDTO> listar(){
+		return assembler.toCollectionModel(service.listar());
 	}
 	
 	@GetMapping("{id}")
 	public GrupoResponseDTO buscar(@PathVariable Long id) {
-		return assembler.toDto(service.buscar(id));
+		return assembler.toModel(service.buscar(id));
 	}
 	
 	@DeleteMapping("{id}")
@@ -57,13 +56,13 @@ public class GrupoController implements GrupoControllerOpenApi {
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoResponseDTO criar(@RequestBody @Valid GrupoRequestDTO dto) {
 		var grupo = desassembler.toModel(dto);
-		return assembler.toDto(service.salvar(grupo));
+		return assembler.toModel(service.salvar(grupo));
 	}
 	
 	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public GrupoResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid GrupoRequestDTO dto) {
 		var grupo = service.buscar(id);
 		desassembler.copyDtotoModel(dto, grupo);
-		return assembler.toDto(service.salvar(grupo));
+		return assembler.toModel(service.salvar(grupo));
 	}
 }
