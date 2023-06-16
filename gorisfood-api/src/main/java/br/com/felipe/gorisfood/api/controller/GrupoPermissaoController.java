@@ -1,21 +1,23 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.assembler.PermissaoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.controller.GrupoPermissaoControllerOpenApi;
+import br.com.felipe.gorisfood.domain.model.Permissao;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController
@@ -28,21 +30,34 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	@Autowired
 	private PermissaoResponseDtoAssembler permissaoAssembler;
 	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	@GetMapping
-	public List<PermissaoResponseDTO> listar(@PathVariable Long grupoId) {
+	public CollectionModel<PermissaoResponseDTO> listar(@PathVariable Long grupoId) {
 		var grupo = grupoService.buscar(grupoId);
-		return permissaoAssembler.toDtoList(grupo.getPermissoes());
+		var permissoes = grupo.getPermissoes();
+		
+		CollectionModel<PermissaoResponseDTO> collectionModel = permissaoAssembler.toCollectionModel(permissoes)
+			.removeLinks()
+			.add(gorisLinks.linkToGrupoPermissaoAssociar(grupoId, "associar"))
+			.add(gorisLinks.linkToGrupoPermissoes(grupoId));
+		
+		collectionModel.getContent()
+			.forEach(p -> p.add(gorisLinks.linkToGrupoPermissaoDesassociar(grupoId, p.getId(), "desassociar")));
+		
+		return collectionModel;
 	}
 	
 	@PutMapping("{permissaoId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void associar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+	public ResponseEntity<Void> associar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
 		grupoService.adicionarPermissao(grupoId, permissaoId);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("{permissaoId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void desassociar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+	public ResponseEntity<Void> desassociar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
 		grupoService.removerPermissao(grupoId, permissaoId);
+		return ResponseEntity.noContent().build();
 	}
 }

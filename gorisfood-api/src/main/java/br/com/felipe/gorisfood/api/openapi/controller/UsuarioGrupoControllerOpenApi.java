@@ -1,7 +1,6 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
@@ -28,7 +27,7 @@ public interface UsuarioGrupoControllerOpenApi {
 				 			schema = @Schema(implementation = Problema.class))
 		)
 	})
-	List<GrupoResponseDTO> listar(@ApiParam(value = "ID do usuário", required = true) Long usuarioId);
+	CollectionModel<GrupoResponseDTO> listar(@ApiParam(value = "ID do usuário", required = true) Long usuarioId);
 
 	@ApiOperation("Associação de gurpos com usuário")
 	@ApiResponses({

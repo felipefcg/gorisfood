@@ -19,6 +19,7 @@ import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.GrupoController;
 import br.com.felipe.gorisfood.api.controller.GrupoPermissaoController;
 import br.com.felipe.gorisfood.api.controller.PedidoController;
+import br.com.felipe.gorisfood.api.controller.PermissoesController;
 import br.com.felipe.gorisfood.api.controller.RestauranteController;
 import br.com.felipe.gorisfood.api.controller.RestauranteFormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.RestauranteProdutoContoller;
@@ -157,11 +158,33 @@ public class GorisLinks {
 				.withRel(rel);
 	}
 	
-	//Permisso~es
-	public Link linkToPermissoes(Long grupoId, String rel) {
+	public Link linkToGrupoPermissoes(Long grupoId, String rel) {
 		return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId))
 				.withRel(rel);
 	}
+	
+	public Link linkToGrupoPermissoes(Long grupoId) {
+		return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId))
+				.withSelfRel();
+	}
+	
+	public Link linkToGrupoPermissaoDesassociar(Long grupoId, Long permissaoId, String rel) {
+		return linkTo(methodOn(GrupoPermissaoController.class).desassociar(grupoId, permissaoId))
+				.withRel(rel);
+	}
+	
+	public Link linkToGrupoPermissaoAssociar(Long grupoId, String rel) {
+		return linkTo(methodOn(GrupoPermissaoController.class).associar(grupoId, null))
+				.withRel(rel);
+	}
+	
+	//Permissões
+	public Link linkToPermissoes() {
+		return linkTo(PermissoesController.class)
+				.withSelfRel();
+	}
+	
+	
 	
 	//Pedidos
 	public Link linkToPedidos(String rel) {
@@ -309,7 +332,6 @@ public class GorisLinks {
 		return linkTo(UsuarioController.class)
 			   .withRel(rel);
 	}
-
 
 	
 	

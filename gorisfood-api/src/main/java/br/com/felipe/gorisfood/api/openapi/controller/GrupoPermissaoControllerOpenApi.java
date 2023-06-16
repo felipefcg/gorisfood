@@ -1,8 +1,8 @@
 package br.com.felipe.gorisfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
@@ -28,7 +28,7 @@ public interface GrupoPermissaoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	List<PermissaoResponseDTO> listar(@ApiParam(value = "ID do grupo") Long grupoId);
+	CollectionModel<PermissaoResponseDTO> listar(@ApiParam(value = "ID do grupo") Long grupoId);
 	
 	@ApiOperation("Associação de permissão com  grupo")
 	@ApiResponses ({
@@ -38,7 +38,7 @@ public interface GrupoPermissaoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	void associar (@ApiParam(value = "ID do grupo") Long grupoId, @ApiParam(value = "ID do grupo") Long permissaoId);
+	ResponseEntity<Void> associar (@ApiParam(value = "ID do grupo") Long grupoId, @ApiParam(value = "ID do grupo") Long permissaoId);
 	
 
 	@ApiOperation("Desassociação de permissão com  grupo")
@@ -49,5 +49,5 @@ public interface GrupoPermissaoControllerOpenApi {
 			  				 schema = @Schema(implementation = Problema.class))
 		)
 	})
-	void desassociar (@ApiParam(value = "ID do grupo") Long grupoId, @ApiParam(value = "ID do grupo") Long permissaoId);
+	ResponseEntity<Void> desassociar (@ApiParam(value = "ID do grupo") Long grupoId, @ApiParam(value = "ID do grupo") Long permissaoId);
 }

@@ -1,10 +1,6 @@
 package br.com.felipe.gorisfood.api.assembler;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -32,7 +28,7 @@ public class GrupoResponseDtoAssembler extends RepresentationModelAssemblerSuppo
 	public GrupoResponseDTO toModel(Grupo grupo) {
 		var model = createModelWithId(grupo.getId(), grupo)
 						.add(gorisLinks.linkToGrupos("grupos"))
-						.add(gorisLinks.linkToPermissoes(grupo.getId(), "permissoes"));
+						.add(gorisLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
 		mapper.map(grupo, model);
 		return model;
 	}

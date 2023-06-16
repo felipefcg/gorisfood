@@ -6,23 +6,36 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
+import br.com.felipe.gorisfood.api.controller.PermissoesController;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Permissao;
 
 @Component
-public class PermissaoResponseDtoAssembler {
+public class PermissaoResponseDtoAssembler extends RepresentationModelAssemblerSupport<Permissao, PermissaoResponseDTO> {
 
+	public PermissaoResponseDtoAssembler() {
+		super(PermissoesController.class, PermissaoResponseDTO.class);
+	}
+
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	@Autowired
 	private ModelMapper mapper;
 	
-	public PermissaoResponseDTO toDto(Permissao model) {
-		return mapper.map(model, PermissaoResponseDTO.class);
+	@Override
+	public PermissaoResponseDTO toModel(Permissao permissao) {
+		return mapper.map(permissao, PermissaoResponseDTO.class);
 	}
 	
-	public List<PermissaoResponseDTO> toDtoList(Collection<Permissao> modelList) {
-		var typeToken = new TypeToken<List<PermissaoResponseDTO>>() {};
-		return mapper.map(modelList, typeToken.getType());
+	@Override
+	public CollectionModel<PermissaoResponseDTO> toCollectionModel(Iterable<? extends Permissao> permissoes) {
+		return super.toCollectionModel(permissoes)
+				.add(gorisLinks.linkToPermissoes());
 	}
 }

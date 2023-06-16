@@ -1,5 +1,7 @@
 package br.com.felipe.gorisfood.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,9 @@ public class CadastroPermissaoService {
 	public Permissao buscar(Long id) {
 		return repository.findById(id)
 				.orElseThrow(() -> new PermissaoNaoEncontradaException(id));
+	}
+
+	public List<Permissao> buscar() {
+		return repository.findAll();
 	}
 }

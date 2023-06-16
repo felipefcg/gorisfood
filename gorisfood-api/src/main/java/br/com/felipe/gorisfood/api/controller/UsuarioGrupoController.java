@@ -1,8 +1,7 @@
 package br.com.felipe.gorisfood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.assembler.GrupoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.controller.UsuarioGrupoControllerOpenApi;
@@ -28,10 +28,15 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	@Autowired
 	private GrupoResponseDtoAssembler grupoAssembler;
 	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
 	@GetMapping
-	public List<GrupoResponseDTO> listar(@PathVariable Long usuarioId){
+	public CollectionModel<GrupoResponseDTO> listar(@PathVariable Long usuarioId){
 		var usuario = usuarioService.buscar(usuarioId);
-		return grupoAssembler.toDtoList(usuario.getGrupos()); 
+		return grupoAssembler.toCollectionModel(usuario.getGrupos())
+				.removeLinks()
+				.add(gorisLinks.linkToGruposUsuario(usuarioId)); 
 	}
 	
 	@PutMapping("{grupoId}")
