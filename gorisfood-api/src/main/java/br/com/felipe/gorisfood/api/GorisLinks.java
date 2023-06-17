@@ -194,7 +194,10 @@ public class GorisLinks {
 				.withSelfRel();
 	}
 	
-	
+	public Link linkToPermissoes(String rel) {
+		return linkTo(PermissoesController.class)
+				.withRel(rel);
+	}
 	
 	//Pedidos
 	public Link linkToPedidos(String rel) {
