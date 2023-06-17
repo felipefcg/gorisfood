@@ -148,6 +148,16 @@ public class GorisLinks {
 	    return linkToGruposUsuario(usuarioId, IanaLinkRelations.SELF.value());
 	}
 	
+	public Link linkToGruposUsuarioAssociar(Long usuarioId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).adicionar(usuarioId, null))
+				.withRel(rel);
+	}
+	
+	public Link linkToGruposUsuarioDesassociar(Long usuarioId, Long grupoId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).remover(usuarioId, grupoId))
+				.withRel(rel);
+	}
+	
 	public Link linkToGrupos() {
 		return linkTo(methodOn(GrupoController.class).listar())
 				.withSelfRel();
@@ -333,7 +343,5 @@ public class GorisLinks {
 			   .withRel(rel);
 	}
 
-	
-	
 	
 }

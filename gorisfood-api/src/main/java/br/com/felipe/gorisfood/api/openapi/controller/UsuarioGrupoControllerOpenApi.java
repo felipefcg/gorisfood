@@ -2,6 +2,7 @@ package br.com.felipe.gorisfood.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
@@ -37,7 +38,7 @@ public interface UsuarioGrupoControllerOpenApi {
 							   mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	void adicionar(@ApiParam(value = "ID do usuário", required = true) Long usuarioId, @ApiParam(value = "ID do grupo", required = true) Long grupoId);
+	ResponseEntity<Void> adicionar(@ApiParam(value = "ID do usuário", required = true) Long usuarioId, @ApiParam(value = "ID do grupo", required = true) Long grupoId);
 	
 	@ApiOperation("Desassociação de grupos com usuário")
 	@ApiResponses({
@@ -47,6 +48,6 @@ public interface UsuarioGrupoControllerOpenApi {
 							   mediaType = MediaType.APPLICATION_JSON_VALUE)}
 		)
 	})
-	void remover(@ApiParam(value = "ID do usuário", required = true) Long usuarioId, @ApiParam(value = "ID do grupo", required = true) Long grupoId);
+	ResponseEntity<Void> remover(@ApiParam(value = "ID do usuário", required = true) Long usuarioId, @ApiParam(value = "ID do grupo", required = true) Long grupoId);
 	
 }
