@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,13 +20,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.models.RefModel;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ModelSpecificationBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,11 +31,9 @@ import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ModelSpecification;
 import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.ParameterStyle;
 import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.RequestParameter;
 import springfox.documentation.service.Response;
@@ -73,6 +69,7 @@ public class SpringFoxConfig {
 				.ignoredParameterTypes(ServletWebRequest.class)
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 //				.alternateTypeRules(													// TODO: Removido esse código em detrimento da lina abaixo
 //					AlternateTypeRules.newRule(											// ".alternateTypeRules(buildPageTypeRole(CozinhaResponseDTO.class))"
 //						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 	// que deixa o código mais limpo e sem a necessidade de ficar recriando 
