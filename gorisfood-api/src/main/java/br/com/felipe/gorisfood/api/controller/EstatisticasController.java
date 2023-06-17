@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.felipe.gorisfood.api.GorisLinks;
 import br.com.felipe.gorisfood.api.openapi.controller.EstatisticasControllerOpenApi;
 import br.com.felipe.gorisfood.domain.filter.VendaDiariaFilter;
 import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
@@ -26,6 +28,19 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	
 	@Autowired
 	private VendaReportService vendaReportService;
+	
+	@Autowired
+	private GorisLinks gorisLinks;
+	
+	public class EstatisticaResponseDTO extends RepresentationModel<EstatisticaResponseDTO> {}
+	
+	@GetMapping
+	public EstatisticaResponseDTO listaEndpointsEstatisticas() {
+		var dto = new EstatisticaResponseDTO();
+		dto.add(gorisLinks.linkToEstatiticasVendasDiarias("vendas-diarias"));
+		
+		return dto;
+	}
 	
 	@GetMapping("vendas-diarias")
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, @RequestParam(defaultValue = "+00:00") String timeOffset) {

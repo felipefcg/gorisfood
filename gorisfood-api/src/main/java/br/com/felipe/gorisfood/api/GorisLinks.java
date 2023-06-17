@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.controller.CidadeController;
 import br.com.felipe.gorisfood.api.controller.CozinhaController;
 import br.com.felipe.gorisfood.api.controller.EstadoController;
+import br.com.felipe.gorisfood.api.controller.EstatisticasController;
 import br.com.felipe.gorisfood.api.controller.FluxoPedidoController;
 import br.com.felipe.gorisfood.api.controller.FormaPagamentoController;
 import br.com.felipe.gorisfood.api.controller.GrupoController;
@@ -346,5 +347,22 @@ public class GorisLinks {
 			   .withRel(rel);
 	}
 
-	
+	public Link linkToEstatiticas(String rel) {
+		return linkTo(EstatisticasController.class)
+				.withRel(rel);
+	}
+
+	public Link linkToEstatiticasVendasDiarias(String rel) {
+		Link vendasDiariasLink = linkTo(methodOn(EstatisticasController.class).consultarVendasDiarias(null, null))
+				.withRel(rel);
+			
+			var vendasDiariasUriTemplate = vendasDiariasLink
+				.getTemplate()
+				.with("dataCriacaoInicio", VariableType.REQUEST_PARAM)
+				.with("dataCriacaoFim", VariableType.REQUEST_PARAM)
+				.with("restauranteId", VariableType.REQUEST_PARAM)
+				.with("timeOffset", VariableType.REQUEST_PARAM);
+			
+			return Link.of(vendasDiariasUriTemplate, vendasDiariasLink.getRel());
+	}
 }

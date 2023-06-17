@@ -28,6 +28,7 @@ public class RootEntyPointController {
 		root.add(gorisLinks.linkToFormasPagamento("formas-pagamento"));
 		root.add(gorisLinks.linkToEstados("estados"));
 		root.add(gorisLinks.linkToCidades("cidades"));
+		root.add(gorisLinks.linkToEstatiticas("estatisticas"));
 		
 		return root;
 	}

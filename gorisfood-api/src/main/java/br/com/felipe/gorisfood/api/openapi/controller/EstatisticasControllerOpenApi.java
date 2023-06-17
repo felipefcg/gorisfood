@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import br.com.felipe.gorisfood.api.controller.EstatisticasController.EstatisticaResponseDTO;
 import br.com.felipe.gorisfood.domain.filter.VendaDiariaFilter;
 import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
 import io.swagger.annotations.Api;
@@ -14,6 +15,9 @@ import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
+	
+	@ApiOperation(value = "Estatísticas", hidden = true)
+	public EstatisticaResponseDTO listaEndpointsEstatisticas();
 	
 	@ApiOperation(value = "Consulta estatísticas de vendas diárias", hidden = false)
 	@ApiImplicitParams({
