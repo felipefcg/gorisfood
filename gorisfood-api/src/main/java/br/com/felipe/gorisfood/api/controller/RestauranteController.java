@@ -93,11 +93,11 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
-	@GetMapping(value = "por-nome")
-	@ResponseStatus(value = HttpStatus.OK)
-	public CollectionModel<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
-		return restauranteResponseDtoAssembler.toCollectionModel(service.buscarPorNomeECozinha(nome, cozinhaId));
-	}
+//	@GetMapping(value = "por-nome")
+//	@ResponseStatus(value = HttpStatus.OK)
+//	public CollectionModel<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
+//		return restauranteResponseDtoAssembler.toCollectionModel(service.buscarPorNomeECozinha(nome, cozinhaId));
+//	}
 	
 //	@GetMapping(value = "por-nome-e-taxa")
 //	@ResponseStatus(value = HttpStatus.OK)

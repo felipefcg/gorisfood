@@ -34,6 +34,7 @@ public interface RestauranteControllerOpenApi {
 	CollectionModel<RestauranteBasicoResponseDTO> listar();
 	
 	@ApiOperation(value = "Listar restaurantes", hidden = true)
+	@ApiIgnore
 	CollectionModel<RestauranteApenasNomeResponseDTO> listarApenasNome();
 
 	@ApiOperation(value = "Busca um restaurante por ID")
