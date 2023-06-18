@@ -23,10 +23,12 @@ import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.EstadoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.EstadosModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.FormasPagamentoModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
@@ -87,7 +89,8 @@ public class SpringFoxConfig {
 						buildPagedModelTypeRole(CozinhaResponseDTO.class, CozinhasModelOpenApi.class),
 						buildPageTypeRole(PedidoResumidoResponseDTO.class),
 						buildCollectionModelToModelOpenApiTypeRole(CidadeResponseDTO.class, CidadesModelOpenApi.class),
-						buildCollectionModelToModelOpenApiTypeRole(EstadoResponseDTO.class, EstadosModelOpenApi.class))
+						buildCollectionModelToModelOpenApiTypeRole(EstadoResponseDTO.class, EstadosModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(FormaPagamentoResponseDTO.class, FormasPagamentoModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
