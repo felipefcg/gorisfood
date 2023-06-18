@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
@@ -73,12 +75,13 @@ public class SpringFoxConfig {
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
-//				.alternateTypeRules(													// TODO: Removido esse código em detrimento da lina abaixo
+//				.alternateTypeRules(													// TODO: Removido esse código em detrimento da linha abaixo
 //					AlternateTypeRules.newRule(											// ".alternateTypeRules(buildPageTypeRole(CozinhaResponseDTO.class))"
 //						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 	// que deixa o código mais limpo e sem a necessidade de ficar recriando 
 //						CozinhasModelOpenApi.class))									// classes vazias. Conforme explicado na classe CozinhasModelOpenApi
 				.alternateTypeRules(
-						buildPageTypeRole(CozinhaResponseDTO.class),
+//						buildPageTypeRole(CozinhaResponseDTO.class),
+						buildCozinhaPagedModelTypeRole(),
 						buildPageTypeRole(PedidoResumidoResponseDTO.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeResponseDTO.class),
@@ -108,6 +111,13 @@ public class SpringFoxConfig {
 	@Bean
 	public JacksonModuleRegistrar springFoxJacksonConfig() {
 		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
+	}
+	
+	private <T> AlternateTypeRule buildCozinhaPagedModelTypeRole() {
+		var typeResolver = new TypeResolver();
+		return AlternateTypeRules.newRule(
+				typeResolver.resolve(PagedModel.class, CozinhaResponseDTO.class), 
+				typeResolver.resolve(CozinhasModelOpenApi.class));
 	}
 	
 	private <T> AlternateTypeRule buildPageTypeRole(Class<T> classResponseDTO) {
