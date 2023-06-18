@@ -29,6 +29,8 @@ import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.ProdutoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.RestauranteBasicoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.UsuarioResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.EstadosModelOpenApi;
@@ -39,6 +41,8 @@ import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PedidosResumoModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PermissoesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.ProdutosModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.RestaurantesBasicoModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.UsuariosModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -97,7 +101,9 @@ public class SpringFoxConfig {
 						buildCollectionModelToModelOpenApiTypeRole(GrupoResponseDTO.class, GruposModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(PermissaoResponseDTO.class, PermissoesModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(PedidoResponseDTO.class, PedidosResumoModelOpenApi.class),
-						buildCollectionModelToModelOpenApiTypeRole(ProdutoResponseDTO.class, ProdutosModelOpenApi.class))
+						buildCollectionModelToModelOpenApiTypeRole(ProdutoResponseDTO.class, ProdutosModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(RestauranteBasicoResponseDTO.class, RestaurantesBasicoModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(UsuarioResponseDTO.class, UsuariosModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
