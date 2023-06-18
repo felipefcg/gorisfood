@@ -36,7 +36,6 @@ import br.com.felipe.gorisfood.api.openapi.model.FormasPagamentoModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.GruposModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
-import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PedidosResumoModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PermissoesModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -88,13 +87,7 @@ public class SpringFoxConfig {
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 				.directModelSubstitute(Link.class, LinksModelOpenApi.class)
-//				.alternateTypeRules(													// TODO: Removido esse código em detrimento da linha abaixo
-//					AlternateTypeRules.newRule(											// ".alternateTypeRules(buildPageTypeRole(CozinhaResponseDTO.class))"
-//						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 	// que deixa o código mais limpo e sem a necessidade de ficar recriando 
-//						CozinhasModelOpenApi.class))									// classes vazias. Conforme explicado na classe CozinhasModelOpenApi
 				.alternateTypeRules(
-//						buildPageTypeRole(CozinhaResponseDTO.class),
-						buildPageTypeRole(PedidoResumidoResponseDTO.class),
 						buildPagedModelTypeRole(CozinhaResponseDTO.class, CozinhasModelOpenApi.class),
 						buildPagedModelTypeRole(PedidoResumidoResponseDTO.class, PedidosResumoModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(CidadeResponseDTO.class, CidadesModelOpenApi.class),
@@ -134,12 +127,6 @@ public class SpringFoxConfig {
 		return AlternateTypeRules.newRule(
 				typeResolver.resolve(PagedModel.class, responseDtoClass), 
 				typeResolver.resolve(pagedModel));
-	}
-	
-	private <T> AlternateTypeRule buildPageTypeRole(Class<T> classResponseDTO) {
-		return AlternateTypeRules.newRule(
-				typeResolver.resolve(Page.class, classResponseDTO), 
-				typeResolver.resolve(PagedModelOpenApi.class, classResponseDTO));
 	}
 	
 	private AlternateTypeRule buildCollectionModelToModelOpenApiTypeRole(Class<?> responseDtoClass, Class<?> modelOpenApiClass) {
