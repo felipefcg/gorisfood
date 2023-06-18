@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,10 @@ import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
+import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
@@ -77,6 +80,9 @@ public class SpringFoxConfig {
 				.alternateTypeRules(
 						buildPageTypeRole(CozinhaResponseDTO.class),
 						buildPageTypeRole(PedidoResumidoResponseDTO.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, CidadeResponseDTO.class),
+						CidadesModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
