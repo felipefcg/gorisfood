@@ -22,9 +22,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.EstadoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.EstadosModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
@@ -52,9 +54,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 //@Import(BeanValidatorPluginsConfiguration.class) //na versão 3 do Spring Fox não precisa fazer esse import
 public class SpringFoxConfig {
 
+	private TypeResolver typeResolver = new TypeResolver();
+	
 	@Bean
 	public Docket apiDocket() {
-		var typeResolver = new TypeResolver();
 		
 		return new Docket(DocumentationType.OAS_30)
 				.select()
@@ -81,11 +84,10 @@ public class SpringFoxConfig {
 //						CozinhasModelOpenApi.class))									// classes vazias. Conforme explicado na classe CozinhasModelOpenApi
 				.alternateTypeRules(
 //						buildPageTypeRole(CozinhaResponseDTO.class),
-						buildCozinhaPagedModelTypeRole(),
-						buildPageTypeRole(PedidoResumidoResponseDTO.class))
-				.alternateTypeRules(AlternateTypeRules.newRule(
-						typeResolver.resolve(CollectionModel.class, CidadeResponseDTO.class),
-						CidadesModelOpenApi.class))
+						buildPagedModelTypeRole(CozinhaResponseDTO.class, CozinhasModelOpenApi.class),
+						buildPageTypeRole(PedidoResumidoResponseDTO.class),
+						buildCollectionModelToModelOpenApiTypeRole(CidadeResponseDTO.class, CidadesModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(EstadoResponseDTO.class, EstadosModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
@@ -113,18 +115,22 @@ public class SpringFoxConfig {
 		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
 	}
 	
-	private <T> AlternateTypeRule buildCozinhaPagedModelTypeRole() {
-		var typeResolver = new TypeResolver();
+	private <T> AlternateTypeRule buildPagedModelTypeRole(Class<?> responseDtoClass, Class<?> pagedModel) {
 		return AlternateTypeRules.newRule(
-				typeResolver.resolve(PagedModel.class, CozinhaResponseDTO.class), 
-				typeResolver.resolve(CozinhasModelOpenApi.class));
+				typeResolver.resolve(PagedModel.class, responseDtoClass), 
+				typeResolver.resolve(pagedModel));
 	}
 	
 	private <T> AlternateTypeRule buildPageTypeRole(Class<T> classResponseDTO) {
-		var typeResolver = new TypeResolver();
 		return AlternateTypeRules.newRule(
 				typeResolver.resolve(Page.class, classResponseDTO), 
 				typeResolver.resolve(PagedModelOpenApi.class, classResponseDTO));
+	}
+	
+	private AlternateTypeRule buildCollectionModelToModelOpenApiTypeRole(Class<?> responseDtoClass, Class<?> modelOpenApiClass) {
+		return AlternateTypeRules.newRule(
+				typeResolver.resolve(CollectionModel.class, responseDtoClass),
+				modelOpenApiClass);
 	}
 	
 	private List<Response> globalGetResponseMessages() {
