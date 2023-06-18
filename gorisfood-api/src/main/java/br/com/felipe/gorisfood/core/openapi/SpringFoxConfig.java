@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
@@ -24,14 +25,18 @@ import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.EstadoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.FormaPagamentoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.EstadosModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.FormasPagamentoModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.GruposModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PagedModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.PermissoesModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -80,6 +85,7 @@ public class SpringFoxConfig {
 				.additionalModels(typeResolver.resolve(Problema.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.directModelSubstitute(Link.class, LinksModelOpenApi.class)
 //				.alternateTypeRules(													// TODO: Removido esse código em detrimento da linha abaixo
 //					AlternateTypeRules.newRule(											// ".alternateTypeRules(buildPageTypeRole(CozinhaResponseDTO.class))"
 //						typeResolver.resolve(Page.class, CozinhaResponseDTO.class), 	// que deixa o código mais limpo e sem a necessidade de ficar recriando 
@@ -90,7 +96,9 @@ public class SpringFoxConfig {
 						buildPageTypeRole(PedidoResumidoResponseDTO.class),
 						buildCollectionModelToModelOpenApiTypeRole(CidadeResponseDTO.class, CidadesModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(EstadoResponseDTO.class, EstadosModelOpenApi.class),
-						buildCollectionModelToModelOpenApiTypeRole(FormaPagamentoResponseDTO.class, FormasPagamentoModelOpenApi.class))
+						buildCollectionModelToModelOpenApiTypeRole(FormaPagamentoResponseDTO.class, FormasPagamentoModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(GrupoResponseDTO.class, GruposModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(PermissaoResponseDTO.class, PermissoesModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
