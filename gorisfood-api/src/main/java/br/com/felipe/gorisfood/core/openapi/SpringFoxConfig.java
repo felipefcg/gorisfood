@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -29,6 +28,7 @@ import br.com.felipe.gorisfood.api.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.model.response.PermissaoResponseDTO;
+import br.com.felipe.gorisfood.api.model.response.ProdutoResponseDTO;
 import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.CozinhasModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.EstadosModelOpenApi;
@@ -38,6 +38,7 @@ import br.com.felipe.gorisfood.api.openapi.model.LinksModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PageableModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PedidosResumoModelOpenApi;
 import br.com.felipe.gorisfood.api.openapi.model.PermissoesModelOpenApi;
+import br.com.felipe.gorisfood.api.openapi.model.ProdutosModelOpenApi;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -95,7 +96,8 @@ public class SpringFoxConfig {
 						buildCollectionModelToModelOpenApiTypeRole(FormaPagamentoResponseDTO.class, FormasPagamentoModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(GrupoResponseDTO.class, GruposModelOpenApi.class),
 						buildCollectionModelToModelOpenApiTypeRole(PermissaoResponseDTO.class, PermissoesModelOpenApi.class),
-						buildCollectionModelToModelOpenApiTypeRole(PedidoResponseDTO.class, PedidosResumoModelOpenApi.class))
+						buildCollectionModelToModelOpenApiTypeRole(PedidoResponseDTO.class, PedidosResumoModelOpenApi.class),
+						buildCollectionModelToModelOpenApiTypeRole(ProdutoResponseDTO.class, ProdutosModelOpenApi.class))
 				.tags(new Tag("Cidades", "Gerencia as cidades"), 
 					  new Tag("Cozinhas", "Gerencia os tipos de cozinhas"),
 					  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
