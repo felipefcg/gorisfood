@@ -12,13 +12,13 @@ import lombok.Data;
 @Data
 public class PedidosResumoModelOpenApi {
 
-	private PedidoResumoEmbeddedModelOpenApi _embedded;
+	private PedidosResumoEmbeddedModelOpenApi _embedded;
 	private Link _links;
 	private PageModelOpenApi page;
 	
-	@ApiModel("PedidoResumoEmbeddedModel")
+	@ApiModel("PedidosResumoEmbeddedModel")
 	@Data
-	public class PedidoResumoEmbeddedModelOpenApi {	
+	public class PedidosResumoEmbeddedModelOpenApi {	
 		private List<PedidoResponseDTO> pedidos;
 	}
 }

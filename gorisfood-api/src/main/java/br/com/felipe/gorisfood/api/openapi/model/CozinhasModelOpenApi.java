@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.hateoas.Link;
 
 import br.com.felipe.gorisfood.api.model.response.CidadeResponseDTO;
-import br.com.felipe.gorisfood.api.model.response.CozinhaResponseDTO;
-import br.com.felipe.gorisfood.api.openapi.model.CidadesModelOpenApi.CidadeEmbeddedModelOpenApi;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
@@ -27,13 +25,13 @@ public class CozinhasModelOpenApi //extends PagedModelOpenApi<CozinhaResponseDTO
 */
 {
 
-	private CidadeEmbeddedModelOpenApi _embedded;
+	private CozinhasEmbeddedModelOpenApi _embedded;
 	private Link _links;
 	private PageModelOpenApi page;
 	
-	@ApiModel("CidadesEmdddedModel")
+	@ApiModel("CozinhasEmdddedModel")
 	@Data
-	public class CidadeEmbeddedModelOpenApi {	
+	public class CozinhasEmbeddedModelOpenApi {	
 		private List<CidadeResponseDTO> cozinhas;
 	}
 

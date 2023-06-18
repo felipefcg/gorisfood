@@ -12,12 +12,12 @@ import lombok.Data;
 @Data
 public class GruposModelOpenApi {
 
-	private GrupoEmbeddedModelOpenApi _embedded;
+	private GruposEmbeddedModelOpenApi _embedded;
 	private Link _links;
 	
-	@ApiModel("GrupoEmbeddedModel")
+	@ApiModel("GruposEmbeddedModel")
 	@Data
-	public class GrupoEmbeddedModelOpenApi {	
+	public class GruposEmbeddedModelOpenApi {	
 		private List<GrupoResponseDTO> grupos;
 	}
 }

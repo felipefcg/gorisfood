@@ -15,7 +15,7 @@ public class ProdutosModelOpenApi {
 	private CidadeEmbeddedModelOpenApi _embedded;
 	private Link _links;
 	
-	@ApiModel("ProdutoEmbeddedModel")
+	@ApiModel("ProdutosEmbeddedModel")
 	@Data
 	public class CidadeEmbeddedModelOpenApi {	
 		private List<ProdutoResponseDTO> produtos;
