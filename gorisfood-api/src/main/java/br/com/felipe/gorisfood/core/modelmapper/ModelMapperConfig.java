@@ -4,8 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.felipe.gorisfood.api.model.request.ItemPedidoResquestDTO;
-import br.com.felipe.gorisfood.api.model.response.EnderecoResponseDTO;
+import br.com.felipe.gorisfood.api.v1.model.request.ItemPedidoResquestDTO;
+import br.com.felipe.gorisfood.api.v1.model.response.EnderecoResponseDTO;
 import br.com.felipe.gorisfood.domain.model.Endereco;
 import br.com.felipe.gorisfood.domain.model.ItemPedido;
 
