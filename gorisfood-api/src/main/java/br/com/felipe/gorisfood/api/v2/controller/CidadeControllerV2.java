@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.api.v1.controller;
+package br.com.felipe.gorisfood.api.v2.controller;
 
 import javax.validation.Valid;
 
@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.api.ResourceUriHelper;
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import br.com.felipe.gorisfood.api.exceptionhandler.TipoProblema;
-import br.com.felipe.gorisfood.api.v1.assembler.CidadeRequestDtoDesassembler;
-import br.com.felipe.gorisfood.api.v1.assembler.CidadeResponseDtoAssembler;
-import br.com.felipe.gorisfood.api.v1.model.request.CidadeRequestDTO;
-import br.com.felipe.gorisfood.api.v1.model.response.CidadeResponseDTO;
-import br.com.felipe.gorisfood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import br.com.felipe.gorisfood.api.v2.assembler.CidadeRequestDtoDesassemblerV2;
+import br.com.felipe.gorisfood.api.v2.assembler.CidadeResponseDtoAssemblerV2;
+import br.com.felipe.gorisfood.api.v2.model.request.CidadeRequestDTOV2;
+import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
 import br.com.felipe.gorisfood.core.web.GorisMediaType;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
@@ -32,42 +31,42 @@ import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 
 
 @RestController
-@RequestMapping(path = "cidades", produces = GorisMediaType.V1_APPLICATION_JSON_VALUE)
-public class CidadeController implements CidadeControllerOpenApi {
+@RequestMapping(path = "cidades", produces = GorisMediaType.V2_APPLICATION_JSON_VALUE)
+public class CidadeControllerV2 {
 
 	@Autowired
 	private CadastroCidadeService service;
 	
 	@Autowired
-	private CidadeResponseDtoAssembler assembler;
+	private CidadeResponseDtoAssemblerV2 assembler;
 	
 	@Autowired
-	private CidadeRequestDtoDesassembler desassembler;
+	private CidadeRequestDtoDesassemblerV2 desassembler;
 	
 	@GetMapping
-	public CollectionModel<CidadeResponseDTO> listar() {
+	public CollectionModel<CidadeResponseDTOV2> listar() {
 		 return assembler.toCollectionModel(service.listar());
 	}
 
 	@GetMapping(value = "{id}")
-	public CidadeResponseDTO buscar(@PathVariable Long id) {
+	public CidadeResponseDTOV2 buscar(@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+	public CidadeResponseDTOV2 criar(@RequestBody @Valid CidadeRequestDTOV2 cidadeDTO) {
 		Cidade cidade = desassembler.toModel(cidadeDTO);
-		CidadeResponseDTO cidadeDto = assembler.toModel(service.salvar(cidade));
+		CidadeResponseDTOV2 cidadeDto = assembler.toModel(service.salvar(cidade));
 		
-		ResourceUriHelper.addUriInResponseHeader(cidadeDto.getId());
+		ResourceUriHelper.addUriInResponseHeader(cidadeDto.getIdCidade());
 		return cidadeDto;
 	}
 	
 	
 	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public CidadeResponseDTO alterar(@PathVariable Long id, 
-									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
+	public CidadeResponseDTOV2 alterar(@PathVariable Long id, 
+									 @RequestBody @Valid CidadeRequestDTOV2 cidadeDTO) {
 		Cidade cidadeAtual = service.buscar(id);
 		desassembler.copyDtoToModel(cidadeDTO, cidadeAtual);
 		return assembler.toModel(service.alterar(cidadeAtual));

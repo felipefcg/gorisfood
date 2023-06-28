@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 import br.com.felipe.gorisfood.api.v1.model.request.ItemPedidoResquestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.EnderecoResponseDTO;
+import br.com.felipe.gorisfood.api.v2.model.request.CidadeRequestDTOV2;
+import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.model.Endereco;
 import br.com.felipe.gorisfood.domain.model.ItemPedido;
 
@@ -29,6 +31,10 @@ public class ModelMapperConfig {
 				mapper.skip((dest, value) -> dest.getPedido().setId(null) );
 			})
 		;
+		
+		modelMapper.createTypeMap(CidadeRequestDTOV2.class, Cidade.class)
+			.addMappings( mapper -> mapper.skip(Cidade::setId));
+		
 		return modelMapper;
 	}
 	
