@@ -22,11 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
 //			.maxAge(30)
 		;
 	}
-
-	@Override
-	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		configurer.defaultContentType(GorisMediaType.V2_APPLICATION_JSON);
-	}
 	
 	@Bean
 	public Filter shallowEtagHeaderFilter() {

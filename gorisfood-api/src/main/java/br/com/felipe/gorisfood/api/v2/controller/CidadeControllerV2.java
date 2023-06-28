@@ -24,14 +24,13 @@ import br.com.felipe.gorisfood.api.v2.assembler.CidadeRequestDtoDesassemblerV2;
 import br.com.felipe.gorisfood.api.v2.assembler.CidadeResponseDtoAssemblerV2;
 import br.com.felipe.gorisfood.api.v2.model.request.CidadeRequestDTOV2;
 import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
-import br.com.felipe.gorisfood.core.web.GorisMediaType;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 
 
 @RestController
-@RequestMapping(path = "cidades", produces = GorisMediaType.V2_APPLICATION_JSON_VALUE)
+@RequestMapping(path = "v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeControllerV2 {
 
 	@Autowired
