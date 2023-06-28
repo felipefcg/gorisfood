@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.CidadeController;
+import br.com.felipe.gorisfood.api.v2.GorisLinksV2;
 import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 
@@ -18,7 +19,8 @@ public class CidadeResponseDtoAssemblerV2 extends RepresentationModelAssemblerSu
 	private ModelMapper mapper;
 
 	@Autowired
-	private GorisLinks gorisLinks;
+	private GorisLinksV2 gorisLinks;
+	
 	public CidadeResponseDtoAssemblerV2() {
 		super(CidadeController.class, CidadeResponseDTOV2.class);
 	}

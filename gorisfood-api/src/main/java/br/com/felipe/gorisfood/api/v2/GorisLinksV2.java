@@ -9,7 +9,7 @@ import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.stereotype.Component;
 
-import br.com.felipe.gorisfood.api.v1.controller.CidadeController;
+import br.com.felipe.gorisfood.api.v2.controller.CidadeControllerV2;
 
 @Component
 public class GorisLinksV2 {
@@ -21,22 +21,22 @@ public class GorisLinksV2 {
 	
 	//Cidades
 	public Link linkToCidades() {
-		return linkTo(CidadeController.class)
+		return linkTo(CidadeControllerV2.class)
 			  .withSelfRel();
 	}
 
 	public Link linkToCidades(String rel) {
-		return linkTo(CidadeController.class)
+		return linkTo(CidadeControllerV2.class)
 			  .withRel(rel);
 	}
 	
 	public Link linkToCidade(Long cidadeId) {
-		return linkTo(methodOn(CidadeController.class).buscar(cidadeId))
+		return linkTo(methodOn(CidadeControllerV2.class).buscar(cidadeId))
 			   .withSelfRel();
 	}
 	
 	public Link linkToCidade(Long cidadeId, String rel) {
-		return linkTo(methodOn(CidadeController.class).buscar(cidadeId))
+		return linkTo(methodOn(CidadeControllerV2.class).buscar(cidadeId))
 			   .withRel(rel);
 	}	
 	
