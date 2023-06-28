@@ -24,7 +24,7 @@ import br.com.felipe.gorisfood.api.v1.openapi.controller.EstadoControllerOpenApi
 import br.com.felipe.gorisfood.domain.service.CadastroEstadoService;
 
 @RestController
-@RequestMapping(value = "estados", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/estados", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EstadoController implements EstadoControllerOpenApi {
 
 	@Autowired

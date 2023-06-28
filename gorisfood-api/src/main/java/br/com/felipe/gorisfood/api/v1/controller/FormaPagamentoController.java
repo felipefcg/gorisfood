@@ -33,7 +33,7 @@ import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
-@RequestMapping(value = "formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FormaPagamentoController implements FormasPagamentoControllerOpenApi {
 
 	@Autowired

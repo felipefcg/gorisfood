@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.FluxoPedidoControllerOpenApi;
 import br.com.felipe.gorisfood.domain.service.FluxoPedidoService;
 
-@RequestMapping(value = "pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 

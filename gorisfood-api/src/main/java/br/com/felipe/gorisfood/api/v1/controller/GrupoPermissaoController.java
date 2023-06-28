@@ -1,7 +1,5 @@
 package br.com.felipe.gorisfood.api.v1.controller;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
@@ -17,11 +15,10 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.PermissaoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
-import br.com.felipe.gorisfood.domain.model.Permissao;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController
-@RequestMapping(value =  "grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value =  "v1/grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
 	@Autowired

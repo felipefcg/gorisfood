@@ -12,7 +12,7 @@ import br.com.felipe.gorisfood.api.v1.openapi.controller.PermissoesControllerOpe
 import br.com.felipe.gorisfood.domain.service.CadastroPermissaoService;
 
 @RestController
-@RequestMapping("permissoes")
+@RequestMapping("v1/permissoes")
 public class PermissoesController implements PermissoesControllerOpenApi {
 
 	@Autowired

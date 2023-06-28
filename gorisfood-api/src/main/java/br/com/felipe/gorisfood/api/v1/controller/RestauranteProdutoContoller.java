@@ -27,7 +27,7 @@ import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 
 @RestController
-@RequestMapping(value = "restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteProdutoContoller implements RestauranteProdutoContollerOpenApi {
 
 	@Autowired

@@ -32,7 +32,7 @@ import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.service.EmissaoPedidoService;
 
 @RestController
-@RequestMapping(value = "pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired

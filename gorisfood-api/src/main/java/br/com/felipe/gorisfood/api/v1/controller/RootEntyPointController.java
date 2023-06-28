@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntyPointController {
 
 	@Autowired

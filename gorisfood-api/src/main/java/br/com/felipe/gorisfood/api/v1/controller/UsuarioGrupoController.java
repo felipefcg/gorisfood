@@ -20,7 +20,7 @@ import br.com.felipe.gorisfood.api.v1.openapi.controller.UsuarioGrupoControllerO
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping(value = "usuarios/{usuarioId}/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/usuarios/{usuarioId}/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
 	@Autowired

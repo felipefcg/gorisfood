@@ -20,7 +20,7 @@ import br.com.felipe.gorisfood.domain.service.VendaQueryService;
 import br.com.felipe.gorisfood.domain.service.VendaReportService;
 
 @RestController
-@RequestMapping(value = "estatisticas", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "v1/estatisticas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EstatisticasController implements EstatisticasControllerOpenApi {
 
 	@Autowired
