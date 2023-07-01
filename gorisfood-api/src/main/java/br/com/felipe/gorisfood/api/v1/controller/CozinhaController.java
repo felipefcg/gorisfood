@@ -29,7 +29,9 @@ import br.com.felipe.gorisfood.api.v1.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.CozinhaControllerOpenApi;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(path = "v1/cozinhas" , produces = MediaType.APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControllerOpenApi {
@@ -48,6 +50,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	
 	@GetMapping
 	public PagedModel<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
+		log.info("Consultando cozinhas com páginas de {} registos...", pagable.getPageSize());
+		
 		Page<Cozinha> cozinhaPage = service.listar(pagable);
 		return pagedAssembler.toModel(cozinhaPage, assembler);
 	}
