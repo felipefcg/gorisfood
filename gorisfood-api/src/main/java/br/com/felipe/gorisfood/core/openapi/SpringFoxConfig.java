@@ -78,7 +78,7 @@ public class SpringFoxConfig {
 				.groupName("V1")
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("br.com.felipe.gorisfood.api"))
-					.paths(PathSelectors.ant("/v1/*"))
+					.paths(PathSelectors.ant("/v1/**"))
 					.build()
 				.useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -123,7 +123,7 @@ public class SpringFoxConfig {
 				.groupName("V2")
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("br.com.felipe.gorisfood.api"))
-					.paths(PathSelectors.ant("/v2/*"))
+					.paths(PathSelectors.ant("/v2/**"))
 					.build()
 				.useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -253,7 +253,8 @@ public class SpringFoxConfig {
 	private ApiInfo apiInfoV1() {
 		return new  ApiInfoBuilder()
 				.title("GorisFood API")
-				.description("API aberta para clientes e restaurantes")
+				.description("API aberta para clientes e restaurantes<br>"
+						+ "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2024. Use a versão mais atual da API.")
 				.version("1")
 				.contact(new Contact("GorisFood", "http://gorisfood.com.br", "teste.poc.dev@gmail.com"))
 				.build();

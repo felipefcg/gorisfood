@@ -43,6 +43,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeRequestDtoDesassembler desassembler;
 	
+	@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeResponseDTO> listar() {
 		 return assembler.toCollectionModel(service.listar());
