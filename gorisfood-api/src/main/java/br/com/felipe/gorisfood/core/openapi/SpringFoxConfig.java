@@ -70,13 +70,13 @@ public class SpringFoxConfig {
 	private TypeResolver typeResolver = new TypeResolver();
 	
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 		
 		return new Docket(DocumentationType.OAS_30)
+				.groupName("V1")
 				.select()
 					.apis(RequestHandlerSelectors.basePackage("br.com.felipe.gorisfood.api"))
-					.paths(PathSelectors.any())
-//					.paths(PathSelectors.ant("/restaurantes/*"))
+					.paths(PathSelectors.ant("/v1/*"))
 					.build()
 				.useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -111,9 +111,31 @@ public class SpringFoxConfig {
 					  new Tag("Produtos", "Gerencia os produtos de restaurantes"),
 					  new Tag("Usuários", "Gerencia os usuários"),
 					  new Tag("Estatísticas", "Estatísticas do GorisFood"))
-				.apiInfo(apiInfo());				
+				.apiInfo(apiInfoV1());				
 	}
 
+	@Bean
+	public Docket apiDocketV2() {
+		
+		return new Docket(DocumentationType.OAS_30)
+				.groupName("V2")
+				.select()
+					.apis(RequestHandlerSelectors.basePackage("br.com.felipe.gorisfood.api"))
+					.paths(PathSelectors.ant("/v2/*"))
+					.build()
+				.useDefaultResponseMessages(false)
+				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+				.globalResponses(HttpMethod.POST, globalPostResponseMessages())
+				.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+				.ignoredParameterTypes(ServletWebRequest.class)
+				.additionalModels(typeResolver.resolve(Problema.class))
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.directModelSubstitute(Link.class, LinksModelOpenApi.class)
+				.apiInfo(apiInfoV2());				
+	}
+	
 	private List<RequestParameter> builderParameters() {
 		return Arrays.asList(
 					new RequestParameterBuilder()
@@ -224,11 +246,20 @@ public class SpringFoxConfig {
 					);
 	}
 	
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new  ApiInfoBuilder()
 				.title("GorisFood API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
+				.contact(new Contact("GorisFood", "http://gorisfood.com.br", "teste.poc.dev@gmail.com"))
+				.build();
+	}
+	
+	private ApiInfo apiInfoV2() {
+		return new  ApiInfoBuilder()
+				.title("GorisFood API")
+				.description("API aberta para clientes e restaurantes")
+				.version("2")
 				.contact(new Contact("GorisFood", "http://gorisfood.com.br", "teste.poc.dev@gmail.com"))
 				.build();
 	}
