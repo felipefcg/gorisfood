@@ -3,10 +3,12 @@ package br.com.felipe.gorisfood.api.v2.model.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@ApiModel("CidadeRequest")
 @Getter
 @Setter
 public class CidadeRequestDTOV2 {

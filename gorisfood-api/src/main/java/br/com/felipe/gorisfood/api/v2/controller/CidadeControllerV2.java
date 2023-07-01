@@ -24,6 +24,7 @@ import br.com.felipe.gorisfood.api.v2.assembler.CidadeRequestDtoDesassemblerV2;
 import br.com.felipe.gorisfood.api.v2.assembler.CidadeResponseDtoAssemblerV2;
 import br.com.felipe.gorisfood.api.v2.model.request.CidadeRequestDTOV2;
 import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
+import br.com.felipe.gorisfood.api.v2.openapi.controller.CidadeControllerOpenApiV2;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
@@ -31,7 +32,7 @@ import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(path = "v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+public class CidadeControllerV2 implements CidadeControllerOpenApiV2 {
 
 	@Autowired
 	private CadastroCidadeService service;

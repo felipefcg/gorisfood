@@ -43,6 +43,8 @@ import br.com.felipe.gorisfood.api.v1.openapi.model.PermissoesModelOpenApi;
 import br.com.felipe.gorisfood.api.v1.openapi.model.ProdutosModelOpenApi;
 import br.com.felipe.gorisfood.api.v1.openapi.model.RestaurantesBasicoModelOpenApi;
 import br.com.felipe.gorisfood.api.v1.openapi.model.UsuariosModelOpenApi;
+import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
+import br.com.felipe.gorisfood.api.v2.openapi.model.CidadesModelOpenApiV2;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -133,6 +135,8 @@ public class SpringFoxConfig {
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 				.directModelSubstitute(Link.class, LinksModelOpenApi.class)
+				.alternateTypeRules(
+						buildCollectionModelToModelOpenApiTypeRole(CidadeResponseDTOV2.class, CidadesModelOpenApiV2.class))
 				.apiInfo(apiInfoV2());				
 	}
 	

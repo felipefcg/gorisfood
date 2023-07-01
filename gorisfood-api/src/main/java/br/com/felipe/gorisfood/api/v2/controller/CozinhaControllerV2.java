@@ -26,12 +26,13 @@ import br.com.felipe.gorisfood.api.v2.assembler.CozinhaRequestDesassemblerV2;
 import br.com.felipe.gorisfood.api.v2.assembler.CozinhaResponseDtoAssemblerV2;
 import br.com.felipe.gorisfood.api.v2.model.request.CozinhaRequestDTOV2;
 import br.com.felipe.gorisfood.api.v2.model.response.CozinhaResponseDTOV2;
+import br.com.felipe.gorisfood.api.v2.openapi.controller.CozinhaControllerOpenApiV2;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 
 @RestController
 @RequestMapping(path = "v2/cozinhas" , produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerOpenApiV2 {
 
 	@Autowired
 	private CadastroCozinhaService service;
