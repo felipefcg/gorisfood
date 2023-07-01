@@ -71,7 +71,7 @@ public class SpringFoxConfig {
 
 	private TypeResolver typeResolver = new TypeResolver();
 	
-	@Bean
+//	@Bean
 	public Docket apiDocketV1() {
 		
 		return new Docket(DocumentationType.OAS_30)
