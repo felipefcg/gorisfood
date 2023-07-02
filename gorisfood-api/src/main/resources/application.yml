@@ -45,7 +45,10 @@ spring:
   freemarker:
     settings:
       locale: pt_BR
-      
+  security:
+    user:
+      name: gorisfood
+      password: 123456      
 management:
   endpoints:
     web:
