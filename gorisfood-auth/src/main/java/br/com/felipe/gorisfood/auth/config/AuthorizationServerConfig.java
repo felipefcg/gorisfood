@@ -31,13 +31,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.authorizedGrantTypes("password")
 				.scopes("write", "read")
 				.accessTokenValiditySeconds(HORA_EM_SEGUNDOS * 6)
+			.and()
+				.withClient("checktoken")
+				.secret(passwordEncoder.encode("check123"))
+				.authorizedGrantTypes("password")
+				.scopes("read")
 				;
 	}
 	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		security.checkTokenAccess("isAuthenticated()");
-//		security.checkTokenAccess("permitAll()");
+//		security.checkTokenAccess("isAuthenticated()");
+		security.checkTokenAccess("permitAll()");
 		
 	}
 	@Override

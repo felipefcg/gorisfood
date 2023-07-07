@@ -45,6 +45,15 @@ spring:
   freemarker:
     settings:
       locale: pt_BR
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: http://localhost:8081/oauth/check_token
+          client-id: checktoken
+          client-secret: check123
+          
+# ** Alterar o usuario e senha padrão do usuário em memória, se o mesmo não tiver sido criado programaticamente na classe de config **
 #  security:
 #    user:
 #      name: gorisfood
