@@ -40,8 +40,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.and()
 				.withClient("checktoken")
 				.secret(passwordEncoder.encode("check123"))
-				.authorizedGrantTypes("password")
-				.scopes("read")
+			.and()
+				.withClient("faturamento")
+				.secret(passwordEncoder.encode("fat123"))
+				.authorizedGrantTypes("client_credentials")
+				.scopes("write", "read")
 				;
 	}
 	
