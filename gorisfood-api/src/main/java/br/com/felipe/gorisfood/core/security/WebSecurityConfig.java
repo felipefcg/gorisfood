@@ -14,6 +14,8 @@ public class WebSecurityConfig  {
 			.authorizeHttpRequests()
 				.anyRequest().authenticated()
 			.and()
+				.cors()
+			.and()
 				.oauth2ResourceServer().opaqueToken()
 			;
 		
