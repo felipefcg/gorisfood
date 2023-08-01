@@ -39,13 +39,9 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean 
+	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 	
-//	@Bean
-//	UserDetailsService userDetailsService(AuthenticationConfiguration s) {
-//		return User;
-//	}
 }
