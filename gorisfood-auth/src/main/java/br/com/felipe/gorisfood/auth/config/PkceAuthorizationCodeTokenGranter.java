@@ -19,9 +19,9 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeTokenG
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
 //Solução baseada em: https://github.com/spring-projects/spring-security-oauth/pull/675/files
-public class PkceAuthorizatinoCodeTokenGranter extends AuthorizationCodeTokenGranter {
+public class PkceAuthorizationCodeTokenGranter extends AuthorizationCodeTokenGranter {
 
-	public PkceAuthorizatinoCodeTokenGranter(AuthorizationServerTokenServices tokenServices,
+	public PkceAuthorizationCodeTokenGranter(AuthorizationServerTokenServices tokenServices,
 			AuthorizationCodeServices authorizationCodeServices, ClientDetailsService clientDetailsService,
 			OAuth2RequestFactory requestFactory) {
 		super(tokenServices, authorizationCodeServices, clientDetailsService, requestFactory);
@@ -32,7 +32,7 @@ public class PkceAuthorizatinoCodeTokenGranter extends AuthorizationCodeTokenGra
 		OAuth2Authentication authentication = super.getOAuth2Authentication(client, tokenRequest);
 		OAuth2Request request = authentication.getOAuth2Request();
 		
-		var codeChallenge = request.getRequestParameters().get("code_challange");
+		var codeChallenge = request.getRequestParameters().get("code_challenge");
 		var codeChallengeMethod = request.getRequestParameters().get("code_challenge_method");
 		var codeVerifier = request.getRequestParameters().get("code_verifier");
 		

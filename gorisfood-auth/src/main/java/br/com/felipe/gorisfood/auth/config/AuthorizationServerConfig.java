@@ -86,12 +86,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.authenticationManager(authenticationManager)
 			.userDetailsService(userDetailsService)
 			.reuseRefreshTokens(false)
-//			.tokenGranter(tokenGranter(endpoints))
+			.tokenGranter(tokenGranter(endpoints))
 		;
 	}
 
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
-		var pkceAuthorizatinoCodeTokenGranter = new PkceAuthorizatinoCodeTokenGranter(endpoints.getTokenServices(), endpoints.getAuthorizationCodeServices(), 
+		var pkceAuthorizatinoCodeTokenGranter = new PkceAuthorizationCodeTokenGranter(endpoints.getTokenServices(), endpoints.getAuthorizationCodeServices(), 
 				endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory());
 		
 		var granters = Arrays.asList(pkceAuthorizatinoCodeTokenGranter, endpoints.getTokenGranter());
