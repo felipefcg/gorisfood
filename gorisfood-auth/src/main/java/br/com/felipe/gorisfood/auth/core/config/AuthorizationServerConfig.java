@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.auth.config;
+package br.com.felipe.gorisfood.auth.core.config;
 
 import java.security.KeyPair;
 import java.util.Arrays;
@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -21,14 +18,12 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import br.com.felipe.gorisfood.auth.properties.JwtKeyStoreProperties;
+import br.com.felipe.gorisfood.auth.core.properties.JwtKeyStoreProperties;
+import br.com.felipe.gorisfood.auth.core.service.JpaUserDetailsService;
 
 @Configuration
 @EnableAuthorizationServer
@@ -43,7 +38,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private InMemoryUserDetailsManager userDetailsService;
+	private JpaUserDetailsService userDetailsService;
 	
 	@Autowired
 	private JwtKeyStoreProperties jwtKeyStoreProperties;

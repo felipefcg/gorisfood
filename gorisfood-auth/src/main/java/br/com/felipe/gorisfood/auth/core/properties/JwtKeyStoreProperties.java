@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.auth.properties;
+package br.com.felipe.gorisfood.auth.core.properties;
 
 import javax.validation.constraints.NotBlank;
 

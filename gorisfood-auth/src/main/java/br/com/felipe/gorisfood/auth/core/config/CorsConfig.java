@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.auth.config;
+package br.com.felipe.gorisfood.auth.core.config;
 
 //Fonte: https://spring.io/blog/2015/06/08/cors-support-in-spring-framework#filter-based-cors-support
 

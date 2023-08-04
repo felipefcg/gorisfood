@@ -1,4 +1,4 @@
-package br.com.felipe.gorisfood.auth.config;
+package br.com.felipe.gorisfood.auth.core.config;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

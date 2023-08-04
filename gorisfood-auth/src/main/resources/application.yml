@@ -1,11 +1,15 @@
 server:
   port: 8081
 
-#spring:
+spring:
 #  redis:
 #    host: localhost
 #    port: 6379
 #    password: 
+  datasource:
+    url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: root
 
 logging:
   level:
