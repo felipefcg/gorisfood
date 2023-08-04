@@ -84,6 +84,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 //		security.checkTokenAccess("isAuthenticated()");
 		security.checkTokenAccess("permitAll()")
+			.tokenKeyAccess("permitAll()") //permite expor endpoint para visualizar a chave pública do certificado. Opção mais simples caso não tenha instalado o OPENSSL para pegar a chave pública direto do certificado.
 			.allowFormAuthenticationForClients()
 		;
 	}
