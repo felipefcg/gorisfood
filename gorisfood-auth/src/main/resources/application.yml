@@ -10,4 +10,11 @@ server:
 logging:
   level:
     org.springframework.security: DEBUG
-    org.springframework.http: DEBUG    
+    org.springframework.http: DEBUG   
+    
+gorisfood:
+  jwt:
+    keystore:
+      path: keystores/gorisfood.jks
+      password: 123456
+      keypair-alias: gorisfood    

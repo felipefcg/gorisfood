@@ -26,6 +26,8 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import br.com.felipe.gorisfood.auth.properties.JwtKeyStoreProperties;
+
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -40,6 +42,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private InMemoryUserDetailsManager userDetailsService;
+	
+	@Autowired
+	private JwtKeyStoreProperties jwtKeyStoreProperties;
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -105,9 +110,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	}
 
 	private KeyPair keyPair() {
-		var jksResource = new ClassPathResource("keystores/gorisfood.jks");
-		var keyStorePass = "123456";
-		var keyPairAlias = "gorisfood";
+		var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());
+		var keyStorePass = jwtKeyStoreProperties.getPassword();
+		var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
 		
 		var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
 		return keyStoreKeyFactory.getKeyPair(keyPairAlias);
