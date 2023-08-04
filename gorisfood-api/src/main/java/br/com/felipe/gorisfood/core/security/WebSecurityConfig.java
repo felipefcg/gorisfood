@@ -30,10 +30,4 @@ public class WebSecurityConfig  {
 		return http.build();
 	}
 	
-	@Bean
-	JwtDecoder jwtDecoder() {
-		var secretKey = new SecretKeySpec("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9".getBytes(), HmacAlgorithms.HMAC_SHA_256.getName());
-		return NimbusJwtDecoder.withSecretKey(secretKey).build();
-	}
-	
 }
