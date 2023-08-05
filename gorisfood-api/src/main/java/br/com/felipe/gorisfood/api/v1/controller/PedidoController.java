@@ -26,6 +26,7 @@ import br.com.felipe.gorisfood.api.v1.model.response.PedidoResumidoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import br.com.felipe.gorisfood.core.data.PageWrapper;
 import br.com.felipe.gorisfood.core.data.PageableTranslator;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.Usuario;
@@ -50,6 +51,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+	
 	private PageWrapper<Pedido> pagePedidos;
 	
 	@GetMapping
@@ -68,7 +72,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	public PedidoResponseDTO emitir(@RequestBody @Valid PedidoRequestDTO pedidoDTO) {
 		var pedido = pedidoDisassembler.toModel(pedidoDTO);
 		pedido.setCliente(new Usuario());
-		pedido.getCliente().setId(1L);
+		pedido.getCliente().setId(authUserSecurity.getUsuarioId());
 		
 		pedido = emissaoPedidoService.emitir(pedido);
 		return pedidoAssembler.toModel(pedido);
