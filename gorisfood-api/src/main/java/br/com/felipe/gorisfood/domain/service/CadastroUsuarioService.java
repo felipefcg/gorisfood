@@ -3,6 +3,8 @@ package br.com.felipe.gorisfood.domain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ public class CadastroUsuarioService {
 	
 	@Autowired
 	private CadastroGupoService grupoService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Transactional
 	public List<Usuario> listar() {
@@ -45,6 +50,10 @@ public class CadastroUsuarioService {
 			throw new NegocioException(String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
 		}
 		
+		if(usuario.isNovo()) {
+			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+		}
+		
 		return repository.save(usuario);
 	}
 	
@@ -56,11 +65,11 @@ public class CadastroUsuarioService {
 	@Transactional
 	public void alterarSenha(Usuario usuario, String senhaAntiga, String senhaNova) {
 		
-		if(usuario.senhaNaoCoincide(senhaAntiga)) {
+		if(!passwordEncoder.matches(senhaAntiga, usuario.getSenha())) {
 			throw new SenhaInvalidaExcpetion(SENHA_NAO_CONRRESPONDENTE);
 		}
 		
-		usuario.setSenha(senhaNova);
+		usuario.setSenha(passwordEncoder.encode(senhaNova));
 		
 		repository.save(usuario);
 	}
