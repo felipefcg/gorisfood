@@ -12,6 +12,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedAssembler;
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping
 	public PagedModel<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
 		log.info("Consultando cozinhas com páginas de {} registos...", pagable.getPageSize());
@@ -56,17 +58,20 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return pagedAssembler.toModel(cozinhaPage, assembler);
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("{id}")
 	public CozinhaResponseDTO buscar (@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaResponseDTO criar(@RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
 		return assembler.toModel(service.salvar(desassembler.toModel(cozinhaDTO)));
 	}
 	
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@PutMapping("{id}")
 	public CozinhaResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
 		Cozinha cozinhaAtual = service.buscar(id);
@@ -75,6 +80,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 			
 	}
 	
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@DeleteMapping("{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
@@ -82,6 +88,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<Cozinha> buscarPrimeiro() {

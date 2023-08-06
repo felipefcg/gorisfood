@@ -2,42 +2,28 @@ package br.com.felipe.gorisfood.core.security;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.amazonaws.services.kms.model.AlgorithmSpec;
-import com.nimbusds.jose.crypto.impl.ECDH.AlgorithmMode;
-
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig  {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests()
-				.antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-				.antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-				.antMatchers(HttpMethod.GET, "/v1/cozinhas/**").authenticated()
-				.anyRequest().denyAll()
-			.and()
-				.cors()
+			.cors()
 			.and()
 				.oauth2ResourceServer()
 					.jwt()
