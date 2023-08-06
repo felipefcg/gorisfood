@@ -1,6 +1,5 @@
 package br.com.felipe.gorisfood.auth.domain.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Usuario {
+public class Grupo {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -28,15 +27,10 @@ public class Usuario {
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(nullable = false)
-	private String email;
-	
-	@Column(nullable = false)
-	private String senha;
-	
 	@ManyToMany
-	@JoinTable(name = "usuario_grupo",
-				joinColumns = @JoinColumn(name = "usuario_id", nullable = false),
-				inverseJoinColumns = @JoinColumn(name = "grupo_id", nullable = false))
-	private Set<Grupo> grupos = new HashSet<>();
+	@JoinTable(name = "grupo_permissao",
+				joinColumns = @JoinColumn(name = "grupo_id", nullable = false),
+				inverseJoinColumns = @JoinColumn(name = "permissao_id", nullable = false))
+	private Set<Permissao> permissoes;
+
 }
