@@ -1,5 +1,10 @@
 package br.com.felipe.gorisfood.api.v1.controller;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -28,6 +33,8 @@ import br.com.felipe.gorisfood.api.v1.assembler.CozinhaResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.CozinhaRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
+import br.com.felipe.gorisfood.core.security.CheckSecurity.Cozinha.PodeEditar;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +56,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedAssembler;
 	
-	@PreAuthorize("isAuthenticated()")
+	@CheckSecurity.Cozinha.PodeConsultar
 	@GetMapping
 	public PagedModel<CozinhaResponseDTO> listar (@PageableDefault(size = 3) Pageable pagable) {
 		log.info("Consultando cozinhas com páginas de {} registos...", pagable.getPageSize());
@@ -58,20 +65,20 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return pagedAssembler.toModel(cozinhaPage, assembler);
 	}
 	
-	@PreAuthorize("isAuthenticated()")
+	@CheckSecurity.Cozinha.PodeConsultar
 	@GetMapping("{id}")
 	public CozinhaResponseDTO buscar (@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
-	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+	@CheckSecurity.Cozinha.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaResponseDTO criar(@RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
 		return assembler.toModel(service.salvar(desassembler.toModel(cozinhaDTO)));
 	}
 	
-	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+	@CheckSecurity.Cozinha.PodeEditar
 	@PutMapping("{id}")
 	public CozinhaResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid CozinhaRequestDTO cozinhaDTO) {
 		Cozinha cozinhaAtual = service.buscar(id);
@@ -80,7 +87,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 			
 	}
 	
-	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+	@CheckSecurity.Cozinha.PodeEditar
 	@DeleteMapping("{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
@@ -88,7 +95,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	}
 	
-	@PreAuthorize("isAuthenticated()")
+	@CheckSecurity.Cozinha.PodeConsultar
 	@GetMapping(value = "primeiro", consumes = MediaType.ALL_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public Optional<Cozinha> buscarPrimeiro() {
