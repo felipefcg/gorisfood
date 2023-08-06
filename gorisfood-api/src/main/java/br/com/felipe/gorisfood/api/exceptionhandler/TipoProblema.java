@@ -10,7 +10,8 @@ public enum TipoProblema {
 	CORPO_REQUISCAO_INVALIDO("Corpo da Requisição Inválido", "corpo-da-requisicao-invalido"),
 	PARAMETRO_INVALIDO("Parametro Inválido", "parametro-invalido"),
 	ERRO_DE_SISTEMA("Erro de Sistema", "erro-de-sistema"),
-	DADOS_INVALIDOS("Dados inválidos", "dados-invalidos");
+	DADOS_INVALIDOS("Dados inválidos", "dados-invalidos"),
+	ACESSO_NEGADO("Acesso Negado", "acesso-negado");
 	
 	private String uri;
 	private String titulo;
