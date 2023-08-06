@@ -2,6 +2,7 @@ package br.com.felipe.gorisfood.core.security;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -42,12 +44,21 @@ public class ResourceServerConfig  {
 
 	private Collection<GrantedAuthority> jwtGrantedAuthoritiesConverter(Jwt jwt) {
 		var authorities = jwt.getClaimAsStringList("authorities");
+		
 		if(authorities == null) {
 			authorities = Collections.EMPTY_LIST;
 		}
-		return authorities.stream()
+		
+		List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
 				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+				.toList();
+		
+		var scopeAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		Collection<GrantedAuthority> grantedAuthorities = scopeAuthoritiesConverter.convert(jwt);
+		
+		grantedAuthorities.addAll(simpleGrantedAuthorities);
+		
+		return grantedAuthorities;
 	}
 
 	
