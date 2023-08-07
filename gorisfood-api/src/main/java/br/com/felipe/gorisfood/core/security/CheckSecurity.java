@@ -35,5 +35,11 @@ public @interface CheckSecurity {
 		@Target(METHOD)
 		public @interface PodeGerenciarCadastro {}
 		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "(hasAuthority('EDITAR_RESTAURANTES') or "
+				+ "@authUserSecurity.gerenciaRestaurante(#id))")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeGerenciarFuncionamento {}
 	}
 }

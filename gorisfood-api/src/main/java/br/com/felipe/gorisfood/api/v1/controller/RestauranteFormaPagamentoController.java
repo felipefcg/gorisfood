@@ -48,14 +48,14 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 		return formasPagamentoDTO;
 	}
 	
-	@CheckSecurity.Restaurante.PodeGerenciarCadastro
+	@CheckSecurity.Restaurante.PodeGerenciarFuncionamento
 	@PutMapping("{formaPagamentoId}")
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
 		restauranteService.associarFormaPagamento(restauranteId, formaPagamentoId);
 		return ResponseEntity.noContent().build();
 	}
 
-	@CheckSecurity.Restaurante.PodeGerenciarCadastro
+	@CheckSecurity.Restaurante.PodeGerenciarFuncionamento
 	@DeleteMapping("{formaPagamentoId}")
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
 		restauranteService.desassociarFormaPagamento(restauranteId, formaPagamentoId);

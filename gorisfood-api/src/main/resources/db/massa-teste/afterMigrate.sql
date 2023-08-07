@@ -102,7 +102,7 @@ insert into grupo_permissao (grupo_id, permissao_id)
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1,2), (2,2), (3, 3), (4, 4);
 
-insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 1), (2,2), (3,1), (3, 2);
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (2,5), (3,6), (3, 7);
 
 insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, 
                     endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,

@@ -22,4 +22,7 @@ public interface RestauranteRepository extends RestauranteRepositoryCustom,
 	
 	@Query("select distinct r from Restaurante r left JOIN FETCH r.cozinha left JOIN FETCH r.formasPagamento")
 	List<Restaurante> findAll();
+	
+	@Query
+	boolean existsResponsavel(Long restauranteId, Long usuarioId);
 }
