@@ -23,6 +23,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.ProdutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.ProdutoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.ProdutoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteProdutoContollerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.service.CadastroProdutoService;
 
@@ -42,6 +43,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public CollectionModel<ProdutoResponseDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos){
@@ -49,6 +51,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 		return assembler.toCollectionModel(service.listar(restauranteId, incluirInativos), restauranteId);
 	}
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping("{produtoId}")
 	public ProdutoResponseDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId){
 		Produto produto = service.buscar(produtoId, restauranteId);
@@ -56,6 +59,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 				.add(gorisLinks.linkToProdutoFoto(produto.getRestaurante().getId(), produto.getId(), "foto"));
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoResponseDTO criar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoRequestDTO produtoDTO) {
@@ -64,6 +68,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 	
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(value = "{produtoId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ProdutoResponseDTO alterar(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestBody @Valid ProdutoRequestDTO produtoDTO) {
@@ -74,6 +79,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 		return assembler.toModel(service.alterar(produto));
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping("{produtoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

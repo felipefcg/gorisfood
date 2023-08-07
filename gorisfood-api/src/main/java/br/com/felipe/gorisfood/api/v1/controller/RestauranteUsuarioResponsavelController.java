@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.UsuarioResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.UsuarioResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @RestController
@@ -30,6 +31,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioResponseDTO> listar(@PathVariable Long restauranteId) {
 		var restaurante = restauranteService.buscar(restauranteId);
@@ -46,12 +48,14 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		 return usuarioCollectionModel;
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping("{usuarioId}")
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
 		restauranteService.associarUsuarioResponsavel(restauranteId, usuarioId);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping("{usuarioId}")
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
 		restauranteService.desassociarUsuarioResponsavel(restauranteId, usuarioId);

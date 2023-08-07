@@ -28,6 +28,7 @@ import br.com.felipe.gorisfood.api.v1.model.response.RestauranteApenasNomeRespon
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteBasicoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.exception.CidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.exception.EntidadeRelacionamentoNaoEncontradaException;
@@ -52,25 +53,27 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	@Autowired
 	private RestauranteRequestDtoDesassembler restauranteRequestDtoDesassembler;
 
-//	@JsonView(RestauranteView.Resumo.class)
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public CollectionModel<RestauranteBasicoResponseDTO> listar(){
 		return restauranteBasicoResponseDTOAssembler.toCollectionModel(service.listar());
 	}
 	
-//	@JsonView(RestauranteView.ApenasNome.class)
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping(params = "projecao=apenas-nome")
 	@ResponseStatus(HttpStatus.OK)
 	public CollectionModel<RestauranteApenasNomeResponseDTO> listarApenasNome(){
 		return restauranteApenasNomeResponseDtoAssembler.toCollectionModel(service.listar());
 	}
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping(value =  "{id}", consumes = MediaType.ALL_VALUE)
 	public RestauranteResponseDTO buscar(@PathVariable Long id){
 		return restauranteResponseDtoAssembler.toModel(service.buscar(id));
 	}
 
+	@CheckSecurity.Restaurante.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteResponseDTO criar(@RequestBody @Valid RestauranteRequestDTO restauranteDTO) {
@@ -82,6 +85,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid RestauranteRequestDTO restauranteDTO) {
 		try {
@@ -93,36 +97,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
-//	@GetMapping(value = "por-nome")
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public CollectionModel<RestauranteResponseDTO> buscarPorNomeECozinha(String nome, Long cozinhaId) {
-//		return restauranteResponseDtoAssembler.toCollectionModel(service.buscarPorNomeECozinha(nome, cozinhaId));
-//	}
-	
-//	@GetMapping(value = "por-nome-e-taxa")
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public List<RestauranteResponseDTO> buscarPorNomeETaxa(String nome, BigDecimal taxaInicio, BigDecimal taxaFim) {
-//		return restauranteResponseDtoAssembler.toModelList(service.buscarPorNomeETaxa(nome, taxaInicio, taxaFim));
-//	}
-//	
-//	@GetMapping(value = "por-nome-cozinha-e-taxa")
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public List<RestauranteResponseDTO> buscarPorCozinhaETaxa(String nomeCozinha, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-//		return restauranteResponseDtoAssembler.toModelList(service.buscarPorCozinhaETaxa(nomeCozinha, taxaInicial, taxaFinal));
-//	}
-//	
-//	@GetMapping(value = "por-frete-gratis-e-nome")
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public List<RestauranteResponseDTO> buscarPorFreteGratisENome(String nome) {
-//		return restauranteResponseDtoAssembler.toModelList(service.buscarPorFreteGratisENome(nome));
-//	}
-//	
-//	@GetMapping(value = "primeiro")
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public Optional<RestauranteResponseDTO> buscarPrimeiro() {
-//		return restauranteResponseDtoAssembler.toModel(service.buscarPrimeiro());
-//	}
-	
+
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(value = "{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> ativar(@PathVariable Long id) {
@@ -130,6 +106,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping(value = "{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> inativar(@PathVariable Long id) {
@@ -137,6 +114,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(value = "ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> id) {
@@ -144,6 +122,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping(value = "ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> id) {
@@ -151,6 +130,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(value = "{id}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> abrir(@PathVariable Long id) {
@@ -158,6 +138,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(value = "{id}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> fechar(@PathVariable Long id) {

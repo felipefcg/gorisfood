@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
 @RestController
@@ -30,6 +31,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	public CollectionModel<FormaPagamentoResponseDTO> listar(@PathVariable Long restauranteId){
 		var formasPagamentoDTO = formaPagamentoAssembler.toCollectionModel(
@@ -46,12 +48,14 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 		return formasPagamentoDTO;
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping("{formaPagamentoId}")
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
 		restauranteService.associarFormaPagamento(restauranteId, formaPagamentoId);
 		return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping("{formaPagamentoId}")
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
 		restauranteService.desassociarFormaPagamento(restauranteId, formaPagamentoId);

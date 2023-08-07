@@ -28,6 +28,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.FotoProtutoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.FotoProdutoReponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.felipe.gorisfood.domain.model.Produto;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
@@ -50,6 +51,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorage;
 	
+	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	public FotoProdutoReponseDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		return assembler.toModel(fotoProdutoService.buscar(restauranteId, produtoId));
@@ -83,6 +85,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		}
 	}
 
+	@CheckSecurity.Restaurante.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@Valid FotoProtudoRequestDTO fotoProduto,
@@ -95,6 +98,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return assembler.toModel(fotoProdutoModel);
 	}
 	
+	@CheckSecurity.Restaurante.PodeEditar
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
