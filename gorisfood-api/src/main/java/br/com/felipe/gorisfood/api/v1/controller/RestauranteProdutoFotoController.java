@@ -85,7 +85,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		}
 	}
 
-	@CheckSecurity.Restaurante.PodeEditar
+	@CheckSecurity.Restaurante.PodeGerenciarCadastro
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@Valid FotoProtudoRequestDTO fotoProduto,
@@ -98,7 +98,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return assembler.toModel(fotoProdutoModel);
 	}
 	
-	@CheckSecurity.Restaurante.PodeEditar
+	@CheckSecurity.Restaurante.PodeGerenciarCadastro
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

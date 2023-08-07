@@ -59,7 +59,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 				.add(gorisLinks.linkToProdutoFoto(produto.getRestaurante().getId(), produto.getId(), "foto"));
 	}
 	
-	@CheckSecurity.Restaurante.PodeEditar
+	@CheckSecurity.Restaurante.PodeGerenciarCadastro
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoResponseDTO criar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoRequestDTO produtoDTO) {
@@ -68,7 +68,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 	
 	}
 	
-	@CheckSecurity.Restaurante.PodeEditar
+	@CheckSecurity.Restaurante.PodeGerenciarCadastro
 	@PutMapping(value = "{produtoId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ProdutoResponseDTO alterar(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
 			@RequestBody @Valid ProdutoRequestDTO produtoDTO) {
@@ -79,7 +79,7 @@ public class RestauranteProdutoContoller implements RestauranteProdutoContollerO
 		return assembler.toModel(service.alterar(produto));
 	}
 	
-	@CheckSecurity.Restaurante.PodeEditar
+	@CheckSecurity.Restaurante.PodeGerenciarCadastro
 	@DeleteMapping("{produtoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
