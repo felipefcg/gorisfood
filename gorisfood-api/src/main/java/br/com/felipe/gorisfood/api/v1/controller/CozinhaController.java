@@ -1,10 +1,5 @@
 package br.com.felipe.gorisfood.api.v1.controller;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -17,7 +12,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +28,6 @@ import br.com.felipe.gorisfood.api.v1.model.request.CozinhaRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.CozinhaResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.CozinhaControllerOpenApi;
 import br.com.felipe.gorisfood.core.security.CheckSecurity;
-import br.com.felipe.gorisfood.core.security.CheckSecurity.Cozinha.PodeEditar;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 import lombok.extern.slf4j.Slf4j;
