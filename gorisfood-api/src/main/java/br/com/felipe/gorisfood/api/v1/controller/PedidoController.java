@@ -27,6 +27,7 @@ import br.com.felipe.gorisfood.api.v1.openapi.controller.PedidoControllerOpenApi
 import br.com.felipe.gorisfood.core.data.PageWrapper;
 import br.com.felipe.gorisfood.core.data.PageableTranslator;
 import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.filter.PedidoFilter;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 import br.com.felipe.gorisfood.domain.model.Usuario;
@@ -63,6 +64,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pagedResourcesAssembler.toModel(pagePedidos, pedidoResumidoAssembler);
 	}
 	
+	@CheckSecurity.Pedidos.PodeBuscar
 	@GetMapping("{codigoPedido}")
 	public PedidoResponseDTO buscar(@PathVariable String codigoPedido) {
 		return pedidoAssembler.toModel(emissaoPedidoService.buscar(codigoPedido));
