@@ -24,6 +24,11 @@ public class AuthUserSecurity {
 	}
 	
 	public boolean gerenciaRestaurante(Long restauranteId) {
+		
+		if (restauranteId == null) {
+	        return false;
+	    }
+		
 		var existsResponsavel = restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
 		return existsResponsavel;
 	}
