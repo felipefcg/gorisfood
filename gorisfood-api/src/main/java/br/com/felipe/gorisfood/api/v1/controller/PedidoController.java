@@ -71,6 +71,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidoAssembler.toModel(emissaoPedidoService.buscar(codigoPedido));
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@PostMapping
 	public PedidoResponseDTO emitir(@RequestBody @Valid PedidoRequestDTO pedidoDTO) {
 		var pedido = pedidoDisassembler.toModel(pedidoDTO);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.v1.openapi.controller.FluxoPedidoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.FluxoPedidoService;
 
 @RequestMapping(value = "v1/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +21,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 	@Autowired
 	private FluxoPedidoService fluxoPedidoService;
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("confirmado")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
@@ -27,6 +29,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("entregue")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
@@ -34,6 +37,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("cancelado")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {

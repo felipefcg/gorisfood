@@ -46,6 +46,11 @@ public @interface CheckSecurity {
 	
 	public @interface Pedidos {
 		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeCriar {}
+		
 		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 		@PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or "
 				+ "@authUserSecurity.getUsuarioId() == returnObject.cliente.id or "
@@ -62,5 +67,11 @@ public @interface CheckSecurity {
 		@Target(METHOD)
 		public @interface PodePesquisar {}
 		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "hasAuthority('GERENCIAR_PEDIDOS') or "
+				+ "@authUserSecurity.gerenciaRestauranteDoPedido(#codigoPedido)")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeGerenciarPedido {}
 	}
 }
