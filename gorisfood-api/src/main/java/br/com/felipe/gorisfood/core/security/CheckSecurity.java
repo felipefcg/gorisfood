@@ -74,4 +74,20 @@ public @interface CheckSecurity {
 		@Target(METHOD)
 		public @interface PodeGerenciarPedido {}
 	}
+	
+	public @interface FormasPagamento {
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and "
+				+ "hasAuthority('EDITAR_FORMAS_PAGAMENTO')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+		
+		
+	}
 }

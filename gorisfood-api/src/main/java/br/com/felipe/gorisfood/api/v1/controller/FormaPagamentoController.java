@@ -29,6 +29,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.FormaPagamentoResponseDtoAssembl
 import br.com.felipe.gorisfood.api.v1.model.request.FormaPagamentoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.FormasPagamentoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.repository.FormaPagamentoRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroFormaPagamentoService;
 
@@ -48,6 +49,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 	@Autowired
 	private FormaPagamentoRequestDtoDesassembler desassembler;
 	
+	@CheckSecurity.FormasPagamento.PodeConsultar
 	@GetMapping
 	public ResponseEntity<CollectionModel<FormaPagamentoResponseDTO>> listar(ServletWebRequest request) {
 		
@@ -73,6 +75,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 				.body(formasPagamentoDTO);
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeConsultar
 	@GetMapping("{id}")
 	public ResponseEntity<FormaPagamentoResponseDTO> buscar(@PathVariable Long id, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -103,6 +106,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 				.body(pagamentoResponseDTO);
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoResponseDTO criar(@Valid @RequestBody FormaPagamentoRequestDTO formaPagamentoDTO) {
@@ -119,6 +123,7 @@ public class FormaPagamentoController implements FormasPagamentoControllerOpenAp
 		return assembler.toModel(service.alterar(formaPagamento));
 	}
 	
+	@CheckSecurity.FormasPagamento.PodeEditar
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
