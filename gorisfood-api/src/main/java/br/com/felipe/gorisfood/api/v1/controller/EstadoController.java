@@ -21,6 +21,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.EstadoResponseAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.EstadoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.EstadoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.EstadoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroEstadoService;
 
 @RestController
@@ -36,28 +37,33 @@ public class EstadoController implements EstadoControllerOpenApi {
 	@Autowired
 	private EstadoRequestDtoDesassembler desassembler;
 	
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping
 	public CollectionModel<EstadoResponseDTO> listar() {
 		return assembler.toCollectionModel(service.listar());
 	}
 	
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping(value = "{id}")
 	public EstadoResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public EstadoResponseDTO criar(@RequestBody @Valid EstadoRequestDTO estadoDTO) {
 		return assembler.toModel(service.salvar(desassembler.toModel(estadoDTO)));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
 	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public EstadoResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid EstadoRequestDTO estadoDTO){
 		var estado = desassembler.toModel(estadoDTO);
 		return assembler.toModel(service.atualizar(id, estado));
 	}
 	
+	@CheckSecurity.Estados.PodeEditar
 	@DeleteMapping(value = "{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {

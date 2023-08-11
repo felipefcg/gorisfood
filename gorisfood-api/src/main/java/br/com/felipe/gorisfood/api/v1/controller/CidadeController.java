@@ -25,6 +25,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.CidadeResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.CidadeRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.CidadeResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.exception.EstadoNaoEncontradoException;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 import br.com.felipe.gorisfood.domain.service.CadastroCidadeService;
@@ -42,18 +43,21 @@ public class CidadeController implements CidadeControllerOpenApi {
 	
 	@Autowired
 	private CidadeRequestDtoDesassembler desassembler;
-	
+
+	@CheckSecurity.Cidades.PodeConsultar
 	@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeResponseDTO> listar() {
 		 return assembler.toCollectionModel(service.listar());
 	}
 
+	@CheckSecurity.Cidades.PodeConsultar
 	@GetMapping(value = "{id}")
 	public CidadeResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
+	@CheckSecurity.Cidades.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeResponseDTO criar(@RequestBody @Valid CidadeRequestDTO cidadeDTO) {
@@ -64,7 +68,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeDto;
 	}
 	
-	
+	@CheckSecurity.Cidades.PodeEditar
 	@PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeResponseDTO alterar(@PathVariable Long id, 
 									 @RequestBody @Valid CidadeRequestDTO cidadeDTO) {
@@ -73,6 +77,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return assembler.toModel(service.alterar(cidadeAtual));
 	}
 	
+	@CheckSecurity.Cidades.PodeEditar
 	@DeleteMapping(value = "{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
