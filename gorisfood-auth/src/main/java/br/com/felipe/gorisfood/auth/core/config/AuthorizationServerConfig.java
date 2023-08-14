@@ -3,6 +3,8 @@ package br.com.felipe.gorisfood.auth.core.config;
 import java.security.KeyPair;
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +35,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private static final int HORA_EM_SEGUNDOS = 3600;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private DataSource dataSource;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -46,34 +48,34 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients
-			.inMemory()
-				.withClient("gorisfood-web")
-				.secret(passwordEncoder.encode("web123"))
-				.authorizedGrantTypes("password", "refresh_token")
-				.scopes("WRITE", "READ")
-				.accessTokenValiditySeconds(HORA_EM_SEGUNDOS * 6)
-				.refreshTokenValiditySeconds(HORA_EM_SEGUNDOS * 24 * 2)
-			.and()
-				.withClient("checktoken")
-				.secret(passwordEncoder.encode("check123"))
-			.and()
-				.withClient("faturamento")
-				.secret(passwordEncoder.encode("fat123"))
-				.authorizedGrantTypes("client_credentials")
-				.scopes("WRITE", "READ")
-			.and()
-				.withClient("foodanalytics")
-				.secret(passwordEncoder.encode("fan123"))
-				.authorizedGrantTypes("authorization_code")
-				.scopes("WRITE", "READ")
-				.redirectUris("http://aplicacao-cliente")
-			.and()
-				.withClient("webadmin")
-				.authorizedGrantTypes("implicit")
-				.scopes("write", "read")
-				.redirectUris("http://aplicacao-cliente")
-			;
+		clients.jdbc(dataSource);
+//			.inMemory()
+//				.withClient("gorisfood-web")
+//				.secret(passwordEncoder.encode("web123"))
+//				.authorizedGrantTypes("password", "refresh_token")
+//				.scopes("WRITE", "READ")
+//				.accessTokenValiditySeconds(HORA_EM_SEGUNDOS * 6)
+//				.refreshTokenValiditySeconds(HORA_EM_SEGUNDOS * 24 * 2)
+//			.and()
+//				.withClient("checktoken")
+//				.secret(passwordEncoder.encode("check123"))
+//			.and()
+//				.withClient("faturamento")
+//				.secret(passwordEncoder.encode("fat123"))
+//				.authorizedGrantTypes("client_credentials")
+//				.scopes("WRITE", "READ")
+//			.and()
+//				.withClient("foodanalytics")
+//				.secret(passwordEncoder.encode("fan123"))
+//				.authorizedGrantTypes("authorization_code")
+//				.scopes("WRITE", "READ")
+//				.redirectUris("http://aplicacao-cliente")
+//			.and()
+//				.withClient("webadmin")
+//				.authorizedGrantTypes("implicit")
+//				.scopes("write", "read")
+//				.redirectUris("http://aplicacao-cliente")
+//			;
 		
 		
 	}
