@@ -17,6 +17,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.GrupoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
 @RestController
@@ -32,6 +33,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoResponseDTO> listar(@PathVariable Long usuarioId){
 		var usuario = usuarioService.buscar(usuarioId);
@@ -50,12 +52,14 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 		 return collectionModel;
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping("{grupoId}")
 	public ResponseEntity<Void> adicionar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
 		usuarioService.adicionarGrupo(usuarioId, grupoId);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("{grupoId}")
 	public ResponseEntity<Void> remover(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
 		usuarioService.removerGrupo(usuarioId, grupoId);

@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.PermissaoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController
@@ -30,6 +31,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<PermissaoResponseDTO> listar(@PathVariable Long grupoId) {
 		var grupo = grupoService.buscar(grupoId);
@@ -46,12 +48,14 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 		return collectionModel;
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping("{permissaoId}")
 	public ResponseEntity<Void> associar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
 		grupoService.adicionarPermissao(grupoId, permissaoId);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("{permissaoId}")
 	public ResponseEntity<Void> desassociar (@PathVariable Long grupoId, @PathVariable Long permissaoId) {
 		grupoService.removerPermissao(grupoId, permissaoId);

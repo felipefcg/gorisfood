@@ -22,6 +22,7 @@ import br.com.felipe.gorisfood.api.v1.model.request.UsuarioComSenhaRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.request.UsuarioRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.UsuarioResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
 @RestController
@@ -37,33 +38,38 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	@Autowired
 	private CadastroUsuarioService service;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioResponseDTO> listar(){
 		return assembler.toCollectionModel(service.listar()); 
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("{id}")
 	public UsuarioResponseDTO buscar(@PathVariable Long id){
 		return assembler.toModel(service.buscar(id)); 
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UsuarioResponseDTO criar(@Valid @RequestBody UsuarioComSenhaRequestDTO dto) {
 		var usuario = desassembler.toModel(dto);
 		return assembler.toModel(service.criar(usuario));
 	}
 	
-	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public UsuarioResponseDTO alterar(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
-		var usuario = service.buscar(id);
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
+	@PutMapping(value = "{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public UsuarioResponseDTO alterar(@PathVariable Long usuarioId, @Valid @RequestBody UsuarioRequestDTO dto) {
+		var usuario = service.buscar(usuarioId);
 		desassembler.copyDtoToModel(dto, usuario);
 		return assembler.toModel(service.alterar(usuario));
 	}
 	
-	@PutMapping(value = "{id}/senha")
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
+	@PutMapping(value = "{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void alterarSenha(@PathVariable Long id, @Valid @RequestBody SenhaRequestDTO dto) {
-		var usuario = service.buscar(id);
+	public void alterarSenha(@PathVariable Long usuarioId, @Valid @RequestBody SenhaRequestDTO dto) {
+		var usuario = service.buscar(usuarioId);
 		service.alterarSenha(usuario, dto.getSenhaAntiga(), dto.getSenhaNova());
 	}
 }

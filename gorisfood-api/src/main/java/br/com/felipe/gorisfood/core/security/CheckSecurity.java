@@ -109,17 +109,48 @@ public @interface CheckSecurity {
 
 	public @interface Cidades {
 	
-	@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
-	@Retention(RUNTIME)
-	@Target(METHOD)
-	public @interface PodeConsultar {}
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and "
+				+ "hasAuthority('EDITAR_CIDADES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
 	
-	@PreAuthorize("hasAuthority('SCOPE_READ') and "
-			+ "hasAuthority('EDITAR_CIDADES')")
-	@Retention(RUNTIME)
-	@Target(METHOD)
-	public @interface PodeEditar {}
+	
+	}
+	
+	public @interface UsuariosGruposPermissoes {
+		
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and "
+				+ "hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "( hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') or "
+				+ "@authUserSecurity.getUsuarioId() == #usuarioId )")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeAlterarUsuario {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "@authUserSecurity.getUsuarioId() == #usuarioId")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeAlterarPropriaSenha {}
+	}
 	
 	
-}
 }

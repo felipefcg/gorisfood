@@ -21,6 +21,7 @@ import br.com.felipe.gorisfood.api.v1.assembler.GrupoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.request.GrupoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.GrupoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
 @RestController
@@ -36,22 +37,26 @@ public class GrupoController implements GrupoControllerOpenApi {
 	@Autowired
 	private GrupoResponseDtoAssembler assembler;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoResponseDTO> listar(){
 		return assembler.toCollectionModel(service.listar());
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("{id}")
 	public GrupoResponseDTO buscar(@PathVariable Long id) {
 		return assembler.toModel(service.buscar(id));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluir(@PathVariable Long id) {
 		service.excluir(id);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoResponseDTO criar(@RequestBody @Valid GrupoRequestDTO dto) {
@@ -59,6 +64,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 		return assembler.toModel(service.salvar(grupo));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public GrupoResponseDTO alterar(@PathVariable Long id, @RequestBody @Valid GrupoRequestDTO dto) {
 		var grupo = service.buscar(id);
