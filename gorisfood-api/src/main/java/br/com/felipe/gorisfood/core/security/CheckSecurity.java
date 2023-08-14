@@ -152,5 +152,13 @@ public @interface CheckSecurity {
 		public @interface PodeAlterarPropriaSenha {}
 	}
 	
+	public @interface Estatisticas {
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ "hasAuthority('GERAR_RELATORIOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+	}
 	
 }

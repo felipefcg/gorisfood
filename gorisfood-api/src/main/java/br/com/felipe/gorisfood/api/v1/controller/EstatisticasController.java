@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.filter.VendaDiariaFilter;
 import br.com.felipe.gorisfood.domain.model.projection.VendaDiaria;
 import br.com.felipe.gorisfood.domain.service.VendaQueryService;
@@ -34,6 +35,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	
 	public class EstatisticaResponseDTO extends RepresentationModel<EstatisticaResponseDTO> {}
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping
 	public EstatisticaResponseDTO listaEndpointsEstatisticas() {
 		var dto = new EstatisticaResponseDTO();
@@ -42,12 +44,14 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 		return dto;
 	}
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping("vendas-diarias")
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, @RequestParam(defaultValue = "+00:00") String timeOffset) {
 		System.out.println("JSON");
 		return vendaQueryService.consultaVendasDiaria(filtro, timeOffset);
 	}
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping(path = "vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE )
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro, @RequestParam(defaultValue = "+00:00") String timeOffset) {
 		var report = vendaReportService.consultaVendasDiaria(filtro, timeOffset);
