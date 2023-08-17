@@ -47,4 +47,9 @@ public class AuthUserSecurity {
 		return pedidoRepository.isPedidoGerenciadoPor(codigoPedido, getUsuarioId());
 		
 	}
+	
+	public boolean usuarioAutenticadoIgual(Long usuarioId) {
+		return usuarioId != null && getUsuarioId() != null 
+				&& usuarioId == getUsuarioId(); 
+	}
 }
