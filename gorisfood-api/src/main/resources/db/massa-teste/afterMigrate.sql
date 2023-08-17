@@ -16,6 +16,7 @@ truncate restaurante_usuario_responsavel;
 truncate pedido;
 truncate item_pedido;
 truncate foto_produto;
+truncate oauth_client_details;
 
 set foreign_key_checks = 1;
 
@@ -155,3 +156,58 @@ values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (6, 5, 3, 1, 87.2, 87.2, null);
+
+insert into oauth_client_details (
+	client_id, resource_ids, client_secret,
+	scope, authorized_grant_types, web_server_redirect_uri, authorities,
+	access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+	'gorisfood-web', null, '$2a$12$w.MQDz.kitmYs6z2udzPceRpyEvVzfdyKjPxFi73aWdjORRo1ykVG',
+	'READ,WRITE', 'password,refresh_token', null, null,
+	60*60*6, 60*24*60*60, null
+);
+
+insert into oauth_client_details (
+	client_id, resource_ids, client_secret,
+	scope, authorized_grant_types, web_server_redirect_uri, authorities,
+	access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+	'foodanalytics', null, '$2a$12$rMsrc80FJFpBlVJSke0VxO9JytJrckj1rrFJmyyTJh0uQF0wYOr2m',
+	'READ,WRITE', 'authorization_code', 'http://aplicacao-cliente', null,
+	NULL, NULL, null
+);
+
+insert into oauth_client_details (
+	client_id, resource_ids, client_secret,
+	scope, authorized_grant_types, web_server_redirect_uri, authorities,
+	access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+	'faturamento', null, '$2a$12$Jq8K.yjAorLTR9biGzXLaeyr5dEhgar.304VJTRnZr/CmS.gIZyrG',
+	'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
+	NULL, NULL, null
+);
+
+insert into oauth_client_details (
+	client_id, resource_ids, client_secret,
+	scope, authorized_grant_types, web_server_redirect_uri, authorities,
+	access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+	'checktoken', null, '$2a$12$veHqvU4aH9Z2HFhatkcpZ.yX3EHuC1hpEYWOPO5H5nKw9RJYWhPaW',
+	'READ,WRITE', NULL, null, null,
+	NULL, NULL, null
+);
+
+insert into oauth_client_details (
+	client_id, resource_ids, client_secret,
+	scope, authorized_grant_types, web_server_redirect_uri, authorities,
+	access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+	'webadmin', null, NULL,
+	'READ,WRITE', 'implicit', 'http://aplicacao-cliente', null,
+	NULL, NULL, null
+);
