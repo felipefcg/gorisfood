@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.GrupoController;
 import br.com.felipe.gorisfood.api.v1.model.response.GrupoResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Grupo;
 
 @Component
@@ -23,20 +24,32 @@ public class GrupoResponseDtoAssembler extends RepresentationModelAssemblerSuppo
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	@Override
 	public GrupoResponseDTO toModel(Grupo grupo) {
-		var model = createModelWithId(grupo.getId(), grupo)
-						.add(gorisLinks.linkToGrupos("grupos"))
-						.add(gorisLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+		var model = createModelWithId(grupo.getId(), grupo);
 		mapper.map(grupo, model);
+		
+		if(authUserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			model.add(gorisLinks.linkToGrupos("grupos"))
+				 .add(gorisLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+		}
+		
 		return model;
 	}
 	
 	@Override
 	public CollectionModel<GrupoResponseDTO> toCollectionModel(Iterable<? extends Grupo> grupos) {
-		return super.toCollectionModel(grupos)
-				.add(gorisLinks.linkToGrupos());
+		 var collectionModel = super.toCollectionModel(grupos);
+		 
+		 if(authUserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+				collectionModel.add(gorisLinks.linkToGrupos());
+		 }
+		 
+		 return collectionModel;
 	}
 	
 }

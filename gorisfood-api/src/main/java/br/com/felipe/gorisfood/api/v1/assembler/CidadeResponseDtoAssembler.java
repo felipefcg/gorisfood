@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.CidadeController;
 import br.com.felipe.gorisfood.api.v1.model.response.CidadeResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Cidade;
 
 @Component
@@ -19,6 +20,10 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 
 	@Autowired
 	private GorisLinks gorisLinks;
+	
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	public CidadeResponseDtoAssembler() {
 		super(CidadeController.class, CidadeResponseDTO.class);
 	}
@@ -28,10 +33,14 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		CidadeResponseDTO cidadeModel = createModelWithId(cidade.getId(), cidade);
 		mapper.map(cidade, cidadeModel);
 		
-		cidadeModel.add(gorisLinks.linkToCidades("cidades"));
-
-		cidadeModel.getEstado()
-					.add(gorisLinks.linkToEstado(cidadeModel.getEstado().getId()));
+		if(authUserSecurity.podeConsultarCidades()) {
+			cidadeModel.add(gorisLinks.linkToCidades("cidades"));
+		}
+		
+		if(authUserSecurity.podeConsultarEstados()) {
+			cidadeModel.getEstado()
+				.add(gorisLinks.linkToEstado(cidadeModel.getEstado().getId()));
+		}
 		
 		return cidadeModel;
 	}
@@ -39,8 +48,13 @@ public class CidadeResponseDtoAssembler extends RepresentationModelAssemblerSupp
 	
 	@Override
 	public CollectionModel<CidadeResponseDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
-		return super.toCollectionModel(entities)
-				.add(gorisLinks.linkToCidades());
+		var collectionModel = super.toCollectionModel(entities);
+		
+		if(authUserSecurity.podeConsultarCidades()) {
+			collectionModel.add(gorisLinks.linkToCidades());
+		}
+		
+		return collectionModel;
 	}
 	
 }

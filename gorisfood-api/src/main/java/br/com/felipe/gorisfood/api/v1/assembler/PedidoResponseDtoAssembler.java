@@ -31,20 +31,43 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 		var pedidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResponseDTO);
 		
-		pedidoResponseDTO.add(gorisLinks.linkToPedidos("pedidos"));
-		pedidoResponseDTO.getRestaurante().add(gorisLinks.linkToRestaurante(pedidoResponseDTO.getRestaurante().getId()));
-		pedidoResponseDTO.getCliente().add(gorisLinks.linkToUsuario(pedidoResponseDTO.getCliente().getId()));
-		pedidoResponseDTO.getFormaPagamento().add(gorisLinks.linkToFormaPagamento(pedidoResponseDTO.getFormaPagamento().getId()));
-		pedidoResponseDTO.getEnderecoEntrega()
-			.add(gorisLinks.linkToCidade(pedido.getEnderecoEntrega().getCidadeId(), "cidade"))
-			.add(gorisLinks.linkToEstado(pedido.getEnderecoEntrega().getEstadoId(), "estado"));
+		// Não usei o método algaSecurity.podePesquisarPedidos(clienteId, restauranteId) aqui,
+	    // porque na geração do link, não temos o id do cliente e do restaurante, 
+	    // então precisamos saber apenas se a requisição está autenticada e tem o escopo de leitura
+		if(authUserSecurity.podePesquisarPedidos()) {
+			pedidoResponseDTO.add(gorisLinks.linkToPedidos("pedidos"));
+		}
 		
-		pedidoResponseDTO.getItens()
-			.forEach( item -> 
-				item.add(gorisLinks.linkToProduto(item.getProdutoId(), pedidoResponseDTO.getRestaurante().getId(), "produto"))
-			);
+		if(authUserSecurity.podeConsultarRestaurantes()) {
+			pedidoResponseDTO.getRestaurante()
+				.add(gorisLinks.linkToRestaurante(pedidoResponseDTO.getRestaurante().getId()));
+			
+			pedidoResponseDTO.getItens()
+				.forEach( item -> 
+					item.add(gorisLinks.linkToProduto(item.getProdutoId(), pedidoResponseDTO.getRestaurante().getId(), "produto"))
+				);
+		}
+		
+		if(authUserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			pedidoResponseDTO.getCliente()
+				.add(gorisLinks.linkToUsuario(pedidoResponseDTO.getCliente().getId()));
+		}
+		
+		if(authUserSecurity.podeConsultarFormasPagamento()) {
+			pedidoResponseDTO.getFormaPagamento()
+				.add(gorisLinks.linkToFormaPagamento(pedidoResponseDTO.getFormaPagamento().getId()));
+		}
+		
+		if(authUserSecurity.podeConsultarCidades()) {
+			pedidoResponseDTO.getEnderecoEntrega()
+				.add(gorisLinks.linkToCidade(pedido.getEnderecoEntrega().getCidadeId(), "cidade"))
+				.add(gorisLinks.linkToEstado(pedido.getEnderecoEntrega().getEstadoId(), "estado"));
+		}
+		
+		
 
 		var codigoPedido = pedido.getCodigo();
+		
 		if(authUserSecurity.podeGerenciarPedido(pedido.getCodigo())) { 
 			if(pedido.podeConfirmar()) {
 				pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
@@ -58,6 +81,7 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 				pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
 			}
 		}
+		
 		return pedidoResponseDTO;
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.RestauranteController;
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteBasicoResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Restaurante;
 
 @Component
@@ -19,7 +20,10 @@ public class RestauranteBasicoResponseDTOAssembler extends RepresentationModelAs
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	public RestauranteBasicoResponseDTOAssembler() {
 		super(RestauranteController.class, RestauranteBasicoResponseDTO.class);
 	}
@@ -29,17 +33,27 @@ public class RestauranteBasicoResponseDTOAssembler extends RepresentationModelAs
 		var restauranteResumoResponseDTO = createModelWithId(restaurante.getId(), restaurante);
 		mapper.map(restaurante, restauranteResumoResponseDTO);
 		
-		var cozinha = restauranteResumoResponseDTO.getCozinha();
-		cozinha.add(gorisLinks.linkToCozinha(cozinha.getId()));
+		if(authUserSecurity.podeConsultarCozinhas()) {
+			var cozinha = restauranteResumoResponseDTO.getCozinha();
+			cozinha.add(gorisLinks.linkToCozinha(cozinha.getId()));
+		}
 		
-		restauranteResumoResponseDTO.add(gorisLinks.linkToRestaurantes("restaurantes"));
+		if(authUserSecurity.podeConsultarRestaurantes()) {
+			restauranteResumoResponseDTO.add(gorisLinks.linkToRestaurantes("restaurantes"));
+		}
 		
 		return restauranteResumoResponseDTO;
 	}
 
 	@Override
 	public CollectionModel<RestauranteBasicoResponseDTO> toCollectionModel(Iterable<? extends Restaurante> restaurantes) {
-		return super.toCollectionModel(restaurantes)
-				.add(gorisLinks.linkToRestaurantes());
+		var collectionModel = super.toCollectionModel(restaurantes);
+		
+		if(authUserSecurity.podeConsultarRestaurantes()) {
+			collectionModel.add(gorisLinks.linkToRestaurantes());
+		}
+		
+		return collectionModel;
+		
 	}
 }

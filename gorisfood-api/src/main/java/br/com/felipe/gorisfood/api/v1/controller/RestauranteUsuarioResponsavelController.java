@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.UsuarioResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.UsuarioResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -30,6 +31,9 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	
 	@Autowired
 	private GorisLinks gorisLinks;
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
 	
 	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
@@ -37,14 +41,17 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		var restaurante = restauranteService.buscar(restauranteId);
 		 var usuarioCollectionModel = usuarioAssembler.toCollectionModel(restaurante.getResponsaveis())
 				.removeLinks()
-				.add(gorisLinks.linkToResponsaveisRestaurante(restauranteId))
-				.add(gorisLinks.linkToResponsaveisRestauranteAssociar(restauranteId, "associar"));
+				.add(gorisLinks.linkToResponsaveisRestaurante(restauranteId));
+				
 		 
-		 usuarioCollectionModel.getContent()
-		 	.forEach( u -> u.add(
+		 if(authUserSecurity.podeGerenciarCadastroRestaurantes()) {
+			 usuarioCollectionModel
+			 	.add(gorisLinks.linkToResponsaveisRestauranteAssociar(restauranteId, "associar"))
+			 	.getContent().forEach( u -> u.add(
 		 			gorisLinks.linkToResponsaveisRestauranteDesassociar(restauranteId, u.getId(), "desassociar"))
-		 	);
-		 	
+	 			);
+		 }
+		 
 		 return usuarioCollectionModel;
 	}
 	

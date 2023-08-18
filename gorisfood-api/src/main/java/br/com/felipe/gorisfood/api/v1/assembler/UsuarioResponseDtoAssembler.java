@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.UsuarioController;
 import br.com.felipe.gorisfood.api.v1.model.response.UsuarioResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Usuario;
 
 @Component
@@ -23,14 +24,19 @@ public class UsuarioResponseDtoAssembler extends RepresentationModelAssemblerSup
 	
 	@Autowired
 	private GorisLinks gorisLinks;
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
 	
 	public UsuarioResponseDTO toModel(Usuario usuario) {
 		UsuarioResponseDTO usuarioResponseDTO = createModelWithId(usuario.getId(), usuario);
 		mapper.map(usuario, usuarioResponseDTO);
-
-		usuarioResponseDTO.add(gorisLinks.linkToUsuarios("usuarios"));
 		
-		usuarioResponseDTO.add(gorisLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+		if(authUserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			usuarioResponseDTO
+				.add(gorisLinks.linkToUsuarios("usuarios"))
+				.add(gorisLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+		}
 		
 		return usuarioResponseDTO;
 	}

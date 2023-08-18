@@ -19,7 +19,10 @@ public class PedidoResumidoResponseDtoAssembler extends RepresentationModelAssem
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	public PedidoResumidoResponseDtoAssembler() {
 		super(PedidoController.class, PedidoResumidoResponseDTO.class);
 	}
@@ -29,13 +32,19 @@ public class PedidoResumidoResponseDtoAssembler extends RepresentationModelAssem
 		var pedidoResumidoResponseDTO = createModelWithId(pedido.getId(), pedido);
 		mapper.map(pedido, pedidoResumidoResponseDTO);
 		
-		pedidoResumidoResponseDTO.add(gorisLinks.linkToPedidos("pedidos"));
+		if(authUserSecurity.podePesquisarPedidos()) {
+			pedidoResumidoResponseDTO.add(gorisLinks.linkToPedidos("pedidos"));
+		}
 		
-		pedidoResumidoResponseDTO.getRestaurante().add(
+		if(authUserSecurity.podeConsultarRestaurantes()) {
+			pedidoResumidoResponseDTO.getRestaurante().add(
 				gorisLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+		}
 		
-		pedidoResumidoResponseDTO.getCliente().add(
+		if(authUserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			pedidoResumidoResponseDTO.getCliente().add(
 				gorisLinks.linkToUsuario(pedido.getCliente().getId()));
+		}
 		
 		return pedidoResumidoResponseDTO;
 	}

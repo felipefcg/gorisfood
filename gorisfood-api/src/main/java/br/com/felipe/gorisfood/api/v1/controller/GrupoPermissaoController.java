@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.PermissaoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.PermissaoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroGupoService;
 
@@ -31,6 +32,9 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	@Autowired
 	private GorisLinks gorisLinks;
 	
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<PermissaoResponseDTO> listar(@PathVariable Long grupoId) {
@@ -39,11 +43,15 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 		
 		CollectionModel<PermissaoResponseDTO> collectionModel = permissaoAssembler.toCollectionModel(permissoes)
 			.removeLinks()
-			.add(gorisLinks.linkToGrupoPermissaoAssociar(grupoId, "associar"))
 			.add(gorisLinks.linkToGrupoPermissoes(grupoId));
 		
-		collectionModel.getContent()
-			.forEach(p -> p.add(gorisLinks.linkToGrupoPermissaoDesassociar(grupoId, p.getId(), "desassociar")));
+		if(authUserSecurity.podeEditarUsuariosGruposPermissoes()) {
+			
+			collectionModel
+				.add(gorisLinks.linkToGrupoPermissaoAssociar(grupoId, "associar"))
+				.getContent()
+					.forEach(p -> p.add(gorisLinks.linkToGrupoPermissaoDesassociar(grupoId, p.getId(), "desassociar")));
+		}
 		
 		return collectionModel;
 	}

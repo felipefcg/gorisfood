@@ -15,6 +15,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.FormaPagamentoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.FormaPagamentoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroRestauranteService;
 
@@ -30,21 +31,27 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	@CheckSecurity.Restaurante.PodeConsultar
 	@GetMapping
 	public CollectionModel<FormaPagamentoResponseDTO> listar(@PathVariable Long restauranteId){
 		var formasPagamentoDTO = formaPagamentoAssembler.toCollectionModel(
 				restauranteService.listarFormasPagamentoDoRestaurante(restauranteId)
 			).removeLinks()
-			 .add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId))
-			 .add(gorisLinks.linkToFormasPagamentoRestaurantesAssociar(restauranteId, "associar"));
+			 .add(gorisLinks.linkToFormasPagamentoRestaurantes(restauranteId));
+			 
 
-		formasPagamentoDTO.getContent()
-			.forEach( formaPagamentoDTO -> 
-				formaPagamentoDTO.add(gorisLinks.linkToFormasPagamentoRestaurantesDesassociar(restauranteId, formaPagamentoDTO.getId(), "desassociar")
-			));
-							
+		if (authUserSecurity.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+			formasPagamentoDTO
+				.add(gorisLinks.linkToFormasPagamentoRestaurantesAssociar(restauranteId, "associar"))
+				.getContent().forEach( formaPagamentoDTO -> 
+					formaPagamentoDTO.add(gorisLinks.linkToFormasPagamentoRestaurantesDesassociar(restauranteId, formaPagamentoDTO.getId(), "desassociar")
+				));
+		}
+		
 		return formasPagamentoDTO;
 	}
 	

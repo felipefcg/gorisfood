@@ -17,6 +17,7 @@ import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.assembler.GrupoResponseDtoAssembler;
 import br.com.felipe.gorisfood.api.v1.model.response.GrupoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.core.security.CheckSecurity;
 import br.com.felipe.gorisfood.domain.service.CadastroUsuarioService;
 
@@ -32,22 +33,27 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoResponseDTO> listar(@PathVariable Long usuarioId){
 		var usuario = usuarioService.buscar(usuarioId);
 		
 		 var collectionModel = grupoAssembler.toCollectionModel(usuario.getGrupos())
-				.removeLinks()
-				.add(gorisLinks.linkToGruposUsuario(usuarioId))
-				.add(gorisLinks.linkToGruposUsuarioAssociar(usuarioId, "associar"));
+				.removeLinks();
 		 
-		 collectionModel
-			.getContent()
-			.forEach( grupoUsuario -> 
-					grupoUsuario.add(gorisLinks
+		 if(authUserSecurity.podeEditarUsuariosGruposPermissoes()) {
+		 
+			 collectionModel
+			 	.add(gorisLinks.linkToGruposUsuarioAssociar(usuarioId, "associar"))
+				.getContent()
+					.forEach( grupoUsuario -> 
+						grupoUsuario.add(gorisLinks
 									.linkToGruposUsuarioDesassociar(usuarioId, grupoUsuario.getId(), "desassociar")));
+		 }
 		 
 		 return collectionModel;
 	}
