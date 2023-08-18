@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.PedidoController;
 import br.com.felipe.gorisfood.api.v1.model.response.PedidoResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 
 @Component
@@ -18,7 +19,10 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 	
 	@Autowired
 	private GorisLinks gorisLinks;
-	
+
+	@Autowired
+	private AuthUserSecurity authUserSecurity;
+
 	public PedidoResponseDtoAssembler() {
 		super(PedidoController.class, PedidoResponseDTO.class);
 	}
@@ -41,18 +45,19 @@ public class PedidoResponseDtoAssembler extends RepresentationModelAssemblerSupp
 			);
 
 		var codigoPedido = pedido.getCodigo();
-		if(pedido.podeConfirmar()) {
-			pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
+		if(authUserSecurity.podeGerenciarPedido(pedido.getCodigo())) { 
+			if(pedido.podeConfirmar()) {
+				pedidoResponseDTO.add(gorisLinks.confirmacaoPedido(codigoPedido, "confirmar"));
+			}
+			
+			if(pedido.podeCancelar()) {
+				pedidoResponseDTO.add(gorisLinks.cancelamentoPedido(codigoPedido, "cancelar"));
+			}
+			
+			if(pedido.podeEntregar()) {
+				pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
+			}
 		}
-		
-		if(pedido.podeCancelar()) {
-			pedidoResponseDTO.add(gorisLinks.cancelamentoPedido(codigoPedido, "cancelar"));
-		}
-		
-		if(pedido.podeEntregar()) {
-			pedidoResponseDTO.add(gorisLinks.entregaPedido(codigoPedido, "entregar"));
-		}
-		
 		return pedidoResponseDTO;
 	}
 

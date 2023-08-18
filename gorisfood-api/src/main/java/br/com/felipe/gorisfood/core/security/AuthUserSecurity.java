@@ -52,4 +52,15 @@ public class AuthUserSecurity {
 		return usuarioId != null && getUsuarioId() != null 
 				&& usuarioId == getUsuarioId(); 
 	}
+	
+	public boolean podeGerenciarPedido(String codigoPedido) {
+		return hasAuthority("SCOPE_WRITE") && (hasAuthority("GERENCIAR_PEDIDOS") ||
+				gerenciaRestauranteDoPedido(codigoPedido));
+	}
+
+	public boolean hasAuthority(String authorityName) {
+		return getAuthentication().getAuthorities()
+				.stream()
+				.anyMatch(authority -> authority.getAuthority().equals(authorityName));
+	}
 }

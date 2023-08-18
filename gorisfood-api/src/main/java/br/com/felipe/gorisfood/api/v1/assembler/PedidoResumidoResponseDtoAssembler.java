@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.api.v1.controller.PedidoController;
 import br.com.felipe.gorisfood.api.v1.model.response.PedidoResumidoResponseDTO;
+import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
 import br.com.felipe.gorisfood.domain.model.Pedido;
 
 @Component
