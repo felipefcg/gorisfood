@@ -51,7 +51,7 @@ public @interface CheckSecurity {
 		
 		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 		@PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or "
-				+ "@authUserSecurity.usuarioAutenticadoIgual(#pedidoFilter.clienteId) or "
+				+ "@authUserSecurity.usuarioAutenticadoIgual(returnObject.cliente.id) or "
 				+ "@authUserSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
 		@Retention(RUNTIME)
 		@Target(METHOD)

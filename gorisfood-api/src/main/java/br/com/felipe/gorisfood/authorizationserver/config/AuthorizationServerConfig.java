@@ -1,6 +1,7 @@
 package br.com.felipe.gorisfood.authorizationserver.config;
 
 import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
@@ -23,6 +25,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 import br.com.felipe.gorisfood.authorizationserver.properties.JwtKeyStoreProperties;
 import br.com.felipe.gorisfood.authorizationserver.service.JpaUserDetailsService;
@@ -93,6 +100,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return jwtAccessTokenConverter;
 	}
 
+	@Bean
+	JWKSet jwkSet() {
+		RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+			.keyUse(KeyUse.SIGNATURE)
+			.algorithm(JWSAlgorithm.RS256)
+			.keyID("gorisfood-key-id")
+			.build();
+		
+		return new JWKSet(rsaKey);
+			
+	}
+	
 	private KeyPair keyPair() {
 		var jksResource = jwtKeyStoreProperties.getJksLocation();
 		var keyStorePass = jwtKeyStoreProperties.getPassword();
