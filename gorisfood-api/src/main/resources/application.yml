@@ -82,3 +82,8 @@ gorisfood:
     impl: sandbox
     sandbox:
       destinatario: teste.poc.dev+sandbox@gmail.com
+  jwt:
+    keystore:
+      jks-location: classpath:keys/gorisfood.jks
+      password: 123456
+      keypair-alias: gorisfood          
