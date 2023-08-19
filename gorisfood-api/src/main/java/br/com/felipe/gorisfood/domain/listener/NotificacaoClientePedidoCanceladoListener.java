@@ -20,7 +20,7 @@ public class NotificacaoClientePedidoCanceladoListener {
 		var assunto = String.format("%s - Pedido Cancelado", pedido.getRestaurante().getNome());
 		var mensagem = Mensagem.builder()
 						.assunto(assunto)
-						.template("pedido-cancelado.html")
+						.template("emails/pedido-cancelado.html")
 						.variavel("pedido", pedido)
 						.destinatario(pedido.getCliente().getEmail())
 						.build();
