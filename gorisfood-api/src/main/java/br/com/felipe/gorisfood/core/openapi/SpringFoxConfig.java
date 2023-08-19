@@ -46,6 +46,8 @@ import br.com.felipe.gorisfood.api.v1.openapi.model.UsuariosModelOpenApi;
 import br.com.felipe.gorisfood.api.v2.model.response.CidadeResponseDTOV2;
 import br.com.felipe.gorisfood.api.v2.openapi.model.CidadesModelOpenApiV2;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuth2SchemeBuilder;
+import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -55,12 +57,20 @@ import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.OAuth2Scheme;
 import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.RequestParameter;
+import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.Response;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.OperationContext;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -113,10 +123,42 @@ public class SpringFoxConfig {
 					  new Tag("Produtos", "Gerencia os produtos de restaurantes"),
 					  new Tag("Usuários", "Gerencia os usuários"),
 					  new Tag("Estatísticas", "Estatísticas do GorisFood"))
-				.apiInfo(apiInfoV1());				
+				.apiInfo(apiInfoV1())
+				.securitySchemes(Arrays.asList(securitySchemes()))
+				.securityContexts(Arrays.asList(securityContexts()))
+				;				
 	}
 
-//	@Bean
+	private SecurityContext securityContexts() {
+		var securityReference = SecurityReference.builder()
+				.reference("GorisFood - OAuth2")
+				.scopes(scopes().toArray(new AuthorizationScope[0]))
+				.build()
+		;
+		
+		return SecurityContext.builder()
+				.securityReferences(Arrays.asList(securityReference))
+				.operationSelector(operationContext -> true)
+				.build()
+				;
+	}
+
+	private SecurityScheme securitySchemes() {
+		
+		return OAuth2Scheme.OAUTH2_PASSWORD_FLOW_BUILDER
+			.name("GorisFood - OAuth2")
+			.tokenUrl("/oauth/token")
+			.scopes(scopes())
+			.build();
+	}
+
+	private List<AuthorizationScope> scopes() {
+		return Arrays.asList(
+				new AuthorizationScope("READ", "Permissão de leitura"), 
+				new AuthorizationScope("WRITE", "Permissão de escrita"));
+	}
+
+	//	@Bean
 	public Docket apiDocketV2() {
 		
 		return new Docket(DocumentationType.OAS_30)
