@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import br.com.felipe.gorisfood.core.io.Base64ProtocolResolver;
 import br.com.felipe.gorisfood.infrastructure.repository.CustomJpaRepositoryImpl;
 
 @SpringBootApplication
@@ -16,7 +17,10 @@ public class GorisfoodApiApplication {
 
 	public static void main(String[] args) {
 		TimeZone.setDefault(TimeZone.getTimeZone(TimeZones.GMT_ID));
-		SpringApplication.run(GorisfoodApiApplication.class, args);
+		var app = new SpringApplication(GorisfoodApiApplication.class);
+		app.addListeners(new Base64ProtocolResolver());
+		app.run(args);
+//		SpringApplication.run(GorisfoodApiApplication.class, args);
 	}
 
 }
