@@ -6,7 +6,7 @@ server:
 #logging.loggly.token:${SEU_CUSTOMER_TOKEN_AQUI}      
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
     hikari:
