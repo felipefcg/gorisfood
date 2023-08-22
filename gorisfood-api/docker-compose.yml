@@ -1,0 +1,24 @@
+networks:
+    gorisfood-network:
+        driver: bridge
+        
+services:
+    gorisfood-mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        networks:
+            - gorisfood-network
+        
+    gorisfood-api:
+        image: felipefcg/gorisfood-api
+        environment:
+            DB_HOST: gorisfood-mysql
+        ports: 
+            - "8080:8080"
+        networks:
+            - gorisfood-network
+        depends_on:
+            - gorisfood-mysql
