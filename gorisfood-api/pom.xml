@@ -26,6 +26,8 @@
 		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 		<spring-security-jwt.version>1.1.1.RELEASE</spring-security-jwt.version>
 		<!-- Authorization Server -->
+		<!-- Build Image Docker -->
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 	</properties>
 	
 	<dependencies>
@@ -204,7 +206,40 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 	</dependencies>
-
+	
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<!-- plugin retidado da documentação:  
+						https://github.com/spotify/dockerfile-maven -->							
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${dockerfile-maven-version}</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>build</goal>
+									<goal>push</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<repository>gorisfood-api</repository>
+							<tag>${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>	
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
