@@ -228,8 +228,8 @@
 							</execution>
 						</executions>
 						<configuration>
-							<repository>gorisfood-api</repository>
-							<tag>${project.version}</tag>
+							<repository>felipefcg/gorisfood-api</repository>
+							<tag>latest</tag>
 							<buildArgs>
 								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
 							</buildArgs>

@@ -14,6 +14,7 @@ services:
         
     gorisfood-api:
         image: felipefcg/gorisfood-api
+        command: ["/wait-for-it.sh", "gorisfood-mysql:3306", "-t", "30", "--", "java", "-jar", "gorisfood-api.jar"]
         environment:
             DB_HOST: gorisfood-mysql
         ports: 
