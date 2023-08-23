@@ -1,5 +1,11 @@
 set foreign_key_checks = 0;
 
+lock tables cidade write, cozinha write, estado write, forma_pagamento write,
+	grupo write, grupo_permissao write, permissao write,
+	produto write, restaurante write, restaurante_forma_pagamento write,
+	restaurante_usuario_responsavel write, usuario write, usuario_grupo write,
+	pedido write, item_pedido write, foto_produto write, oauth_client_details write; 
+
 truncate cidade;
 truncate cozinha;
 truncate estado;
@@ -211,3 +217,5 @@ values (
 	'READ,WRITE', 'implicit', 'http://aplicacao-cliente', null,
 	NULL, NULL, null
 );
+
+unlock tables;

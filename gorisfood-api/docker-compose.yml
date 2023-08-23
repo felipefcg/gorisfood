@@ -17,8 +17,10 @@ services:
         command: ["/wait-for-it.sh", "gorisfood-mysql:3306", "-t", "30", "--", "java", "-jar", "gorisfood-api.jar"]
         environment:
             DB_HOST: gorisfood-mysql
-        ports: 
-            - "8080:8080"
+# Removendo a propriedade para nã ter conflito de portas no host, pois vamos escalar a imgem
+# durante a execução do docker compose, com o atributo "--scale gorisfood-api=2"             
+#        ports: 
+#            - "8080:8080"
         networks:
             - gorisfood-network
         depends_on:
