@@ -25,3 +25,13 @@ services:
             - gorisfood-network
         depends_on:
             - gorisfood-mysql
+            
+    gorisfood-proxy:
+        build: ./nginx
+        image: gorisfood-proxy
+        ports:
+            - "80:80"
+        networks:
+            - gorisfood-network
+        depends_on:
+            - gorisfood-api
