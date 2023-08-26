@@ -11,7 +11,12 @@ services:
             - "3306:3306"
         networks:
             - gorisfood-network
-        
+    
+    gorisfood-redis:
+        image: redis:alpine
+        networks:
+            - gorisfood-network
+            
     gorisfood-api:
         image: felipefcg/gorisfood-api
         command: ["/wait-for-it.sh", "gorisfood-mysql:3306", "-t", "30", "--", "java", "-jar", "gorisfood-api.jar"]
