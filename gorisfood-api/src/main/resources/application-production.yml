@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    username: ${SPRING_DATA_SOURCE_USERNAME}
+    password: ${SPRING_DATA_SOURCE_PASSWORD}
+  session:
+    store-type: redis
+  redis:
+    host: ${SPRING_REDIS_HOST}
+    port: ${SPRING_REDIS_PORT}
+    password: ${REDIS_PASS}     
+  mail:
+    host: ${SPRING_MAIL_HOST}
+    port: ${SPRING_MAIL_PORT}
+    username: ${SPRING_MAIL_USERNAME}
+    
+logging:
+  loggly:
+    token: ${LOGGING_LOGGLY_TOKEN}        
+         
+gorisfood:
+  storage:
+    tipo: s3
+    s3:
+      diretorio-fotos: 'catalogo'
+      id-chave-acesso: ${GORISFOOD_STORAGE_S3_ID_CHAVE_ACESSO}
+      chave-acesso-secreta: ${GORISFOOD_STORAGE_S3_CHAVE_ACESSO_SECRETA}
+      bucket: ${GORISFOOD_STORAGE_S3_BUCKET}
+      regiao: ${GORISFOOD_STORAGE_S3_REGIAO}
+  email:
+    impl: SMTP
+    remetente: ${GORISFOOD_EMAIL_REMETENTE}
+    
+  jwt:
+    keystore:
+      jks-location: ${GORISFOOD_JWT_KEYSTORE_JKS_LOCATION}
+      password: ${GORISFOOD_JWT_KEYSTORE__PASSWORD}
+      keypair-alias: ${GORISFOOD_JWT_KEYSTORE_KEYPAIR_ALIAS}          

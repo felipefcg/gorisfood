@@ -3,38 +3,22 @@ server:
     enabled: true
     min-response-size: 2KB
 
-#logging.loggly.token:${SEU_CUSTOMER_TOKEN_AQUI}      
 spring:
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:3306/gorisfood?connectionTimeZone=UTC&characterEncoding=UTF-8&createDatabaseIfNotExist=true&serverTimezone=UTC
-    username: root
-    password: root
-    hikari:
-      minimum-idle: 10
-      maximum-pool-size: 15
-      idle-timeout: 10000
-  jpa:
-    show-sql: true
-    
-  flyway:
-    locations: 'classpath:db/migration, classpath:db/massa-teste'
     
   jackson:
     deserialization:
       fail-on-unknown-properties: true
       fail-on-ignored-properties: true
     #property-naming-strategy: SNAKE_CASE
-  mail:
-    host: smtp.sendgrid.net
-    port: 587
-    username: apikey
-#    password:       
+
   mvc:
     throw-exception-if-no-handler-found: true
-    pathmatch.matching-strategy: ANT_PATH_MATCHER #para o Spring Fox (habilitar essa propriedade e remover o @EnableWebMvC) -2 propostas de solução: anotação ou essa propriedade
   web:
-    resources:
-      add-mappings: false
+      resources:
+        add-mappings: false
+
   data:
     web:
       pageable:
@@ -52,42 +36,11 @@ spring:
   security:
     oauth2:
       resourceserver:
-        opaquetoken:
-          introspection-uri: http://localhost:8081/oauth/check_token
-          client-id: checktoken
-          client-secret: check123
         jwt:
           jwk-set-uri: http://localhost:8080/.well-know/jwks.json
            
-# ** Alterar o usuario e senha padrão do usuário em memória, se o mesmo não tiver sido criado programaticamente na classe de config **
-#  security:
-#    user:
-#      name: gorisfood
-#      password: 123456      
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-        
-gorisfood:
-  storage:
-    tipo: local
-    local:
-      diretorio-fotos: /gorisfood/storage/fotos
-    s3:
-#      id-chave-acesso: 
-#      chave-acesso-secreta: 
-      bucket: 'gorisfood'
-      regiao: 'us-east-1'
-      diretorio-fotos: 'catalogo'
-  email:
-    remetente: teste.poc.dev+no-reply@gmail.com
-    impl: sandbox
-    sandbox:
-      destinatario: teste.poc.dev+sandbox@gmail.com
-  jwt:
-    keystore:
-      jks-location: 'base64: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'
-      password: 123456
-      keypair-alias: gorisfood          
