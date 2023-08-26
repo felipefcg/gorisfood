@@ -15,10 +15,8 @@ import br.com.felipe.gorisfood.core.email.EmailProperties;
 import br.com.felipe.gorisfood.domain.service.EnvioEmailService;
 import freemarker.template.Configuration;
 
-public class SmtpEnvioEmailService implements EnvioEmailService{
+public class SmtpEnvioEmailService implements EnvioEmailService {
 
-	private static final String ENCODING_UTF_8 = StandardCharsets.UTF_8.name();
-	
 	@Autowired
 	protected EmailProperties emailProperties;
 	
@@ -26,7 +24,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private Configuration freeMarkerConfig;
+	private ProcessadorEmailTemplate processadorEmailTemplate;
 	
 	
 	@Override
@@ -41,8 +39,8 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 	
 	protected MimeMessage criarMimeMessage(Mensagem msg) throws MessagingException {
 		var mimeMessage = mailSender.createMimeMessage();
-		var helper = new MimeMessageHelper(mimeMessage, ENCODING_UTF_8);
-		var corpo = processarTemplate(msg.getTemplate(), msg.getVariaveis());
+		var helper = new MimeMessageHelper(mimeMessage, StandardCharsets.UTF_8.name());
+		var corpo = processadorEmailTemplate.processarTemplate(msg);
 		
 		helper.setFrom(emailProperties.getRemetente());
 		helper.setTo(msg.getDestinatarios().toArray(new String[0]));
@@ -52,13 +50,4 @@ public class SmtpEnvioEmailService implements EnvioEmailService{
 		return mimeMessage;
 	}
 	
-	private String processarTemplate(String template, Map<String, Object> variaveis) { 
-		try {
-			var freeMakerTemplate = freeMarkerConfig.getTemplate(template, ENCODING_UTF_8);
-			return FreeMarkerTemplateUtils.processTemplateIntoString(freeMakerTemplate, variaveis);
-		} catch (Exception e) {
-			throw new EmailException("Não foi possível montar o e-mail", e);
-		}
-	}
-
 }

@@ -24,6 +24,7 @@ services:
             DB_HOST: gorisfood-mysql
             SPRING_SESSION_STORE_TYPE: redis
             SPRING_REDIS_HOST: gorisfood-redis
+            SPRING_PROFILES_ACTIVE: development
             
 # Removendo a propriedade para nã ter conflito de portas no host, pois vamos escalar a imgem
 # durante a execução do docker compose, com o atributo "--scale gorisfood-api=2"             
