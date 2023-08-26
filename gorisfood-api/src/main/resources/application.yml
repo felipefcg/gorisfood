@@ -45,6 +45,10 @@ spring:
   freemarker:
     settings:
       locale: pt_BR
+      
+  session:
+    store-type: none
+          
   security:
     oauth2:
       resourceserver:

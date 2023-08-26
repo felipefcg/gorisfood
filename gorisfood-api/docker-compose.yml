@@ -22,6 +22,9 @@ services:
         command: ["/wait-for-it.sh", "gorisfood-mysql:3306", "-t", "30", "--", "java", "-jar", "gorisfood-api.jar"]
         environment:
             DB_HOST: gorisfood-mysql
+            SPRING_SESSION_STORE_TYPE: redis
+            SPRING_REDIS_HOST: gorisfood-redis
+            
 # Removendo a propriedade para nã ter conflito de portas no host, pois vamos escalar a imgem
 # durante a execução do docker compose, com o atributo "--scale gorisfood-api=2"             
 #        ports: 
@@ -30,6 +33,7 @@ services:
             - gorisfood-network
         depends_on:
             - gorisfood-mysql
+            - gorisfood-redis
             
     gorisfood-proxy:
         build: ./nginx
