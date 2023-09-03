@@ -22,7 +22,7 @@ public class StorageConfig {
 	private StorageProperties storageProperties;
 	
 	@Bean
-	@ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
+	@ConditionalOnProperty(name = "gorisfood.storage.tipo", havingValue = "s3")
 	public AmazonS3 amazonS3() {
 		var basicAwsCredentials = new BasicAWSCredentials(
 				storageProperties.getS3().getIdChaveAcesso(), 
