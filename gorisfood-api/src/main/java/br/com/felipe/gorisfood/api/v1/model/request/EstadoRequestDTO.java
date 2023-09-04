@@ -2,7 +2,6 @@ package br.com.felipe.gorisfood.api.v1.model.request;
 
 import javax.validation.constraints.NotBlank;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +9,11 @@ import lombok.Setter;
 @Setter
 public class EstadoRequestDTO {
 	
-	@ApiModelProperty(example = "SP", required = true)
+
 	@NotBlank
 	private String uf;
 	
-	@ApiModelProperty(example = "São Paulo", required = true)
+
 	@NotBlank
 	private String nome;
 }
