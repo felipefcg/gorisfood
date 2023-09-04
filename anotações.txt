@@ -639,3 +639,17 @@ alterar as propriedades abaixo nos arquivos de configuração:
 	spring.servlet.multipart.max-request-size=3MB
 	
 	OBS: Podemos criar um Validation para customizar o tamanho máximo de cada arquivo e as suas respectivas mensagens de retorno
+	
+
+***** Spring Doc *****
+**** O Spring Doc substitui o Spring Fox para criação de Swagger (Open API)
+	- Precisamos criar um Bean de Configuração (OpenAPI openAPI() {}) com as informações do Swagger, igual ao Spring Fox
+	- Podemos mapear no properties para o Spring Doc mapear um determinado pacote e/ou um determinado path com as propriedades:
+		- springdoc.packages-to-scan = br.com.felipe.gorisfood.api
+		- springdoc.aths-to-match:
+	- Essas propriedades também pode ser mapeados no próprio Bean.
+	- Podemos também criar várias documentações em um mesmo Swagger utilizando vários Beans do tipo GroupedOpenApi, onde será mapeado dentro desse bean o package e/ou o path que 
+	  fará parte dessa documentação. Dessa forma as propriedades declaradas no properties no item anterior deverá ser removida.
+		 - GroupedOpenApi groupedOpenApiExternas() {...}
+		 - GroupedOpenApi groupedOpenApiInternas() {...}
+	

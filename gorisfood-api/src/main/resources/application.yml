@@ -47,9 +47,11 @@ management:
       exposure:
         include: '*'
 
-springdoc:
-  packages-to-scan:
-    - br.com.felipe.gorisfood.api
-  paths-to-match:
-    - /v1/**
+## Removido essa configuração pois isso está agora na classe de config pois temos um
+## mapeamento para cada documentação
+#springdoc:
+#  packages-to-scan:
+#    - br.com.felipe.gorisfood.api
+#  paths-to-match:
+#    - /v1/**
   

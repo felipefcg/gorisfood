@@ -1,5 +1,6 @@
 package br.com.felipe.gorisfood.core.openapi;
 
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +12,32 @@ import io.swagger.v3.oas.models.info.License;
 @Configuration
 public class SpringDocConfig {
 
-	@Bean
-	OpenAPI openAPI() {
-		return new OpenAPI()
-				.info(info())
-				.externalDocs(externalDocs());
-	}
+//	@Bean
+//	OpenAPI openAPI() {
+//		return new OpenAPI()
+//				.info(info())
+//				.externalDocs(externalDocs());
+//	}
 
+	//Criando 2 documentações separadas para endpoints distintos. Ex: APIs externas e APIs internas
+	@Bean
+	GroupedOpenApi groupedOpenApiExternas() {
+		return GroupedOpenApi.builder()
+				.group("GorisFood API Externa")
+				.pathsToMatch("/v1/**") //Para isso preciso tirar esssa config no properties
+				.addOpenApiCustomiser(openApi -> openApi.info(info()))
+				.build();
+	}
+	
+	@Bean
+	GroupedOpenApi groupedOpenApiInterna() {
+		return GroupedOpenApi.builder()
+				.group("GorisFood API Interna")
+				.pathsToExclude("/v1/**") //Para isso preciso tirar esssa config no properties
+				.addOpenApiCustomiser(openApi -> openApi.info(infoApiInterna()))
+				.build();
+	}
+	
 	private Info info() {
 		return new Info()
 				.title("GorisFood API")
@@ -27,6 +47,12 @@ public class SpringDocConfig {
 				.license(license());
 	}
 
+	private Info infoApiInterna() {
+		return new Info()
+				.title("GorisFood API Interna")
+				.description("APIs de uso interno da empresa");
+	}
+	
 	private License license() {
 		return new License()
 				.name("Apache 2.0")
