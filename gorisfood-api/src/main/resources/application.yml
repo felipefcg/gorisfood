@@ -46,3 +46,10 @@ management:
     web:
       exposure:
         include: '*'
+
+springdoc:
+  packages-to-scan:
+    - br.com.felipe.gorisfood.api
+  paths-to-match:
+    - /v1/**
+  

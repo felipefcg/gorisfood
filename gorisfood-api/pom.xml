@@ -27,6 +27,7 @@
 		<!-- Authorization Server -->
 		<!-- Build Image Docker -->
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+		<springdoc.version>1.7.0</springdoc.version>
 	</properties>
 	
 	<dependencies>
@@ -92,6 +93,24 @@
 		    <version>${squiggly.filter.version}</version>
 		</dependency>
 		
+		<!-- SWAGGER - Spring Doc -->
+		<dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-hateoas</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
 		<!-- TESTES -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
