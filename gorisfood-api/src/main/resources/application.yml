@@ -47,11 +47,21 @@ management:
       exposure:
         include: '*'
 
-## Removido essa configuração pois isso está agora na classe de config pois temos um
-## mapeamento para cada documentação
-#springdoc:
-#  packages-to-scan:
-#    - br.com.felipe.gorisfood.api
-#  paths-to-match:
-#    - /v1/**
+## Remover essa configuração caso deseje criar 2 documentações separadas dentro da app
+## pois isso está agora na classe de config pois temos um mapeamento para cada 
+## documentação
+springdoc:
+  packages-to-scan:
+    - br.com.felipe.gorisfood.api
+  paths-to-match:
+    - /v1/**
+  swagger-ui:
+    oauth:
+      client-id: gorisfood-web
+      client-secret: web123
+      use-pkce-with-authorization-code-grant: true
+  gorisfood:
+    oAuthFlow:
+      authorizationUrl: http://localhost:8080/oauth/authorize
+      tokenUrl: http://localhost:8080/oauth/token
   

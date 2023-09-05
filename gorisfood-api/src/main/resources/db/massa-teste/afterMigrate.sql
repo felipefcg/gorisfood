@@ -170,7 +170,7 @@ insert into oauth_client_details (
 )
 values (
 	'gorisfood-web', null, '$2a$12$w.MQDz.kitmYs6z2udzPceRpyEvVzfdyKjPxFi73aWdjORRo1ykVG',
-	'READ,WRITE', 'password,refresh_token', null, null,
+	'READ,WRITE', 'password,authorization_code,refresh_token', 'http://localhost:8080,http://localhost:8080/swagger-ui/oauth2-redirect.html', null,
 	60*60*6, 60*24*60*60, null
 );
 
