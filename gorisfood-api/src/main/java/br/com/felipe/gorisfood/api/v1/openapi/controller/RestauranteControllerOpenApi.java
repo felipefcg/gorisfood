@@ -9,10 +9,11 @@ import br.com.felipe.gorisfood.api.v1.model.request.RestauranteRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteApenasNomeResponseDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteBasicoResponseDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.RestauranteResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
-public interface RestauranteControllerOpenApi {
+@Tag(name = "Restaurantes")
+@SecurityRequirement(name = "security_auth")public interface RestauranteControllerOpenApi {
 	CollectionModel<RestauranteBasicoResponseDTO> listar();
 	CollectionModel<RestauranteApenasNomeResponseDTO> listarApenasNome();
 	RestauranteResponseDTO buscar(Long id);

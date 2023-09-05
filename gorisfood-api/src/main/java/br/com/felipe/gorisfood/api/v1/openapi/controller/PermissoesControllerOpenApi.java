@@ -3,9 +3,10 @@ package br.com.felipe.gorisfood.api.v1.openapi.controller;
 import org.springframework.hateoas.CollectionModel;
 
 import br.com.felipe.gorisfood.api.v1.model.response.PermissaoResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
-public interface PermissoesControllerOpenApi {
+@Tag(name = "Permissões")
+@SecurityRequirement(name = "security_auth")public interface PermissoesControllerOpenApi {
 	CollectionModel<PermissaoResponseDTO> listar();
 }

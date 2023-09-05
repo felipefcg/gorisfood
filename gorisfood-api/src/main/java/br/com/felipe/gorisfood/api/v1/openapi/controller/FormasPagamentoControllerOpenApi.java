@@ -7,9 +7,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import br.com.felipe.gorisfood.api.v1.model.request.FormaPagamentoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.FormaPagamentoResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-public interface FormasPagamentoControllerOpenApi {
+@Tag(name = "Formas de pagamento")
+@SecurityRequirement(name = "security_auth")public interface FormasPagamentoControllerOpenApi {
 	ResponseEntity<CollectionModel<FormaPagamentoResponseDTO>> listar(ServletWebRequest request);
 	ResponseEntity<FormaPagamentoResponseDTO> buscar(Long id, ServletWebRequest request);
 	FormaPagamentoResponseDTO criar(FormaPagamentoRequestDTO formaPagamentoDTO);

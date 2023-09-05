@@ -4,10 +4,11 @@ import org.springframework.hateoas.CollectionModel;
 
 import br.com.felipe.gorisfood.api.v1.model.request.GrupoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.GrupoResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
-public interface GrupoControllerOpenApi {
+@Tag(name = "Grupos")
+@SecurityRequirement(name = "security_auth")public interface GrupoControllerOpenApi {
 	CollectionModel<GrupoResponseDTO> listar();
 	GrupoResponseDTO buscar(Long id);
 	void excluir(Long id);

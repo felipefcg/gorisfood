@@ -8,9 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.felipe.gorisfood.api.v1.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.FotoProdutoReponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-public interface RestauranteProdutoFotoControllerOpenApi {
+@Tag(name = "Produtos")
+@SecurityRequirement(name = "security_auth")public interface RestauranteProdutoFotoControllerOpenApi {
 	FotoProdutoReponseDTO buscar(Long restauranteId, Long produtoId);
 	ResponseEntity<?> buscarInputStream(Long restauranteId, Long produtoId, 
 	   		String acceptHeader) throws HttpMediaTypeNotAcceptableException ;
