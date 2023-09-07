@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +15,11 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
 
 @Configuration
@@ -27,9 +31,7 @@ import io.swagger.v3.oas.models.tags.Tag;
 				scopes = {
 						@OAuthScope(name = "READ", description = "Escopo de leitura"),
 						@OAuthScope(name = "WRITE", description = "Escopo de escrita")
-				}
-			))
-		)
+})))
 public class SpringDocConfig {
 
 	@Bean
@@ -56,6 +58,24 @@ public class SpringDocConfig {
 			);
 	}
 
+	@Bean
+	OpenApiCustomiser openApiCustomiser() {
+		return openApi -> {
+			openApi.getPaths()
+					.values()
+					.stream()
+					.flatMap( pathItem -> pathItem.readOperations().stream())
+					.forEach( operation -> {
+						ApiResponses responses = operation.getResponses();
+						
+						responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
+						responses.addApiResponse("406", new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor"));
+						responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+					});
+			
+		};
+	}
+	
 	//Criando 2 documentações separadas para endpoints distintos. Ex: APIs externas e APIs internas
 //	@Bean
 //	GroupedOpenApi groupedOpenApiExternas() {
