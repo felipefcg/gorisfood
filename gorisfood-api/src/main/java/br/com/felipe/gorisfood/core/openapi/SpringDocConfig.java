@@ -63,18 +63,56 @@ public class SpringDocConfig {
 		return openApi -> {
 			openApi.getPaths()
 					.values()
-					.stream()
-					.flatMap( pathItem -> pathItem.readOperations().stream())
-					.forEach( operation -> {
-						ApiResponses responses = operation.getResponses();
-						
-						responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
-						responses.addApiResponse("406", new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor"));
-						responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
-					});
-			
+					.forEach(pathItem -> pathItem.readOperationsMap() 
+						.forEach((httpMethod, operation) -> {
+							ApiResponses responses = operation.getResponses();
+							
+							switch (httpMethod) {
+								case GET:
+									responses.addApiResponse("404", get404Response());
+									responses.addApiResponse("406", get406Response());
+									responses.addApiResponse("500", get500Response());
+									break;
+								case POST:
+									responses.addApiResponse("400", get400Response());
+									responses.addApiResponse("500", get500Response());
+									break;
+								case PUT:
+									responses.addApiResponse("400", get400Response());
+									responses.addApiResponse("404", get404Response());
+									responses.addApiResponse("500", get500Response());
+									break;
+								case DELETE:
+									responses.addApiResponse("404", get404Response());
+									responses.addApiResponse("500", get500Response());
+									break;
+								default:
+									responses.addApiResponse("500", get500Response());
+									break;
+							}
+						})
+					);
 		};
 	}
+	
+//	@Bean
+//	OpenApiCustomiser openApiCustomiser() {
+//		return openApi -> {
+//			openApi.getPaths()
+//					.values()
+//					.stream()
+//					.flatMap( pathItem -> pathItem.readOperations().stream())
+//					.forEach( operation -> {
+//						ApiResponses responses = operation.getResponses();
+//						
+//						responses.addApiResponse("404", new ApiResponse().description("Recurso não encontrado"));
+//						responses.addApiResponse("406", new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor"));
+//						responses.addApiResponse("500", new ApiResponse().description("Erro interno no servidor"));
+//						
+//					});
+//			
+//		};
+//	}
 	
 	//Criando 2 documentações separadas para endpoints distintos. Ex: APIs externas e APIs internas
 //	@Bean
@@ -122,4 +160,19 @@ public class SpringDocConfig {
 				.url("http://springdo.com");
 	}
 
+	private ApiResponse get400Response() {
+		return new ApiResponse().description("Requisição inválida (erro do cliente)");
+	}
+	
+	private ApiResponse get404Response() {
+		return new ApiResponse().description("Recurso não encontrado");
+	}
+	
+	private ApiResponse get406Response() {
+		return new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor");
+	}
+	
+	private ApiResponse get500Response() {
+		return new ApiResponse().description("Erro interno no servidor");
+	}
 }
