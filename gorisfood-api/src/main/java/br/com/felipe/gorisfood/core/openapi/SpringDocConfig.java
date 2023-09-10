@@ -1,13 +1,16 @@
 package br.com.felipe.gorisfood.core.openapi;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
@@ -15,9 +18,11 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
@@ -161,18 +166,30 @@ public class SpringDocConfig {
 	}
 
 	private ApiResponse get400Response() {
-		return new ApiResponse().description("Requisição inválida (erro do cliente)");
+		return new ApiResponse().description("Requisição inválida (erro do cliente)")
+				.content(gerarSchemaProblema());
 	}
 	
 	private ApiResponse get404Response() {
-		return new ApiResponse().description("Recurso não encontrado");
+		return new ApiResponse().description("Recurso não encontrado")
+				.content(gerarSchemaProblema());
 	}
 	
 	private ApiResponse get406Response() {
-		return new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor");
+		return new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor")
+				.content(gerarSchemaProblema());
 	}
 	
 	private ApiResponse get500Response() {
-		return new ApiResponse().description("Erro interno no servidor");
+		return new ApiResponse().description("Erro interno no servidor")
+				.content(gerarSchemaProblema());
+	}
+	
+	private Content gerarSchemaProblema() {
+		Map<String, Schema> problemaSchemaMap = ModelConverters.getInstance().read(Problema.class);
+		Schema<Problema> schema = new Schema<Problema>().properties(ModelConverters.getInstance().read(Problema.class));
+		MediaType mediaType = new MediaType().schema(schema);
+		return new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, mediaType);
+//		return null;
 	}
 }
