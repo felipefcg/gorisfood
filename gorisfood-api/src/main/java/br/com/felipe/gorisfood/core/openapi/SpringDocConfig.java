@@ -8,14 +8,16 @@ import java.util.Map;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import static org.springframework.http.MediaType.*;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
-import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -44,7 +46,8 @@ public class SpringDocConfig {
 		return new OpenAPI()
 				.info(info())
 				.externalDocs(externalDocs())
-				.tags(tags());
+				.tags(tags())
+				.components(new Components().responses(getResponses()));
 	}
 
 	private List<Tag> tags() {
@@ -74,25 +77,42 @@ public class SpringDocConfig {
 							
 							switch (httpMethod) {
 								case GET:
-									responses.addApiResponse("404", get404Response());
-									responses.addApiResponse("406", get406Response());
-									responses.addApiResponse("500", get500Response());
+									responses.addApiResponse("404", 
+											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
+									
+									responses.addApiResponse("406", 
+											new ApiResponse().$ref(HttpStatus.NOT_ACCEPTABLE.name()));
+									
+									responses.addApiResponse("500", 
+											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 								case POST:
-									responses.addApiResponse("400", get400Response());
-									responses.addApiResponse("500", get500Response());
+									responses.addApiResponse("400", 
+											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
+									
+									responses.addApiResponse("500", 
+											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 								case PUT:
-									responses.addApiResponse("400", get400Response());
-									responses.addApiResponse("404", get404Response());
-									responses.addApiResponse("500", get500Response());
+									responses.addApiResponse("400", 
+											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
+									
+									responses.addApiResponse("404", 
+											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
+									
+									responses.addApiResponse("500", 
+											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 								case DELETE:
-									responses.addApiResponse("404", get404Response());
-									responses.addApiResponse("500", get500Response());
+									responses.addApiResponse("404", 
+											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
+									
+									responses.addApiResponse("500", 
+											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 								default:
-									responses.addApiResponse("500", get500Response());
+									responses.addApiResponse("500", 
+											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 							}
 						})
@@ -165,31 +185,26 @@ public class SpringDocConfig {
 				.url("http://springdo.com");
 	}
 
-	private ApiResponse get400Response() {
-		return new ApiResponse().description("Requisição inválida (erro do cliente)")
-				.content(gerarSchemaProblema());
+	private Map<String, ApiResponse> getResponses() {
+		final Map<String, ApiResponse> apiResponseMap = new HashMap<>();
+		var schema = new Schema<Problema>().$ref("Problema");
+		var mediaType = new MediaType().schema(schema);
+		var content =new Content().addMediaType(APPLICATION_JSON_VALUE, mediaType);
+		
+		apiResponseMap.put(HttpStatus.BAD_REQUEST.name(), 
+				new ApiResponse().description("Requisição inválida (erro do cliente)").content(content));
+		
+		apiResponseMap.put(HttpStatus.NOT_FOUND.name(), 
+				new ApiResponse().description("Recurso não encontrado").content(content));
+		
+		apiResponseMap.put(HttpStatus.NOT_ACCEPTABLE.name(), 
+				new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor")
+				.content(content));
+		
+		apiResponseMap.put(HttpStatus.INTERNAL_SERVER_ERROR.name(), 
+				new ApiResponse().description("Erro interno no servidor").content(content));
+		
+		return apiResponseMap;
 	}
 	
-	private ApiResponse get404Response() {
-		return new ApiResponse().description("Recurso não encontrado")
-				.content(gerarSchemaProblema());
-	}
-	
-	private ApiResponse get406Response() {
-		return new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor")
-				.content(gerarSchemaProblema());
-	}
-	
-	private ApiResponse get500Response() {
-		return new ApiResponse().description("Erro interno no servidor")
-				.content(gerarSchemaProblema());
-	}
-	
-	private Content gerarSchemaProblema() {
-		Map<String, Schema> problemaSchemaMap = ModelConverters.getInstance().read(Problema.class);
-		Schema<Problema> schema = new Schema<Problema>().properties(ModelConverters.getInstance().read(Problema.class));
-		MediaType mediaType = new MediaType().schema(schema);
-		return new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, mediaType);
-//		return null;
-	}
 }
