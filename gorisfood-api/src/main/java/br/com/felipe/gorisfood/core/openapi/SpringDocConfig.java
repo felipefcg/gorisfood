@@ -77,9 +77,6 @@ public class SpringDocConfig {
 							
 							switch (httpMethod) {
 								case GET:
-									responses.addApiResponse("404", 
-											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
-									
 									responses.addApiResponse("406", 
 											new ApiResponse().$ref(HttpStatus.NOT_ACCEPTABLE.name()));
 									
@@ -89,6 +86,12 @@ public class SpringDocConfig {
 								case POST:
 									responses.addApiResponse("400", 
 											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
+									
+									responses.addApiResponse("406", 
+											new ApiResponse().$ref(HttpStatus.NOT_ACCEPTABLE.name()));
+									
+									responses.addApiResponse("415", 
+											new ApiResponse().$ref(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name()));
 									
 									responses.addApiResponse("500", 
 											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
@@ -100,10 +103,16 @@ public class SpringDocConfig {
 									responses.addApiResponse("404", 
 											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
 									
+									responses.addApiResponse("415", 
+											new ApiResponse().$ref(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name()));
+									
 									responses.addApiResponse("500", 
 											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));
 									break;
 								case DELETE:
+									responses.addApiResponse("400", 
+											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
+									
 									responses.addApiResponse("404", 
 											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
 									
@@ -199,6 +208,10 @@ public class SpringDocConfig {
 		
 		apiResponseMap.put(HttpStatus.NOT_ACCEPTABLE.name(), 
 				new ApiResponse().description("Recurso não possui uma representação que poderia ser aceita pelo consumidor")
+				.content(content));
+		
+		apiResponseMap.put(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name(), 
+				new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado")
 				.content(content));
 		
 		apiResponseMap.put(HttpStatus.INTERNAL_SERVER_ERROR.name(), 
