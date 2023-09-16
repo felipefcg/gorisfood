@@ -7,14 +7,17 @@ import org.springframework.hateoas.PagedModel;
 
 import br.com.felipe.gorisfood.api.v1.model.request.CozinhaRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.CozinhaResponseDTO;
+import br.com.felipe.gorisfood.core.openapi.PageableParameter;
 import br.com.felipe.gorisfood.domain.model.Cozinha;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Cozinhas")
 @SecurityRequirement(name = "security_auth")public interface CozinhaControllerOpenApi {
 
-	PagedModel<CozinhaResponseDTO> listar (Pageable pagable);
+	@PageableParameter
+	PagedModel<CozinhaResponseDTO> listar (@Parameter(hidden = true) Pageable pagable);
 	
 	CozinhaResponseDTO buscar (Long id);
 	
