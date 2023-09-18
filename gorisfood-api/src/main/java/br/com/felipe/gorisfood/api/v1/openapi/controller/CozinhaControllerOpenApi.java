@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,28 +39,29 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 							 	 content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					 			 schema = @Schema(implementation = Problema.class)))
 			})
-	CozinhaResponseDTO buscar (Long id);
+	CozinhaResponseDTO buscar (@Parameter(description = "ID da cozinha", example = "1") Long id);
 	
 	@Operation(summary = "Cadastra uma cozinha",
 			description = "Cadastra uma cozinha",
 			responses = {
 					@ApiResponse(responseCode = "201", description = "Cozinha Cadastrada")
 			})
-	CozinhaResponseDTO criar(CozinhaRequestDTO cozinhaDTO);
+	CozinhaResponseDTO criar(@RequestBody CozinhaRequestDTO cozinhaDTO);
 	
 	@Operation(summary = "Atualiza uma cozinha por ID",
 			description = "Atualiza uma cozinha por ID",
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Cozinha atualizada")
 			})
-	CozinhaResponseDTO alterar(Long id, CozinhaRequestDTO cozinhaDTO);
+	CozinhaResponseDTO alterar(@Parameter(description = "ID da cozinha", example = "1") Long id, 
+			@RequestBody CozinhaRequestDTO cozinhaDTO);
 	
 	@Operation(summary = "Exclui uma cozinha por ID",
 			description = "Exclui uma cozinha por ID",
 			responses = {
 					@ApiResponse(responseCode = "204", description = "Cozinha excluida")
 			})
-	void remover(Long id);
+	void remover(@Parameter(description = "ID da cozinha", example = "1") Long id);
 	
 	@Operation(summary = "Busca a primeira cozinha cadastrada na aplicação - Testes", hidden = true)
 	Optional<Cozinha> buscarPrimeiro();
