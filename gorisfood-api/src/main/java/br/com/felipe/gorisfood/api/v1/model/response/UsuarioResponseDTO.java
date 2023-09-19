@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.api.v1.model.response;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,12 @@ import lombok.Setter;
 @Setter
 public class UsuarioResponseDTO extends RepresentationModel<UsuarioResponseDTO> {
 
+	@Schema(example = "1")
 	private Long id; 
 	
-
+	@Schema(example = "Fulano De Tal")
 	private String nome;
 	
-
+	@Schema(example = "fulado@email.com")
 	private String email;
 }
