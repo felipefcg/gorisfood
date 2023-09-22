@@ -10,8 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.felipe.gorisfood.api.v1.model.request.FotoProtudoRequestDTO;
 import br.com.felipe.gorisfood.api.v1.model.response.FotoProdutoReponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +35,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@Operation(hidden = true)
 	ResponseEntity<?> buscarInputStream(Long restauranteId, Long produtoId, 
 	   		String acceptHeader) throws HttpMediaTypeNotAcceptableException ;
-	FotoProdutoReponseDTO alterarFoto(Long restauranteId, Long produtoId, 
-			 FotoProtudoRequestDTO fotoProduto, MultipartFile arquivo) throws IOException;
+	
+	@Operation(summary = "")
+	FotoProdutoReponseDTO alterarFoto(
+			@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId, 
+			@Parameter(description = "ID do protduto", example = "1", required = true) Long produtoId, 
+			@RequestBody(required = true) FotoProtudoRequestDTO fotoProduto) throws IOException;
 	void remover(Long restauranteId, Long produtoId);
 }

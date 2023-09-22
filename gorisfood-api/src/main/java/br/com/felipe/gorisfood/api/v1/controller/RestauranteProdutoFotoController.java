@@ -88,8 +88,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@CheckSecurity.Restaurante.PodeGerenciarFuncionamento
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoReponseDTO alterarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
-			@Valid FotoProtudoRequestDTO fotoProduto,
-			@RequestPart(required = true) MultipartFile arquivo) throws IOException {
+			@Valid FotoProtudoRequestDTO fotoProduto) throws IOException {
 		
 		var fotoProdutoModel = disassembler.toModel(fotoProduto);
 		
