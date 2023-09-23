@@ -39,7 +39,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Exclui um grupo por ID", 
 			description = "Exclui um grupo por ID",
-			responses = @ApiResponse( responseCode = "204", description = "Grupo excluido"))
+			responses = {
+					@ApiResponse( responseCode = "204", description = "Grupo excluido"),
+					@ApiResponse( responseCode = "400", description = "ID do grupo inválido" , 
+				  				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						  				 schema = @Schema(implementation = Problema.class))),
+					@ApiResponse( responseCode = "404", description = "Grupo não encontrado" , 
+								content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						  				 schema = @Schema(implementation = Problema.class))
+					)
+			}
+	)
 	void excluir(@Parameter(description = "ID do grupo", example = "1") Long id);
 	
 	@Operation(summary = "Cadastra um novo grupo", 
@@ -48,7 +58,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	GrupoResponseDTO criar(@RequestBody(description = "Representação de um novo grupo") GrupoRequestDTO dto) ;
 	
 	@Operation(summary = "Atualiza um grupo por ID", 
-			description = "Atualiza um grupo por ID")
+			description = "Atualiza um grupo por ID",
+			responses = {
+					@ApiResponse(responseCode = "200"),
+					@ApiResponse( responseCode = "400", description = "ID do grupo inválido" , 
+								content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+								  				 schema = @Schema(implementation = Problema.class))
+					),
+					@ApiResponse( responseCode = "404", description = "Grupo não encontrado" , 
+					  			content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						  				 schema = @Schema(implementation = Problema.class))
+					)
+			})
 	GrupoResponseDTO alterar(@Parameter(description = "ID do grupo", example = "1") Long id,  
 			@RequestBody(description = "Representação de um novo grupo") GrupoRequestDTO dto);
 }

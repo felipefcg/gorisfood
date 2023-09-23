@@ -34,14 +34,25 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Associação de permissão com  grupo", 
 			description = "Associação de permissão com  grupo",
-			responses = @ApiResponse( responseCode = "204", description = "Associação efetuadada com sucesso")
-	)
+			responses = {
+					@ApiResponse( responseCode = "204", description = "Associação efetuadada com sucesso"),
+					@ApiResponse( responseCode = "404", description = "Grupo ou permissão não encontrado" , 
+					  			content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						  				 schema = @Schema(implementation = Problema.class))
+					)
+			})
 	ResponseEntity<Void> associar (@Parameter(description = "ID do grupo", example = "1") Long grupoId,
 			@Parameter(description = "ID da permissão", example = "1") Long permissaoId);
 	
 	@Operation(summary = "Desassociação de permissão com  grupo", 
 			description = "Desassociação de permissão com  grupo",
-			responses = @ApiResponse( responseCode = "204", description = "Desassociação efetuadada com sucesso"))
+			responses = {
+					@ApiResponse( responseCode = "204", description = "Desassociação efetuadada com sucesso"),
+					@ApiResponse( responseCode = "404", description = "Grupo ou permissão não encontrado" , 
+					  			content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						  				 schema = @Schema(implementation = Problema.class))
+					)
+			})
 	ResponseEntity<Void> desassociar (@Parameter(description = "ID do grupo", example = "1") Long grupoId, 
 			@Parameter(description = "ID da permissão", example = "1") Long permissaoId);
 }
