@@ -47,12 +47,23 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Atualiza uma forma de pagamento por ID", 
 			description = "Atualiza dados da forma de pagamento",
-			responses = @ApiResponse(responseCode = "200", description = "Forma de pagamento atualizada"))
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Forma de pagamento atualizada"),
+					@ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada",
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+							 			schema = @Schema(implementation = Problema.class)))
+			})
 	FormaPagamentoResponseDTO alterar(@Parameter(description = "ID da forma de pagamento", example = "1") Long id, 
 			@RequestBody FormaPagamentoRequestDTO formaPagamentoDTO);
 	
 	@Operation(summary = "Exclui uma forma de pagamento por ID", 
 			description = "Exclui uma forma de pagamento por ID",
-			responses = @ApiResponse(responseCode = "204", description = "Forma de pagamento excluida"))
+			responses = {
+					@ApiResponse(responseCode = "204", description = "Forma de pagamento excluida"),
+					@ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada",
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+							 			schema = @Schema(implementation = Problema.class))
+					)
+			})
 	void remover(@Parameter(description = "ID da forma de pagamento", example = "1") Long id);
 }

@@ -63,6 +63,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@Operation(summary = "Atualiza um restaurante por ID",
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Restaurante atualizado"),
+					@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))}),
 					@ApiResponse(responseCode = "422", description = "ID de uma das propriedades (cozinha ou cidade) inexistente no sistema", 
 					 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 					 					schema = @Schema(implementation = Problema.class))})
@@ -72,13 +75,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Ativa um restaurante por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Restaurante ativado")
+					@ApiResponse(responseCode = "204", description = "Restaurante ativado"),
+					@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> ativar(@Parameter(description = "ID do restaurante", example = "1") Long id);
 	
 	@Operation(summary = "Inativa um restaurante por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Restaurante inativado")
+					@ApiResponse(responseCode = "204", description = "Restaurante inativado"),
+					@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> inativar(@Parameter(description = "ID do restaurante", example = "1") Long id);
 	
@@ -102,13 +111,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Abre um restaurante por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Restaurante aberto")
+					@ApiResponse(responseCode = "204", description = "Restaurante aberto"),
+					@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> abrir(@Parameter(description = "ID do restaurante", example = "1") Long id);
 	
 	@Operation(summary = "Fecha um restaurante por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Restaurante fechado")
+					@ApiResponse(responseCode = "204", description = "Restaurante fechado"),
+					@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> fechar(@Parameter(description = "ID do restaurante", example = "1") Long id);
 }

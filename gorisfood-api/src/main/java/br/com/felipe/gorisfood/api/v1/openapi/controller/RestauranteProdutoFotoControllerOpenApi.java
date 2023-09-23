@@ -51,7 +51,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Atualiza a foto do produto de um restaurante",
 			responses = {
-					@ApiResponse(responseCode = "200", description = "Foto do produto atualizada")
+					@ApiResponse(responseCode = "200", description = "Foto do produto atualizada"),
+					@ApiResponse(responseCode = "404", description = "Restaurante ou produto não encontrado", 
+								content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+		 		 						 schema = @Schema(implementation = Problema.class))})
 			})
 	FotoProdutoReponseDTO alterarFoto(
 			@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId, 
@@ -60,7 +63,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Exclui a foto do produto de um restaurante",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Foto do produto excluido com sucesso")
+					@ApiResponse(responseCode = "204", description = "Foto do produto excluido com sucesso"),
+					@ApiResponse(responseCode = "404", description = "Restaurante ou produto não encontrado", 
+		 		 	 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+		 		 						 schema = @Schema(implementation = Problema.class))})
 			})
 	void remover(
 			@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId,

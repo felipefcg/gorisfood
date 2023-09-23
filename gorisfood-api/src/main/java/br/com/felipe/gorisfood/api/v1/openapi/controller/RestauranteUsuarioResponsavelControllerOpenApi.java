@@ -30,14 +30,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Associação de restaurante com usuário responsável",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Associação efetuada")
+					@ApiResponse(responseCode = "204", description = "Associação efetuada"),
+					@ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> associar(@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId, 
 			@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId);
 	
 	@Operation(summary = "Desssociação de restaurante com usuário responsável",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Desassociação efetuada")
+					@ApiResponse(responseCode = "204", description = "Desassociação efetuada"),
+					@ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", 
+			 		 			content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+			 		 					schema = @Schema(implementation = Problema.class))})
 			})
 	ResponseEntity<Void> desassociar(@Parameter(description = "ID do restaurante", example = "1", required = true) Long restauranteId, 
 			@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId);
