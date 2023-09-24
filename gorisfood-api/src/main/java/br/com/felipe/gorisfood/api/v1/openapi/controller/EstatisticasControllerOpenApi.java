@@ -44,7 +44,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 							})
 			})
 	public List<VendaDiaria> consultarVendasDiarias(@Parameter(hidden = true) VendaDiariaFilter filtro, 
-			@Parameter(description = "Deslocamento de horário a ser considerado na consumta em relação ao UTC") String timeOffset);
+			@Parameter(description = "Deslocamento de horário a ser considerado na consumta em relação ao UTC", 
+						schema = @Schema(type = "string", defaultValue = "+00:00")) String timeOffset);
 	
 	@Operation(hidden = true)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf( VendaDiariaFilter filtro, 
