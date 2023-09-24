@@ -40,6 +40,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@Operation(summary = "Pesquisa os pedidos por código",
 			description = "Pesquisa os pedidos por código do pedido",
 			responses = {
+					@ApiResponse(responseCode = "200"),
 					@ApiResponse( responseCode = "400", description = "Parâmetro de pesquisa inválido" , 
 							  content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 								  				 schema = @Schema(implementation = Problema.class))

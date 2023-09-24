@@ -51,7 +51,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@Operation(summary = "Atualiza uma cozinha por ID",
 			description = "Atualiza uma cozinha por ID",
 			responses = {
-					@ApiResponse(responseCode = "200", description = "Cozinha atualizada")
+					@ApiResponse(responseCode = "200", description = "Cozinha atualizada"),
+					@ApiResponse(responseCode = "404", description = "Cozinha não encontrada",
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+							 			schema = @Schema(implementation = Problema.class))
+					)
 			})
 	CozinhaResponseDTO alterar(@Parameter(description = "ID da cozinha", example = "1") Long id, 
 			@RequestBody CozinhaRequestDTO cozinhaDTO);
@@ -59,7 +63,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@Operation(summary = "Exclui uma cozinha por ID",
 			description = "Exclui uma cozinha por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Cozinha excluida")
+					@ApiResponse(responseCode = "204", description = "Cozinha excluida"),
+					@ApiResponse(responseCode = "404", description = "Cozinha não encontrada",
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+							 			schema = @Schema(implementation = Problema.class))
+					)
 			})
 	void remover(@Parameter(description = "ID da cozinha", example = "1") Long id);
 	

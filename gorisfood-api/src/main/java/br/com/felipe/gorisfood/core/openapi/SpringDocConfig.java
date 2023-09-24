@@ -100,9 +100,6 @@ public class SpringDocConfig {
 									responses.addApiResponse("400", 
 											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
 									
-									responses.addApiResponse("404", 
-											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
-									
 									responses.addApiResponse("415", 
 											new ApiResponse().$ref(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name()));
 									
@@ -112,9 +109,6 @@ public class SpringDocConfig {
 								case DELETE:
 									responses.addApiResponse("400", 
 											new ApiResponse().$ref(HttpStatus.BAD_REQUEST.name()));
-									
-									responses.addApiResponse("404", 
-											new ApiResponse().$ref(HttpStatus.NOT_FOUND.name()));
 									
 									responses.addApiResponse("500", 
 											new ApiResponse().$ref(HttpStatus.INTERNAL_SERVER_ERROR.name()));

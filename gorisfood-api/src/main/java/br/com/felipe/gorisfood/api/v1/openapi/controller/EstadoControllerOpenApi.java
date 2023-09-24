@@ -18,14 +18,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Estados")
 @SecurityRequirement(name = "security_auth")public interface EstadoControllerOpenApi {
 	
-	@Operation(summary = "Lista os estados",
-			responses = {
-					
-			})
+	@Operation(summary = "Lista os estados")
 	CollectionModel<EstadoResponseDTO> listar();
 	
 	@Operation(summary = "Busca um estado por ID",
 			responses = {
+					@ApiResponse(responseCode = "200"),
 					@ApiResponse(responseCode = "400", description = "ID do estado inválido", 
 							 content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 									 			schema = @Schema(implementation = Problema.class))),
@@ -43,14 +41,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	
 	@Operation(summary = "Atualiza um estado por ID",
 			responses = {
-					@ApiResponse(responseCode = "200", description = "Estado atualizado")
+					@ApiResponse(responseCode = "200", description = "Estado atualizado"),
+					@ApiResponse(responseCode = "404", description = "Estado não encontrado", 
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+										schema = @Schema(implementation = Problema.class)))
 			})
 	EstadoResponseDTO alterar(@Parameter(description = "ID do estado", example = "1") Long id, 
 			@RequestBody(description = "Dados atualizados do estado") EstadoRequestDTO estadoDTO);
 	
 	@Operation(summary = "Exclui um estado por ID",
 			responses = {
-					@ApiResponse(responseCode = "204", description = "Estado excluido")
+					@ApiResponse(responseCode = "204", description = "Estado excluido"),
+					@ApiResponse(responseCode = "404", description = "Estado não encontrado", 
+					 	content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+										schema = @Schema(implementation = Problema.class)))
 			})
 	void remover(@Parameter(description = "ID do estado", example = "1") Long id);
 }

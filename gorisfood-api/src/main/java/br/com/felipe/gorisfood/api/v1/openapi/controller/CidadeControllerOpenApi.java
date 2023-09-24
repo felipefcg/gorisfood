@@ -29,18 +29,48 @@ public interface CidadeControllerOpenApi {
 							content = @Content(
 										schema = @Schema(implementation = Problema.class), 
 										mediaType = MediaType.APPLICATION_JSON_VALUE)
-						)
+						),
+						@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+						 	content = {@Content(schema = @Schema(implementation = Problema.class), 
+						 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+			)
 				})
 	CidadeResponseDTO buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
 	
-	@Operation(summary = "Cadastra uma cidade", description = "Cadastro de uma cidade, " +
-			"necessita de um estado e um nome válido")
+	@Operation(summary = "Cadastra uma cidade", 
+			description = "Cadastro de uma cidade, necessita de um estado e um nome válido",
+			responses = {
+					@ApiResponse(responseCode = "201", description = "Cidade cadastrada"),
+					@ApiResponse(responseCode = "422", description = "ID do estado não cadastrado", 
+								 content = {@Content(schema = @Schema(implementation = Problema.class), 
+								 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+					)
+			})
 	CidadeResponseDTO criar(@RequestBody(description = "Representação de uma nova cidade", required = true ) CidadeRequestDTO cidadeDTO);
 	
-	@Operation(summary = "Atualiza uma cidade")
+	@Operation(summary = "Atualiza uma cidade",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Cidade atualizada"),
+					@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+								content = {@Content(schema = @Schema(implementation = Problema.class), 
+										   mediaType = MediaType.APPLICATION_JSON_VALUE)}
+					),
+					@ApiResponse(responseCode = "422", description = "ID do estado não cadastrado", 
+								 content = {@Content(schema = @Schema(implementation = Problema.class), 
+								 					 mediaType = MediaType.APPLICATION_JSON_VALUE)}
+					)
+			})
 	CidadeResponseDTO alterar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id, 
 			@RequestBody(description = "Representação de uma nova cidade", required = true ) CidadeRequestDTO cidadeDTO);
 	
-	@Operation(summary = "Exclui uma cidade")
+	
+	@Operation(summary = "Exclui uma cidade",
+			responses = {
+					@ApiResponse(responseCode = "204", description = "Cidade excluida"),
+					@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
+								 content = {@Content(schema = @Schema(implementation = Problema.class), 
+								 mediaType = MediaType.APPLICATION_JSON_VALUE)})
+						
+			})
 	void remover(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
 }
