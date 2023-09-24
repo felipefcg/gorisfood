@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.felipe.gorisfood.api.v1.GorisLinks;
 import br.com.felipe.gorisfood.core.security.AuthUserSecurity;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(path = "v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +21,7 @@ public class RootEntyPointController {
 	@Autowired
 	private AuthUserSecurity authUserSecurity;
 
+	@Operation(hidden = true)
 	@GetMapping
 	public RootEntryPointResponseDTO root() {
 		var root = new RootEntryPointResponseDTO();
