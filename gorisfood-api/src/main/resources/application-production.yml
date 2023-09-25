@@ -34,4 +34,6 @@ gorisfood:
     keystore:
       jks-location: ${GORISFOOD_JWT_KEYSTORE_JKS_LOCATION}
       password: ${GORISFOOD_JWT_KEYSTORE__PASSWORD}
-      keypair-alias: ${GORISFOOD_JWT_KEYSTORE_KEYPAIR_ALIAS}          
+      keypair-alias: ${GORISFOOD_JWT_KEYSTORE_KEYPAIR_ALIAS}
+  auth:
+    provider-url: ${GORISFOOD_AUTH_PROVIDER_URL}
