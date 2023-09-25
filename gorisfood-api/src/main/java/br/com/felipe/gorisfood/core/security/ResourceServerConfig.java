@@ -28,6 +28,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
 	
+	@Bean
+	SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+			.antMatchers("/oauth2/**").authenticated()
+			.and()
+				.csrf().disable()
+				.cors()
+			.and()
+				.oauth2ResourceServer().opaqueToken();
+		
+		return http.build();
+	}
+	
 //	@Override
 //	protected void configure(HttpSecurity http) throws Exception {
 //		http

@@ -10,7 +10,14 @@ spring:
       
   session:
     store-type: none
-        
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: http://localhost:8080/oauth2/introspect
+          client-id: gorisfood-backend
+          client-secret: backend123
+          
 gorisfood:
   storage:
     tipo: local

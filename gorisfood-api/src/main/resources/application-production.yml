@@ -12,7 +12,14 @@ spring:
     host: ${SPRING_MAIL_HOST}
     port: ${SPRING_MAIL_PORT}
     username: ${SPRING_MAIL_USERNAME}
-    
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_INTROSPECT_URI}
+          client-id: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT_ID}
+          client-secret: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT_SECRETE} 
+             
 logging:
   loggly:
     token: ${LOGGING_LOGGLY_TOKEN}        
