@@ -3,6 +3,7 @@ package br.com.felipe.gorisfood.authorizationserver.config;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Arrays;
 
 import javax.sql.DataSource;
 
@@ -105,7 +106,7 @@ public class AuthorizationServerConfig {
 	
 	@Bean
 	RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-		RegisteredClient
+		RegisteredClient registeredClient = RegisteredClient
 			.withId("1")
 			.clientId("gorisfood-backend")
 			.clientSecret(passwordEncoder.encode("backend123"))
@@ -117,7 +118,7 @@ public class AuthorizationServerConfig {
 					.accessTokenTimeToLive(Duration.ofMinutes(30))
 					.build())
 			.build();
-		return new InMemoryRegisteredClientRepository();
+		return new InMemoryRegisteredClientRepository(Arrays.asList(registeredClient));
 	}
 	
 //	@Override

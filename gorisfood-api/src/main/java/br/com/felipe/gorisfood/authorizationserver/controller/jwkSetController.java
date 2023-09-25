@@ -11,7 +11,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 @RestController
 public class jwkSetController {
 
-	@Autowired
+//	@Autowired
 	private JWKSet jwkSet;
 	
 	@GetMapping(".well-know/jwks.json")

@@ -26,24 +26,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ResourceServerConfig extends WebSecurityConfigurerAdapter  {
+public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
 	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.formLogin().loginPage("/login")
-			.and()
-			.authorizeRequests()
-				.antMatchers("/oauth/**").authenticated()
-			.and()
-			.csrf().disable()
-			.cors()
-			.and()
-			.oauth2ResourceServer()
-				.jwt()
-				.jwtAuthenticationConverter(jwtAuthenticationConverter())
-		;
-	}
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		http
+//			.formLogin().loginPage("/login")
+//			.and()
+//			.authorizeRequests()
+//				.antMatchers("/oauth/**").authenticated()
+//			.and()
+//			.csrf().disable()
+//			.cors()
+//			.and()
+//			.oauth2ResourceServer()
+//				.jwt()
+//				.jwtAuthenticationConverter(jwtAuthenticationConverter())
+//		;
+//	}
 	
 	private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
 		var jwtAuthenticationConverter = new JwtAuthenticationConverter();
