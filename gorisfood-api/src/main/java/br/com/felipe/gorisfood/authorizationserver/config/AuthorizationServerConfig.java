@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
@@ -67,6 +68,43 @@ public class AuthorizationServerConfig {
 					.accessTokenTimeToLive(Duration.ofMinutes(30))
 					.build())
 			.build();
+		
+		RegisteredClient gorisfoodWeb = RegisteredClient
+				.withId("2")
+				.clientId("gorisfood-web")
+				.clientSecret(passwordEncoder.encode("web123"))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.scope("READ")
+				.scope("WRITE")
+				.tokenSettings(TokenSettings.builder()
+						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+						.accessTokenTimeToLive(Duration.ofMinutes(15))
+						.build())
+				.redirectUri("http://localhost:8080/authorized")
+				.redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+				.clientSettings(ClientSettings.builder()
+						.requireAuthorizationConsent(true)
+						.build())
+				.build();
+		
+		RegisteredClient foodanalytics = RegisteredClient
+				.withId("3")
+				.clientId("foodanlytics")
+				.clientSecret(passwordEncoder.encode("web123"))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.scope("READ")
+				.scope("WRITE")
+				.tokenSettings(TokenSettings.builder()
+						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+						.accessTokenTimeToLive(Duration.ofMinutes(30))
+						.build())
+				.redirectUri("http://foodanalytics.local:8082")
+				.clientSettings(ClientSettings.builder()
+						.requireAuthorizationConsent(false)
+						.build())
+				.build();
 		return new InMemoryRegisteredClientRepository(Arrays.asList(registeredClient));
 	}
 	
