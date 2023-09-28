@@ -36,7 +36,7 @@ public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
 				.csrf().disable()
 				.cors()
 			.and()
-				.oauth2ResourceServer().opaqueToken();
+				.oauth2ResourceServer().jwt();
 		
 		return http.build();
 	}
