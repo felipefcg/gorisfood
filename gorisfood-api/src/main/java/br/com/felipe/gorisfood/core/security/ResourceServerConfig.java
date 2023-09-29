@@ -33,6 +33,8 @@ public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
 		http.authorizeRequests()
 			.antMatchers("/oauth2/**").authenticated()
 			.and()
+				.formLogin()
+			.and()
 				.csrf().disable()
 				.cors()
 			.and()

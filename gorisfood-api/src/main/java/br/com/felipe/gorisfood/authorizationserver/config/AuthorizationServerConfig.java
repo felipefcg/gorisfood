@@ -11,6 +11,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,7 +44,7 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		return http.build();
+		return http.formLogin(Customizer.withDefaults()).build();
 	}
 		
 	@Bean
@@ -81,8 +82,8 @@ public class AuthorizationServerConfig {
 						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
 						.accessTokenTimeToLive(Duration.ofMinutes(15))
 						.build())
-				.redirectUri("http://localhost:8080/authorized")
-				.redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+				.redirectUri("http://127.0.0.1:8080/authorized")
+				.redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
 				.clientSettings(ClientSettings.builder()
 						.requireAuthorizationConsent(true)
 						.build())
@@ -105,7 +106,7 @@ public class AuthorizationServerConfig {
 						.requireAuthorizationConsent(false)
 						.build())
 				.build();
-		return new InMemoryRegisteredClientRepository(Arrays.asList(registeredClient));
+		return new InMemoryRegisteredClientRepository(Arrays.asList(registeredClient, gorisfoodWeb, foodanalytics));
 	}
 	
 	@Bean
