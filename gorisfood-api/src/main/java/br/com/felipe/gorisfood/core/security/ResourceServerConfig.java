@@ -26,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
+public class ResourceServerConfig {
 	
 	@Bean
 	SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
@@ -38,57 +38,31 @@ public class ResourceServerConfig /*extends WebSecurityConfigurerAdapter*/  {
 				.csrf().disable()
 				.cors()
 			.and()
-				.oauth2ResourceServer().jwt();
+				.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 		
 		return http.build();
 	}
 	
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http
-//			.formLogin().loginPage("/login")
-//			.and()
-//			.authorizeRequests()
-//				.antMatchers("/oauth/**").authenticated()
-//			.and()
-//			.csrf().disable()
-//			.cors()
-//			.and()
-//			.oauth2ResourceServer()
-//				.jwt()
-//				.jwtAuthenticationConverter(jwtAuthenticationConverter())
-//		;
-//	}
-	
-	private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
-		var jwtAuthenticationConverter = new JwtAuthenticationConverter();
-		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(this::jwtGrantedAuthoritiesConverter);
-				
-		return jwtAuthenticationConverter;
-	}
-
-	private Collection<GrantedAuthority> jwtGrantedAuthoritiesConverter(Jwt jwt) {
-		var authorities = jwt.getClaimAsStringList("authorities");
+	private JwtAuthenticationConverter jwtAuthenticationConverter() {
+		var converter = new JwtAuthenticationConverter();
 		
-		if(authorities == null) {
-			authorities = Collections.EMPTY_LIST;
-		}
+		converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+			List<String> authorities = jwt.getClaimAsStringList("authorities");
+			
+			if(authorities == null) {
+				return Collections.emptyList();
+			}
+			var authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+			Collection<GrantedAuthority> grantedAuthorities = authoritiesConverter.convert(jwt);
+			grantedAuthorities.addAll(authorities
+					.stream()
+					.map(SimpleGrantedAuthority::new)
+					.toList());
+			
+			return grantedAuthorities;
+		});
 		
-		List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
-				.map(SimpleGrantedAuthority::new)
-				.toList();
-		
-		var scopeAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-		Collection<GrantedAuthority> grantedAuthorities = scopeAuthoritiesConverter.convert(jwt);
-		
-		grantedAuthorities.addAll(simpleGrantedAuthorities);
-		
-		return grantedAuthorities;
-	}
-
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
+		return converter;
 	}
 	
 }
