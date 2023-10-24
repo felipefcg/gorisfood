@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
@@ -65,59 +66,8 @@ public class AuthorizationServerConfig {
 	}
 	
 	@Bean
-	RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-		RegisteredClient registeredClient = RegisteredClient
-			.withId("1")
-			.clientId("gorisfood-backend")
-			.clientSecret(passwordEncoder.encode("backend123"))
-			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-			.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-			.scope("READ")
-			.tokenSettings(TokenSettings.builder()
-					.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-					.accessTokenTimeToLive(Duration.ofMinutes(30))
-					.build())
-			.build();
-		
-		RegisteredClient gorisfoodWeb = RegisteredClient
-				.withId("2")
-				.clientId("gorisfood-web")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.scope("READ")
-				.scope("WRITE")
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(15))
-						.refreshTokenTimeToLive(Duration.ofDays(1))
-						.build())
-				.redirectUri("http://127.0.0.1:8080/authorized")
-				.redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(true)
-						.build())
-				.build();
-		
-		RegisteredClient foodanalytics = RegisteredClient
-				.withId("3")
-				.clientId("foodanlytics")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.scope("READ")
-				.scope("WRITE")
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(30))
-						.build())
-				.redirectUri("http://foodanalytics.local:8082")
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(false)
-						.build())
-				.build();
-		return new InMemoryRegisteredClientRepository(Arrays.asList(registeredClient, gorisfoodWeb, foodanalytics));
+	JdbcRegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder, JdbcOperations jdbcOperations) {
+		return new JdbcRegisteredClientRepository(jdbcOperations);
 	}
 	
 	@Bean
