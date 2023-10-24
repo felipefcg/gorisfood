@@ -33,14 +33,12 @@ public class ResourceServerConfig {
 		http.authorizeRequests()
 			.antMatchers("/oauth2/**").authenticated()
 			.and()
-				.formLogin()
-			.and()
 				.csrf().disable()
 				.cors()
 			.and()
 				.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 		
-		return http.build();
+		return http.formLogin(customizer -> customizer.loginPage("/login")).build();
 	}
 	
 	private JwtAuthenticationConverter jwtAuthenticationConverter() {
