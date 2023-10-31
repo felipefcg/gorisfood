@@ -135,6 +135,7 @@ public class AuthorizationServerConfig {
 		};
 	}
 	
+	@Bean
 	OAuth2AuthorizationConsentService consentServide() {
 		return new InMemoryOAuth2AuthorizationConsentService();
 	}
