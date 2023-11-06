@@ -1,7 +1,7 @@
 package br.com.felipe.gorisfood.api.v1.model.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;

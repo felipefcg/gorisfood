@@ -2,7 +2,7 @@ package br.com.felipe.gorisfood.infrastructure.repository.specification;
 
 import java.util.ArrayList;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -26,11 +26,11 @@ public class PedidoSpecs {
 			}
 			
 			if(filter.getRestauranteId() != null) {
-				predicates.add(builder.equal(root.get(Pedido.Fields.restaurante), filter.getRestauranteId()));
+				predicates.add(builder.equal(root.get(Pedido.Fields.restaurante).get("id"), filter.getRestauranteId()));
 			}
 			
 			if(filter.getClienteId() != null) {
-				predicates.add(builder.equal(root.get(Pedido.Fields.cliente), filter.getClienteId()));
+				predicates.add(builder.equal(root.get(Pedido.Fields.cliente).get("id"), filter.getClienteId()));
 			}
 			
 			if(filter.getDataCriacaoInicio() != null) {

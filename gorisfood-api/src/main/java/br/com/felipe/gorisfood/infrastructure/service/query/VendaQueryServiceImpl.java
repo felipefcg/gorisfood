@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
@@ -61,7 +61,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		predicates.add(root.get("status").in(Arrays.asList(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE)));
 		
 		if(filtro.getRestauranteId() !=  null) {
-			predicates.add(builder.equal(root.get(Pedido.Fields.restaurante), filtro.getRestauranteId()));
+			predicates.add(builder.equal(root.get(Pedido.Fields.restaurante).get("id"), filtro.getRestauranteId()));
 		}
 		
 		if(filtro.getDataCriacaoInicio() !=  null) {
