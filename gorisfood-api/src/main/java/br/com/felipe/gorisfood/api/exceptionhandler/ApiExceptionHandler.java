@@ -11,10 +11,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -49,7 +49,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleErroGenerico(Exception e, WebRequest request) {
-		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		HttpStatusCode status = HttpStatus.INTERNAL_SERVER_ERROR;
 		
 		String detalhe = MSG_GENERICA_USUARIO_FINAL;
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.ERRO_DE_SISTEMA, detalhe, MSG_GENERICA_USUARIO_FINAL)
@@ -61,7 +61,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<Object> handleAccessDenied(AccessDeniedException e, WebRequest request) {
-		HttpStatus status = HttpStatus.FORBIDDEN;
+		HttpStatusCode status = HttpStatus.FORBIDDEN;
 		var mensagem = "Você não possui permissão para executar essa operação";
 		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.ACESSO_NEGADO, e.getMessage(), mensagem)
@@ -73,7 +73,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<Object> handleCidadeNaoEncontrada(EntidadeNaoEncontradaException e,
 				WebRequest request) {
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		HttpStatusCode status = HttpStatus.NOT_FOUND;
 		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.RECURSO_NAO_ENCONTRADO, e.getMessage(), e.getMessage())
 								.build();
@@ -83,7 +83,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(EntidadeEmUsoExcpetion.class)
 	public ResponseEntity<Object> handleEntidadeEmUso(EntidadeEmUsoExcpetion e, WebRequest request) {
-		HttpStatus status = HttpStatus.CONFLICT;
+		HttpStatusCode status = HttpStatus.CONFLICT;
 		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.ENTIDADE_EM_USO, e.getMessage(), e.getMessage())
 								.build();
@@ -95,7 +95,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleEntidadeRelacionamentoNaoEncontrada(EntidadeRelacionamentoNaoEncontradaException e,
 			WebRequest request) {
 		
-		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		HttpStatusCode status = HttpStatus.UNPROCESSABLE_ENTITY;
 		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.ENTIDADE_RELACIONAMENTO_NAO_ENCONTRADA, e.getMessage(), e.getMessage())
 								.build();
@@ -106,7 +106,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({SenhaInvalidaExcpetion.class, NegocioException.class})
 	public ResponseEntity<Object> handleSenhaInvalidaExcpetion(NegocioException e, WebRequest request) {
 		
-		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		HttpStatusCode status = HttpStatus.UNPROCESSABLE_ENTITY;
 		
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.DADOS_INVALIDOS, e.getMessage(), e.getMessage())
 								.build();
@@ -117,15 +117,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		
-		return handleBindException(ex, headers, status, request);
-	}
-
-	
-	@Override
-	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
-			WebRequest request) {
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		
 		String msg = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 		
@@ -157,7 +149,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
+			HttpStatusCode status, WebRequest request) {
 		
 		String detalhe = String.format("O recuro '%s', que você tentou acessar é inexistente.", ex.getRequestURL());
 		Problema problema = criaProblemaBuilder(status.value(), TipoProblema.RECURSO_NAO_ENCONTRADO, detalhe, detalhe)
@@ -168,7 +160,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
+			HttpStatusCode status, WebRequest request) {
 		
 		if (ex instanceof MethodArgumentTypeMismatchException) {
 			return handleMethosArgumentTypeMismatch((MethodArgumentTypeMismatchException) ex, headers, status, request);
@@ -179,7 +171,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		
 		String detalhe = null;
 		Throwable causaRaiz = ExceptionUtils.getRootCause(ex);
@@ -200,10 +192,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
+			HttpStatusCode status, WebRequest request) {
 		
 		if(body == null) {
-			body = criaProblemaBuilder(status.value(), null, status.getReasonPhrase(), MSG_GENERICA_USUARIO_FINAL)
+			body = criaProblemaBuilder(status.value(), null, HttpStatus.valueOf(status.value()).getReasonPhrase(), MSG_GENERICA_USUARIO_FINAL)
 						.build();
 		} else if (body instanceof String msg) {
 			body = criaProblemaBuilder(status.value(), null, msg, MSG_GENERICA_USUARIO_FINAL)
@@ -215,12 +207,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		return ResponseEntity.status(status).headers(headers).build();
 	}
 	
 	private ResponseEntity<Object> handleMethosArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
+			HttpStatusCode status, WebRequest request) {
 		String detalhe = String.format("O parâmetro de URL '%s' recebeu o valor '%s', que é de um tipo inválido. "
 				+ "Corrija e informe um valor compatível do tipo %s", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName());  
 				

@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import br.com.felipe.gorisfood.domain.repository.CozinhaRepository;
 import br.com.felipe.gorisfood.domain.repository.RestauranteRepository;
 import br.com.felipe.gorisfood.domain.service.CadastroCozinhaService;
 import br.com.felipe.gorisfood.util.DatabaseCleaner;
+import jakarta.validation.ConstraintViolationException;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")

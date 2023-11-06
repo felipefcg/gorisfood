@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.7</version>
+		<version>3.1.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.felipe.gorisfood</groupId>
@@ -17,12 +17,11 @@
 	<properties>
 		<java.version>17</java.version>
 		<modelomapper.version>3.1.1</modelomapper.version>
-		<squiggly.filter.version>1.3.18</squiggly.filter.version>
 		<jasperreports.verion>6.20.0</jasperreports.verion>
 		<aws-java-sdk-s3.version>1.12.417</aws-java-sdk-s3.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<!-- Authorization Server -->
-        <spring-auth-server.version>0.3.0</spring-auth-server.version>
+        <spring-auth-server.version>0.3.1</spring-auth-server.version>
 		<!-- Authorization Server -->
 		<!-- Build Image Docker -->
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
@@ -64,6 +63,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.31</version>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -85,11 +85,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
   			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>com.github.bohnman</groupId>
-		    <artifactId>squiggly-filter-jackson</artifactId>
-		    <version>${squiggly.filter.version}</version>
 		</dependency>
 		
 		<!-- SWAGGER - Spring Doc -->
@@ -191,7 +186,6 @@
 		 <dependency>
 		 	<groupId>org.springframework.security</groupId>
 		 	<artifactId>spring-security-oauth2-authorization-server</artifactId>
-		 	<version>${spring-auth-server.version}</version>
 		 </dependency> 
 		<!-- Authorization Server -->
 		
