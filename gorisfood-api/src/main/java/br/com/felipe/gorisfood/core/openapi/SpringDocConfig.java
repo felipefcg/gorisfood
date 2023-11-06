@@ -1,15 +1,16 @@
 package br.com.felipe.gorisfood.core.openapi;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.MediaType.*;
 
 import br.com.felipe.gorisfood.api.exceptionhandler.Problema;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -67,7 +68,7 @@ public class SpringDocConfig {
 	}
 
 	@Bean
-	OpenApiCustomiser openApiCustomiser() {
+	OpenApiCustomizer openApiCustomizer() {
 		return openApi -> {
 			openApi.getPaths()
 					.values()
