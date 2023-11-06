@@ -49,7 +49,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 import br.com.felipe.gorisfood.authorizationserver.properties.GorisFoodSecurityProperties;
 import br.com.felipe.gorisfood.authorizationserver.properties.JwtKeyStoreProperties;
-import br.com.felipe.gorisfood.authorizationserver.service.JdbcoAuth2AuthorizationQueryService;
+import br.com.felipe.gorisfood.authorizationserver.service.JdbcOAuth2AuthorizationQueryService;
 import br.com.felipe.gorisfood.authorizationserver.service.OAuth2AuthorizationQueryService;
 import br.com.felipe.gorisfood.domain.model.Usuario;
 import br.com.felipe.gorisfood.domain.repository.UsuarioRepository;
@@ -144,7 +144,7 @@ public class AuthorizationServerConfig {
 	}
 	
 	@Bean
-	OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations) {
-		return new JdbcoAuth2AuthorizationQueryService(jdbcOperations);
+	OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
+		return new JdbcOAuth2AuthorizationQueryService(jdbcOperations, registeredClientRepository);
 	}
 }
