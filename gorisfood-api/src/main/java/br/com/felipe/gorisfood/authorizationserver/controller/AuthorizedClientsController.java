@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.felipe.gorisfood.authorizationserver.service.OAuth2AuthorizationQueryService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -32,7 +33,9 @@ public class AuthorizedClientsController {
 	private final OAuth2AuthorizationService oAuth2AuthorizationService;
 	
 	@GetMapping
-	public String clientsList(Principal principal, Model model) {
+	public String clientsList(Principal principal, Model model, HttpServletRequest request) {
+		request.getAttributeNames().asIterator().forEachRemaining(System.out::println);
+		request.getHeaderNames().asIterator().forEachRemaining(System.out::println);
 		List<RegisteredClient> clientsWithConsent = oAuth2AuthorizationQueryService.listClientsWithConsent(principal.getName());
 		model.addAttribute("clients", clientsWithConsent);
 		
